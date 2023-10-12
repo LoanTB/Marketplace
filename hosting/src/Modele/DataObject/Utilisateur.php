@@ -4,111 +4,236 @@ namespace App\Ecommerce\Modele\DataObject;
 use App\Ecommerce\Lib\MotDePasse;
 
 class Utilisateur extends AbstractDataObject {
+
+    private int $id_utilisateur;
     private string $login;
     private string $email;
+    private string $telephone;
     private string $password;
     private string $nom;
     private string $prenom;
-    private bool $estAdmin;
-    private string $emailAValider;
-    private string $nonce;
+    private string $nonce_email;
+    private string $nonce_telephone;
+    private bool $admin;
+    private int $id_image;
 
-    public function __construct(string $login, string $email,string $password, string $nom, string $prenom, bool $estAdmin, string $emailAValider, string $nonce, bool $raw = true){
+    public function __construct(int $id_utilisateur, string $login, string $email,string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, int $id_image, bool $raw = true){
         if ($raw) {
+            $this->id_utilisateur = $id_utilisateur;
             $this->login = $login;
             $this->email = $email;
+            $this->telephone = $telephone;
             $this->password = $password;
             $this->nom = $nom;
             $this->prenom = $prenom;
-            $this->estAdmin = $estAdmin;
-            $this->emailAValider = $emailAValider;
-            $this->nonce = $nonce;
+            $this->nonce_email = $nonce_email;
+            $this->nonce_telephone = $nonce_telephone;
+            $this->admin = $admin;
+            $this->id_image = $id_image;
         } else {
+            $this->setIdUtilisateur($id_utilisateur);
             $this->setLogin($login);
             $this->setEmail($email);
+            $this->setTelephone($telephone);
             $this->setPassword($password);
             $this->setNom($nom);
             $this->setPrenom($prenom);
-            $this->setEstAdmin($estAdmin);
-            $this->setEmailAValider($emailAValider);
-            $this->setNonce($nonce);
+            $this->setNonceEmail($nonce_email);
+            $this->setNonceTelephone($nonce_telephone);
+            $this->setAdmin($admin);
+            $this->setIdImage($id_image);
         }
     }
 
     public function formatTableau(): array{
         return array(
+            "id_utilisateur" => $this->getIdUtilisateur(),
             "login" => $this->getLogin(),
             "email" => $this->getEmail(),
+            "telephone" => $this->getTelephone(),
             "password" => $this->getPassword(),
             "nom" => $this->getNom(),
             "prenom" => $this->getPrenom(),
-            "estAdmin" => (int)$this->getEstAdmin(),
-            "emailAValider" => $this->getEmailAValider(),
-            "nonce" => $this->getNonce()
+            "nonce_email" => $this->getNonceEmail(),
+            "nonce_telephone" => $this->getNonceTelephone(),
+            "admin" => $this->getAdmin(),
+            "id_image" => $this->getIdImage()
         );
     }
 
-    public function getLogin(): string {
+    /**
+     * @return int
+     */
+    public function getIdUtilisateur(): int
+    {
+        return $this->id_utilisateur;
+    }
+
+    /**
+     * @param int $id_utilisateur
+     */
+    public function setIdUtilisateur(int $id_utilisateur): void
+    {
+        $this->id_utilisateur = $id_utilisateur;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogin(): string
+    {
         return $this->login;
     }
 
-    public function setLogin(string $login): void {
+    /**
+     * @param string $login
+     */
+    public function setLogin(string $login): void
+    {
         $this->login = $login;
     }
 
-    public function getEmail(): string {
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
         return $this->email;
     }
 
-    public function setEmail(string $email): void {
+    /**
+     * @param string $email
+     */
+    public function setEmail(string $email): void
+    {
         $this->email = $email;
     }
 
-    public function getPassword(): string {
+    /**
+     * @return string
+     */
+    public function getTelephone(): string
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * @param string $telephone
+     */
+    public function setTelephone(string $telephone): void
+    {
+        $this->telephone = $telephone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
         return $this->password;
     }
 
-    public function setPassword(string $password): void {
-        $this->password = MotDePasse::hacher($password);
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
     }
 
-    public function getNom(): string {
+    /**
+     * @return string
+     */
+    public function getNom(): string
+    {
         return $this->nom;
     }
 
-    public function setNom(string $nom): void {
+    /**
+     * @param string $nom
+     */
+    public function setNom(string $nom): void
+    {
         $this->nom = $nom;
     }
 
-    public function getPrenom(): string {
+    /**
+     * @return string
+     */
+    public function getPrenom(): string
+    {
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): void {
+    /**
+     * @param string $prenom
+     */
+    public function setPrenom(string $prenom): void
+    {
         $this->prenom = $prenom;
     }
 
-    public function getEstAdmin(): bool {
-        return $this->estAdmin;
+    /**
+     * @return string
+     */
+    public function getNonceEmail(): string
+    {
+        return $this->nonce_email;
     }
 
-    public function setEstAdmin(bool $estAdmin): void {
-        $this->estAdmin = $estAdmin;
+    /**
+     * @param string $nonce_email
+     */
+    public function setNonceEmail(string $nonce_email): void
+    {
+        $this->nonce_email = $nonce_email;
     }
 
-    public function getEmailAValider(): string {
-        return $this->emailAValider;
+    /**
+     * @return string
+     */
+    public function getNonceTelephone(): string
+    {
+        return $this->nonce_telephone;
     }
 
-    public function setEmailAValider(string $emailAValider): void {
-        $this->emailAValider = $emailAValider;
+    /**
+     * @param string $nonce_telephone
+     */
+    public function setNonceTelephone(string $nonce_telephone): void
+    {
+        $this->nonce_telephone = $nonce_telephone;
     }
 
-    public function getNonce(): string {
-        return $this->nonce;
+    /**
+     * @return bool
+     */
+    public function getAdmin(): bool
+    {
+        return $this->admin;
     }
 
-    public function setNonce(string $nonce): void {
-        $this->nonce = $nonce;
+    /**
+     * @param bool $admin
+     */
+    public function setAdmin(bool $admin): void
+    {
+        $this->admin = $admin;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdImage(): int
+    {
+        return $this->id_image;
+    }
+
+    /**
+     * @param int $id_image
+     */
+    public function setIdImage(int $id_image): void
+    {
+        $this->id_image = $id_image;
     }
 }

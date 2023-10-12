@@ -5,14 +5,13 @@ use App\Ecommerce\Modele\Repository\ConnexionBaseDeDonnee as BD;
 
 abstract class AbstractRepository{
     protected abstract function getNomTable(): string;
-    protected abstract function getNomClePrimaire(): string;
+    protected abstract function getUniques(): array;
     protected abstract function getNomsColonnes(): array;
 
     /**
      * @return AbstractDataObject[]
      */
     public function recuperer(): array {
-
         $pdoStatement = BD::getPdo()->query(/** @lang OracleSqlPlus */ "SELECT * FROM {$this->getNomTable()}");
         $AbstractDataObject = [];
         foreach ($pdoStatement as $dataFormatTableau) {
@@ -25,12 +24,12 @@ abstract class AbstractRepository{
      * @param string $valeurClePrimaire
      * @return AbstractDataObject|null
      */
-    public function recupererParClePrimaire(string $valeurClePrimaire): ?AbstractDataObject{
+    public function recupererParUnique(string $uniqueValue,int $uniqueIndex): ?AbstractDataObject{
         $sql = /** @lang OracleSqlPlus */
-            "SELECT * from {$this->getNomTable()} WHERE {$this->getNomClePrimaire()} = :{$this->getNomClePrimaire()}";
+            "SELECT * from {$this->getNomTable()} WHERE {$this->getUniques()[$uniqueIndex]} = :{$this->getUniques()[$uniqueIndex]}";
         $pdoStatement = BD::getPdo()->prepare($sql);
         $values = array(
-            $this->getNomClePrimaire() => $valeurClePrimaire,
+            $this->getUniques()[$uniqueIndex] => $uniqueValue,
         );
         $pdoStatement->execute($values);
         $dataFormatTableau = $pdoStatement->fetch();
@@ -41,12 +40,12 @@ abstract class AbstractRepository{
         }
     }
 
-    public function supprimerParClePrimaire(string $valeurClePrimaire) : void {
+    public function supprimerParUnique(string $uniqueValue,int $uniqueIndex) : void {
         $sql = /** @lang OracleSqlPlus */
-            "DELETE FROM {$this->getNomTable()} WHERE {$this->getNomClePrimaire()} = :{$this->getNomClePrimaire()}";
+            "DELETE FROM {$this->getNomTable()} WHERE {$this->getUniques()[$uniqueIndex]} = :{$this->getUniques()[$uniqueIndex]}";
         $pdoStatement = BD::getPdo()->prepare($sql);
         $values = array(
-            $this->getNomClePrimaire() => $valeurClePrimaire,
+            $this->getUniques()[$uniqueIndex] => $uniqueValue,
         );
         $pdoStatement->execute($values);
         $pdoStatement->fetch();
@@ -73,7 +72,7 @@ abstract class AbstractRepository{
         foreach ($this->getNomsColonnes() as $nomColone){
             $sql = $sql." {$nomColone} = :{$nomColone}, ";
         }
-        $sql = substr($sql,0,-2)." WHERE {$this->getNomClePrimaire()} = :{$this->getNomClePrimaire()}";
+        $sql = substr($sql,0,-2)." WHERE {$this->getUniques()[0]} = :{$this->getUniques()[0]}";
         $pdoStatement = BD::getPdo()->prepare($sql);
         $pdoStatement->execute($object->formatTableau());
         $pdoStatement->fetch();
