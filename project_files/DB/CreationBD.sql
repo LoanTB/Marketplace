@@ -9,20 +9,20 @@ CREATE TABLE Wishlist(
                          PRIMARY KEY(id_wishlist)
 );
 
-CREATE TABLE Utilisateur(
-                            id_utilisateur INT AUTO_INCREMENT,
-                            login VARCHAR(50)  NOT NULL,
-                            email VARCHAR(100) ,
-                            password CHAR(64)  NOT NULL,
-                            PRIMARY KEY(id_utilisateur),
-                            UNIQUE(login),
-                            UNIQUE(email)
+CREATE TABLE Compte(
+                       id_compte INT AUTO_INCREMENT,
+                       login VARCHAR(50)  NOT NULL,
+                       email VARCHAR(100) ,
+                       password CHAR(64)  NOT NULL,
+                       PRIMARY KEY(id_compte),
+                       UNIQUE(login),
+                       UNIQUE(email)
 );
 
 CREATE TABLE Admin(
-                      id_utilisateur INT,
-                      PRIMARY KEY(id_utilisateur),
-                      FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur)
+                      id_compte INT,
+                      PRIMARY KEY(id_compte),
+                      FOREIGN KEY(id_compte) REFERENCES Compte(id_compte)
 );
 
 CREATE TABLE Type(
@@ -30,41 +30,41 @@ CREATE TABLE Type(
                      PRIMARY KEY(nom_type)
 );
 
-CREATE TABLE Client(
-                       id_utilisateur INT,
-                       telephone CHAR(11) ,
-                       nom VARCHAR(50) ,
-                       prenom VARCHAR(50) ,
-                       nonce_email CHAR(20) ,
-                       nonce_telephone CHAR(20) ,
-                       id_image INT NOT NULL,
-                       PRIMARY KEY(id_utilisateur),
-                       UNIQUE(telephone),
-                       FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
-                       FOREIGN KEY(id_image) REFERENCES Image(id_image)
+CREATE TABLE Utilisateur(
+                            id_compte INT,
+                            telephone CHAR(11) ,
+                            nom VARCHAR(50) ,
+                            prenom VARCHAR(50) ,
+                            nonce_email CHAR(20) ,
+                            nonce_telephone CHAR(20) ,
+                            id_image INT NOT NULL,
+                            PRIMARY KEY(id_compte),
+                            UNIQUE(telephone),
+                            FOREIGN KEY(id_compte) REFERENCES Compte(id_compte),
+                            FOREIGN KEY(id_image) REFERENCES Image(id_image)
 );
 
 CREATE TABLE Article(
                         id_article INT AUTO_INCREMENT,
-                        prix DECIMAL(15,2)   NOT NULL,
                         nom VARCHAR(50)  NOT NULL,
                         description VARCHAR(500) ,
+                        prix DECIMAL(15,2)   NOT NULL,
                         quantite INT NOT NULL,
-                        id_utilisateur INT NOT NULL,
-                        id_utilisateur_1 INT NOT NULL,
+                        id_compte INT NOT NULL,
+                        id_compte_1 INT NOT NULL,
                         PRIMARY KEY(id_article),
-                        FOREIGN KEY(id_utilisateur) REFERENCES Admin(id_utilisateur),
-                        FOREIGN KEY(id_utilisateur_1) REFERENCES Client(id_utilisateur)
+                        FOREIGN KEY(id_compte) REFERENCES Admin(id_compte),
+                        FOREIGN KEY(id_compte_1) REFERENCES Utilisateur(id_compte)
 );
 
 CREATE TABLE Commenter(
-                          id_utilisateur INT,
+                          id_compte INT,
                           id_article INT,
                           titre VARCHAR(50)  NOT NULL,
                           texte VARCHAR(500)  NOT NULL,
                           note DOUBLE NOT NULL,
-                          PRIMARY KEY(id_utilisateur, id_article),
-                          FOREIGN KEY(id_utilisateur) REFERENCES Client(id_utilisateur),
+                          PRIMARY KEY(id_compte, id_article),
+                          FOREIGN KEY(id_compte) REFERENCES Utilisateur(id_compte),
                           FOREIGN KEY(id_article) REFERENCES Article(id_article)
 );
 
@@ -77,10 +77,10 @@ CREATE TABLE illustrer(
 );
 
 CREATE TABLE posseder(
-                         id_utilisateur INT,
+                         id_compte INT,
                          id_wishlist INT,
-                         PRIMARY KEY(id_utilisateur, id_wishlist),
-                         FOREIGN KEY(id_utilisateur) REFERENCES Client(id_utilisateur),
+                         PRIMARY KEY(id_compte, id_wishlist),
+                         FOREIGN KEY(id_compte) REFERENCES Utilisateur(id_compte),
                          FOREIGN KEY(id_wishlist) REFERENCES Wishlist(id_wishlist)
 );
 
@@ -93,13 +93,13 @@ CREATE TABLE souhaiter(
 );
 
 CREATE TABLE ban(
-                    id_utilisateur INT,
-                    id_utilisateur_1 INT,
+                    id_compte INT,
+                    id_compte_1 INT,
                     motif VARCHAR(200) ,
                     fin DATE,
-                    PRIMARY KEY(id_utilisateur, id_utilisateur_1),
-                    FOREIGN KEY(id_utilisateur) REFERENCES Client(id_utilisateur),
-                    FOREIGN KEY(id_utilisateur_1) REFERENCES Admin(id_utilisateur)
+                    PRIMARY KEY(id_compte, id_compte_1),
+                    FOREIGN KEY(id_compte) REFERENCES Utilisateur(id_compte),
+                    FOREIGN KEY(id_compte_1) REFERENCES Admin(id_compte)
 );
 
 CREATE TABLE type_produit(

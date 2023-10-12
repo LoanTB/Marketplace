@@ -1,68 +1,66 @@
 <?php
 namespace App\Ecommerce\Controleur;
-use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
 use App\Ecommerce\Lib\VerificationEmail;
-use App\Ecommerce\Modele\DataObject\Client;
-use App\Ecommerce\Modele\Repository\UtilisateurRepository;
+use App\Ecommerce\Modele\DataObject\Article;
+use App\Ecommerce\Modele\Repository\ArticleRepository;
 
-class ControleurUtilisateur extends ControleurGenerique {
-    // Déclaration de type de retour void : la fonction ne retourne pas de valeur
+class ControleurArticle extends ControleurGenerique {
     public static function afficherListe() : void {
         self::afficherVue("vueGenerale.php",[
-            "pagetitle" => "Liste des utilisateurs",
-            "cheminVueBody" => "utilisateur/liste.php",
-            "utilisateurs" => (new UtilisateurRepository())->recuperer()
+            "pagetitle" => "Liste des articles",
+            "cheminVueBody" => "article/liste.php",
+            "articles" => (new ArticleRepository())->recuperer()
         ]);
     }
 
     public static function afficherErreur(string $messageErreur = "") : void {
         self::afficherVue("vueGenerale.php",[
             "pagetitle" => "Erreur",
-            "cheminVueBody" => "utilisateur/erreur.php",
+            "cheminVueBody" => "article/erreur.php",
             "messageErreur" => $messageErreur
         ]);
     }
 
     public static function afficherDetail() : void {
-        if ((new UtilisateurRepository())->requestContainsUnique()){
+        if ((new ArticleRepository())->requestContainsUnique()){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        $utilisateur = (new UtilisateurRepository())->recupererParUnique($_REQUEST[(new UtilisateurRepository())->requestUniqueValue()],(new UtilisateurRepository())->requestUniqueIndice());
-        if ($utilisateur == null){
-            MessageFlash::ajouter("warning", "Client innexistant");
+        $article = (new ArticleRepository())->recupererParUnique($_REQUEST[(new ArticleRepository())->requestUniqueValue()],(new ArticleRepository())->requestUniqueIndice());
+        if ($article == null){
+            MessageFlash::ajouter("warning", "Article innexistant");
             self::afficherListe();
         } else {
             self::afficherVue("vueGenerale.php",[
-                "pagetitle" => "Détails de l'utilisateur",
-                "cheminVueBody" => "utilisateur/detail.php",
-                "utilisateur" => $utilisateur
+                "pagetitle" => "Détails de l'article",
+                "cheminVueBody" => "article/detail.php",
+                "article" => $article
             ]);
         }
     }
 
     public static function afficherFormulaireCreation() : void {
         self::afficherVue("vueGenerale.php",[
-            "pagetitle" => "Formulaire création utilisateurs",
-            "cheminVueBody" => "utilisateur/formulaireCreation.php"
+            "pagetitle" => "Formulaire création articles",
+            "cheminVueBody" => "article/formulaireCreation.php"
         ]);
     }
 
     public static function afficherFormulaireMiseAJour() : void {
         self::afficherVue("vueGenerale.php",[
-            "pagetitle" => "Formulaire modification utilisateurs",
-            "cheminVueBody" => "utilisateur/formulaireMiseAJour.php"
+            "pagetitle" => "Formulaire modification articles",
+            "cheminVueBody" => "article/formulaireMiseAJour.php"
         ]);
     }
 
     public static function formulaireConnexion() : void {
         self::afficherVue("vueGenerale.php",[
-            "pagetitle" => "Formulaire connexion utilisateurs",
-            "cheminVueBody" => "utilisateur/formulaireConnexion.php"
+            "pagetitle" => "Formulaire connexion articles",
+            "cheminVueBody" => "article/formulaireConnexion.php"
         ]);
     }
 
@@ -75,7 +73,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        if (ConnexionUtilisateur::estAdministrateur()){
+        if (ConnexionArticle::estAdministrateur()){
             $estAdmin = isset($_REQUEST["estAdmin"]);
         } else {
             if (isset($_REQUEST["estAdmin"])){
@@ -99,11 +97,11 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         if ($_REQUEST["password"] == $_REQUEST["passwordConfirmation"]){
-            $utilisateur = new Client($_REQUEST["login"],"",$_REQUEST["password"],$_REQUEST["nom"],$_REQUEST["prenom"], $estAdmin, $_REQUEST["email"], MotDePasse::genererChaineAleatoire(), $raw = false);
-            if (VerificationEmail::envoiEmailValidation($utilisateur)){
-                (new UtilisateurRepository())->ajouter($utilisateur);
+            $article = new Article($_REQUEST["login"],"",$_REQUEST["password"],$_REQUEST["nom"],$_REQUEST["prenom"], $estAdmin, $_REQUEST["email"], MotDePasse::genererChaineAleatoire(), $raw = false);
+            if (VerificationEmail::envoiEmailValidation($article)){
+                (new ArticleRepository())->ajouter($article);
 
-                MessageFlash::ajouter("success","L'utilisateur a bien été créé, un mail de validation a été envoyé. <a href='http://".explode('@', $utilisateur->getEmailAValider())[0].".yopmail.com'>Consultez la boite mail</a>");
+                MessageFlash::ajouter("success","L'article a bien été créé, un mail de validation a été envoyé. <a href='http://".explode('@', $article->getEmailAValider())[0].".yopmail.com'>Consultez la boite mail</a>");
             } else {
                 MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyée, veuillez réessayer plus tard.");
             }
@@ -121,7 +119,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["login"]) and !ConnexionUtilisateur::estAdministrateur()){
+        if (!ConnexionArticle::estArticle($_REQUEST["login"]) and !ConnexionArticle::estAdministrateur()){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
@@ -139,7 +137,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        if (ConnexionUtilisateur::estAdministrateur()){
+        if (ConnexionArticle::estAdministrateur()){
             $estAdmin = isset($_REQUEST["estAdmin"]);
         } else {
             if (isset($_REQUEST["estAdmin"])){
@@ -150,18 +148,18 @@ class ControleurUtilisateur extends ControleurGenerique {
             $estAdmin = false;
         }
 
-        if (MotDePasse::verifier($_REQUEST["oldPassword"],(new UtilisateurRepository())->recupererParClePrimaire($_REQUEST["login"])->getPassword())){
-            $utilisateur = (new UtilisateurRepository())->recupererParClePrimaire($_REQUEST["login"]);
+        if (MotDePasse::verifier($_REQUEST["oldPassword"],(new ArticleRepository())->recupererParClePrimaire($_REQUEST["login"])->getPassword())){
+            $article = (new ArticleRepository())->recupererParClePrimaire($_REQUEST["login"]);
             if (isset($_REQUEST["password"])){
                 if ($_REQUEST["password"] == $_REQUEST["passwordConfirmation"]){
-                    $utilisateur->setPassword($_REQUEST["password"]);
+                    $article->setPassword($_REQUEST["password"]);
                 } else {
                     MessageFlash::ajouter("warning", "Les mots de passes sont différents");
                     self::afficherFormulaireMiseAJour();
                     return;
                 }
             } else {
-                $utilisateur->setPassword($_REQUEST["oldPassword"]);
+                $article->setPassword($_REQUEST["oldPassword"]);
             }
         } else {
             MessageFlash::ajouter("warning", "Mot de passse incorrecte !");
@@ -169,23 +167,23 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        $utilisateur->setNom($_REQUEST["nom"]);
-        $utilisateur->setPrenom($_REQUEST["prenom"]);
-        $utilisateur->setEstAdmin($estAdmin);
+        $article->setNom($_REQUEST["nom"]);
+        $article->setPrenom($_REQUEST["prenom"]);
+        $article->setEstAdmin($estAdmin);
 
-        if ($utilisateur->getEmail() == $_REQUEST["email"]){
-            $utilisateur->setEmail($_REQUEST["email"]);
-            $utilisateur->setEmailAValider("");
-            $utilisateur->setNonce("");
-            (new UtilisateurRepository())->mettreAJour($utilisateur);
-            MessageFlash::ajouter("success", "L'utilisateur avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été mise à jour");
+        if ($article->getEmail() == $_REQUEST["email"]){
+            $article->setEmail($_REQUEST["email"]);
+            $article->setEmailAValider("");
+            $article->setNonce("");
+            (new ArticleRepository())->mettreAJour($article);
+            MessageFlash::ajouter("success", "L'article avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été mise à jour");
         } else {
-            $utilisateur->setEmail("");
-            $utilisateur->setEmailAValider($_REQUEST["email"]);
-            $utilisateur->setNonce(MotDePasse::genererChaineAleatoire());
-            if (VerificationEmail::envoiEmailValidation($utilisateur)){
-                (new UtilisateurRepository())->mettreAJour($utilisateur);
-                MessageFlash::ajouter("success", "L'utilisateur avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été mise à jour, un mail de validation a été envoyé pour confirmer la nouvelle email. <a href='http://".explode('@', $utilisateur->getEmailAValider())[0].".yopmail.com'>Consultez la boite mail</a>");
+            $article->setEmail("");
+            $article->setEmailAValider($_REQUEST["email"]);
+            $article->setNonce(MotDePasse::genererChaineAleatoire());
+            if (VerificationEmail::envoiEmailValidation($article)){
+                (new ArticleRepository())->mettreAJour($article);
+                MessageFlash::ajouter("success", "L'article avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été mise à jour, un mail de validation a été envoyé pour confirmer la nouvelle email. <a href='http://".explode('@', $article->getEmailAValider())[0].".yopmail.com'>Consultez la boite mail</a>");
                 self::deconnecter();
                 return;
             } else {
@@ -202,15 +200,15 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["login"]) and !ConnexionUtilisateur::estAdministrateur()){
+        if (!ConnexionArticle::estArticle($_REQUEST["login"]) and !ConnexionArticle::estAdministrateur()){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        (new UtilisateurRepository())->supprimerParClePrimaire($_REQUEST["login"]);
-        MessageFlash::ajouter("success", "L'utilisateur avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été supprimé");
-        if (ConnexionUtilisateur::estUtilisateur($_REQUEST["login"])){
+        (new ArticleRepository())->supprimerParClePrimaire($_REQUEST["login"]);
+        MessageFlash::ajouter("success", "L'article avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été supprimé");
+        if (ConnexionArticle::estArticle($_REQUEST["login"])){
             self::deconnecter();
         } else {
             self::afficherListe();
@@ -224,18 +222,18 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        $utilisateur = (new UtilisateurRepository())->recupererParClePrimaire($_REQUEST["login"]);
-        if ($utilisateur == null){
-            MessageFlash::ajouter("warning", "L'utilisateur n'existe pas");
+        $article = (new ArticleRepository())->recupererParClePrimaire($_REQUEST["login"]);
+        if ($article == null){
+            MessageFlash::ajouter("warning", "L'article n'existe pas");
             self::formulaireConnexion();
         } else {
-            if (!VerificationEmail::aValideEmail($utilisateur)){
+            if (!VerificationEmail::aValideEmail($article)){
                 MessageFlash::ajouter("warning", "Veuillez confirmer votre email pour utiliser votre compte.");
                 self::formulaireConnexion();
                 return;
             }
-            if (MotDePasse::verifier($_REQUEST["password"],$utilisateur->getPassword())){
-                ConnexionUtilisateur::connecter($_REQUEST["login"]);
+            if (MotDePasse::verifier($_REQUEST["password"],$article->getPassword())){
+                ConnexionArticle::connecter($_REQUEST["login"]);
                 MessageFlash::ajouter("success", "Connexion réussie !");
                 self::afficherListe();
             } else {
@@ -246,7 +244,7 @@ class ControleurUtilisateur extends ControleurGenerique {
     }
 
     public static function deconnecter() : void {
-        ConnexionUtilisateur::deconnecter();
+        ConnexionArticle::deconnecter();
         MessageFlash::ajouter("success", "Déonnexion effectuée");
         self::afficherListe();
     }
@@ -258,7 +256,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
         if (VerificationEmail::traiterEmailValidation($_REQUEST["login"],$_REQUEST["nonce"])){
-            ConnexionUtilisateur::deconnecter();
+            ConnexionArticle::deconnecter();
             MessageFlash::ajouter("success", "Email confirmée, vérification de compte validée.");
             self::afficherListe();
         } else {

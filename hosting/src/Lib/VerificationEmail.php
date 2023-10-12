@@ -2,11 +2,11 @@
 namespace App\Ecommerce\Lib;
 
 use App\Ecommerce\Configuration\ConfigurationSite;
-use App\Ecommerce\Modele\DataObject\Utilisateur;
+use App\Ecommerce\Modele\DataObject\Client;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 
 class VerificationEmail {
-    public static function envoiEmailValidation(Utilisateur $utilisateur): bool {
+    public static function envoiEmailValidation(Client $utilisateur): bool {
         $loginURL = rawurlencode($utilisateur->getLogin());
         $nonceURL = rawurlencode($utilisateur->getNonce());
         $absoluteURL = ConfigurationSite::getAbsoluteURL();
@@ -30,7 +30,7 @@ class VerificationEmail {
         }
     }
 
-    public static function aValideEmail(Utilisateur $utilisateur) : bool {
+    public static function aValideEmail(Client $utilisateur) : bool {
         return ($utilisateur->getNonce() == "" and $utilisateur->getEmailAValider() == "");
     }
 }

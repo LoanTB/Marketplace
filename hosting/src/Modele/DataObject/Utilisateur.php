@@ -5,7 +5,7 @@ use App\Ecommerce\Lib\MotDePasse;
 
 class Utilisateur extends AbstractDataObject {
 
-    private int $id_utilisateur;
+    private int $id_compte;
     private string $login;
     private string $email;
     private string $telephone;
@@ -17,9 +17,9 @@ class Utilisateur extends AbstractDataObject {
     private bool $admin;
     private int $id_image;
 
-    public function __construct(int $id_utilisateur, string $login, string $email,string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, int $id_image, bool $raw = true){
+    public function __construct(int $id_compte, string $login, string $email,string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, int $id_image, bool $raw = true){
         if ($raw) {
-            $this->id_utilisateur = $id_utilisateur;
+            $this->id_compte = $id_compte;
             $this->login = $login;
             $this->email = $email;
             $this->telephone = $telephone;
@@ -31,7 +31,7 @@ class Utilisateur extends AbstractDataObject {
             $this->admin = $admin;
             $this->id_image = $id_image;
         } else {
-            $this->setIdUtilisateur($id_utilisateur);
+            $this->setIdCompte($id_compte);
             $this->setLogin($login);
             $this->setEmail($email);
             $this->setTelephone($telephone);
@@ -47,7 +47,7 @@ class Utilisateur extends AbstractDataObject {
 
     public function formatTableau(): array{
         return array(
-            "id_utilisateur" => $this->getIdUtilisateur(),
+            "id_compte" => $this->getIdCompte(),
             "login" => $this->getLogin(),
             "email" => $this->getEmail(),
             "telephone" => $this->getTelephone(),
@@ -64,17 +64,17 @@ class Utilisateur extends AbstractDataObject {
     /**
      * @return int
      */
-    public function getIdUtilisateur(): int
+    public function getIdCompte(): int
     {
-        return $this->id_utilisateur;
+        return $this->id_compte;
     }
 
     /**
-     * @param int $id_utilisateur
+     * @param int $id_compte
      */
-    public function setIdUtilisateur(int $id_utilisateur): void
+    public function setIdCompte(int $id_compte): void
     {
-        $this->id_utilisateur = $id_utilisateur;
+        $this->id_compte = $id_compte;
     }
 
     /**

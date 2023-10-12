@@ -5,14 +5,14 @@ class UtilisateurRepository extends AbstractRepository{
     private string $nomTable = "Utilisateur";
 
     private array $uniques = array(
-        "id_utilisateur",
+        "id_compte",
         "login",
         "email",
         "telephone"
     );
 
     private array $nomsColonnes = array(
-        "id_utilisateur",
+        "id_compte",
         "login",
         "email",
         "telephone",
@@ -25,7 +25,7 @@ class UtilisateurRepository extends AbstractRepository{
         "id_image"
     );
 
-    public function getNomTable(): string {
+    protected function getNomTable(): string {
         return $this->nomTable;
     }
     protected function getUniques(): array {
@@ -35,7 +35,7 @@ class UtilisateurRepository extends AbstractRepository{
         return $this->nomsColonnes;
     }
 
-    public function construireDepuisTableau(array $objetFormatTableau) : Utilisateur {
-        return new Utilisateur($objetFormatTableau["id_utilisateur"], $objetFormatTableau["login"], $objetFormatTableau["email"], $objetFormatTableau["telephone"], $objetFormatTableau["password"], $objetFormatTableau["nom"], $objetFormatTableau["prenom"], $objetFormatTableau["nonce_email"], $objetFormatTableau["nonce_telephone"], $objetFormatTableau["admin"], $objetFormatTableau["id_image"]);
+    protected function construireDepuisTableau(array $objetFormatTableau) : Utilisateur {
+        return new Utilisateur($objetFormatTableau["id_compte"], $objetFormatTableau["login"], $objetFormatTableau["email"], $objetFormatTableau["telephone"], $objetFormatTableau["password"], $objetFormatTableau["nom"], $objetFormatTableau["prenom"], $objetFormatTableau["nonce_email"], $objetFormatTableau["nonce_telephone"], $objetFormatTableau["admin"], $objetFormatTableau["id_image"]);
     }
 }

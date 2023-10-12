@@ -14,7 +14,7 @@ use \App\Ecommerce\Lib\ConnexionUtilisateur;
 <header>
     <nav>
         <ul>
-            <li><a href="controleurFrontal.php?action=afficherListe&controleur=utilisateur">Utilisateurs</a></li>
+            <li><a href="controleurFrontal.php?action=afficherListe&controleur=article">Articles</a></li>
             <li><a href="controleurFrontal.php?action=formulairePreference"><img src="./../ressources/img/heart.png" alt="cœur"></a></li>
             <?php
             if (ConnexionUtilisateur::estConnecte()){
@@ -34,7 +34,7 @@ use \App\Ecommerce\Lib\ConnexionUtilisateur;
         echo $value;
     }
     /* @var $cheminVueBody */
-    require __DIR__ . "/vueGenerale.php";
+    require __DIR__ . "/{$cheminVueBody}";
     ?>
 </main>
 <footer>
