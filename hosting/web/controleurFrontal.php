@@ -3,13 +3,11 @@ require_once __DIR__ . '/../src/Lib/Psr4AutoloaderClass.php';
 use \App\Ecommerce\Lib\PreferenceControleur;
 use App\Ecommerce\Lib\Psr4AutoloaderClass;
 
-
 // initialisation
 $loader = new Psr4AutoloaderClass();
 $loader->register();
 // enregistrement d'une association "espace de nom" → "dossier"
-$loader->addNamespace('App\Ecommerce', __DIR__ . '/../src');
-
+$loader->addNamespace('App\Ecommerce', __DIR__ . '/../src/');
 
 if (isset($_REQUEST['controleur'])){
     $controleur = $_REQUEST['controleur'];
