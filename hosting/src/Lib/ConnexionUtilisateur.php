@@ -9,8 +9,8 @@ class ConnexionUtilisateur {
     // L'utilisateur connecté sera enregistré en session associé à la clé suivante
     private static string $cleConnexion = "_utilisateurConnecte";
 
-    public static function connecter(string $loginUtilisateur): void {
-        Session::getInstance()->enregistrer(ConnexionUtilisateur::$cleConnexion,$loginUtilisateur);
+    public static function connecter(int $idUtilisateur): void {
+        Session::getInstance()->enregistrer(ConnexionUtilisateur::$cleConnexion,$idUtilisateur);
     }
 
     public static function estConnecte(): bool {
@@ -29,8 +29,8 @@ class ConnexionUtilisateur {
         }
     }
 
-    public static function estUtilisateur($login): bool {
-        return (ConnexionUtilisateur::getLoginUtilisateurConnecte() == $login);
+    public static function estUtilisateur($id): bool {
+        return (ConnexionUtilisateur::getLoginUtilisateurConnecte() == $id);
     }
 
     public static function estAdministrateur() : bool {

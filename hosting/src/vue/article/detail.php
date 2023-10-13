@@ -1,3 +1,3 @@
 <?php
-/* @var $utilisateur */
-echo '<p> Article '.htmlspecialchars($utilisateur->getprenom()).' '.htmlspecialchars($utilisateur->getnom()).' avec comme identifiant ' . htmlspecialchars($utilisateur->getlogin()) . '<a></p>';
+/* @var $article */
+echo '<p> Article '.htmlspecialchars($article->getNom()).' : '.htmlspecialchars($article->getDescription()).' coute '.htmlspecialchars($article->getPrix()).' avec comme identifiant ' . htmlspecialchars($article->getIdArticle()) . '</p>';

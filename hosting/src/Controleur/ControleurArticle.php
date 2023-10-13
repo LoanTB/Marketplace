@@ -1,5 +1,6 @@
 <?php
 namespace App\Ecommerce\Controleur;
+use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
 use App\Ecommerce\Lib\VerificationEmail;
@@ -9,7 +10,7 @@ use App\Ecommerce\Modele\Repository\ArticleRepository;
 class ControleurArticle extends ControleurGenerique {
     public static function afficherListe() : void {
         self::afficherVue("vueGenerale.php",[
-            "pagetitle" => "Liste des articles",
+            "pagetitle" => "Boutique",
             "cheminVueBody" => "article/liste.php",
             "articles" => (new ArticleRepository())->recuperer()
         ]);
@@ -57,59 +58,16 @@ class ControleurArticle extends ControleurGenerique {
         ]);
     }
 
-    public static function formulaireConnexion() : void {
-        self::afficherVue("vueGenerale.php",[
-            "pagetitle" => "Formulaire connexion articles",
-            "cheminVueBody" => "article/formulaireConnexion.php"
-        ]);
-    }
-
-
-
     public static function creerDepuisFormulaire() : void {
-        if (!isset($_REQUEST["login"]) or !isset($_REQUEST["password"]) or !isset($_REQUEST["nom"]) or !isset($_REQUEST["prenom"]) or !isset($_REQUEST["email"])){
+        if (!isset($_REQUEST["nom"]) or !isset($_REQUEST["description"]) or !isset($_REQUEST["prix"]) or !isset($_REQUEST["quantite"])){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
-
-        if (ConnexionArticle::estAdministrateur()){
-            $estAdmin = isset($_REQUEST["estAdmin"]);
-        } else {
-            if (isset($_REQUEST["estAdmin"])){
-                ControleurGenerique::alerterAccesNonAutorise();
-                self::afficherListe();
-                return;
-            }
-            $estAdmin = false;
-        }
-
-        if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)){
-            MessageFlash::ajouter("warning", "Email invalide, veuillez entrer une email valide.");
-            self::afficherFormulaireCreation();
-            return;
-        }
-
-        if (explode('@', $_REQUEST["email"])[1] != "yopmail.com"){
-            MessageFlash::ajouter("warning", "Seuls les emails 'yopmail.com' sont autorisées pour le moment.");
-            self::afficherFormulaireCreation();
-            return;
-        }
-
-        if ($_REQUEST["password"] == $_REQUEST["passwordConfirmation"]){
-            $article = new Article($_REQUEST["login"],"",$_REQUEST["password"],$_REQUEST["nom"],$_REQUEST["prenom"], $estAdmin, $_REQUEST["email"], MotDePasse::genererChaineAleatoire(), $raw = false);
-            if (VerificationEmail::envoiEmailValidation($article)){
-                (new ArticleRepository())->ajouter($article);
-
-                MessageFlash::ajouter("success","L'article a bien été créé, un mail de validation a été envoyé. <a href='http://".explode('@', $article->getEmailAValider())[0].".yopmail.com'>Consultez la boite mail</a>");
-            } else {
-                MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyée, veuillez réessayer plus tard.");
-            }
-            self::afficherListe();
-        } else {
-            MessageFlash::ajouter("warning", "Les mots de passes sont différents");
-            self::afficherFormulaireCreation();
-        }
+        $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),null,$raw = false);
+        (new ArticleRepository())->ajouter($article);
+        MessageFlash::ajouter("success","L'article a bien été mis en ligne.");
+        self::afficherListe();
     }
 
     public static function mettreAJour() : void {

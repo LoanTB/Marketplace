@@ -10,7 +10,7 @@ class Article extends AbstractDataObject {
     private int $id_client_vendeur;
     private int $id_admin_certificateur;
 
-    public function __construct(int $id_article, string $nom, string $description, float $prix, int $quantite, int $id_client_vendeur, int $id_admin_certificateur, bool $raw = true){
+    public function __construct(?int $id_article, string $nom, string $description, float $prix, int $quantite, int $id_client_vendeur, ?int $id_admin_certificateur, bool $raw = true){
         if ($raw) {
             $this->id_article = $id_article;
             $this->nom = $nom;
@@ -33,9 +33,9 @@ class Article extends AbstractDataObject {
     public function formatTableau(): array{
         return array(
             "id_article" => $this->getIdArticle(),
-            "prix" => $this->getPrix(),
             "nom" => $this->getNom(),
             "description" => $this->getDescription(),
+            "prix" => $this->getPrix(),
             "quantite" => $this->getQuantite(),
             "id_client_vendeur" => $this->getIdClientVendeur(),
             "id_admin_certificateur" => $this->getIdAdminCertificateur()
