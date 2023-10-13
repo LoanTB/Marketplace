@@ -4,7 +4,7 @@ use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
 use App\Ecommerce\Lib\VerificationEmail;
-use App\Ecommerce\Modele\DataObject\Client;
+use App\Ecommerce\Modele\DataObject\Utilisateur;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 
 class ControleurUtilisateur extends ControleurGenerique {
@@ -34,7 +34,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
         $utilisateur = (new UtilisateurRepository())->recupererParUnique($_REQUEST[(new UtilisateurRepository())->requestUniqueValue()],(new UtilisateurRepository())->requestUniqueIndice());
         if ($utilisateur == null){
-            MessageFlash::ajouter("warning", "Client innexistant");
+            MessageFlash::ajouter("warning", "Utilisateur innexistant");
             self::afficherListe();
         } else {
             self::afficherVue("vueGenerale.php",[
@@ -69,21 +69,20 @@ class ControleurUtilisateur extends ControleurGenerique {
 
 
     public static function creerDepuisFormulaire() : void {
-        if (!isset($_REQUEST["login"]) or !isset($_REQUEST["password"]) or !isset($_REQUEST["nom"]) or !isset($_REQUEST["prenom"]) or !isset($_REQUEST["email"])){
+        if (!isset($_REQUEST["login"]) or !isset($_REQUEST["email"]) or !isset($_REQUEST["password"]) or !isset($_REQUEST["nom"]) or !isset($_REQUEST["prenom"])){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        if (ConnexionUtilisateur::estAdministrateur()){
-            $estAdmin = isset($_REQUEST["estAdmin"]);
-        } else {
-            if (isset($_REQUEST["estAdmin"])){
-                ControleurGenerique::alerterAccesNonAutorise();
-                self::afficherListe();
+        if (isset($_REQUEST["telephone"]) and $_REQUEST["telephone"] != ""){
+            if (count($_REQUEST["telephone"]) != 12 or $_REQUEST["telephone"][0] != "+" or !filter_var(substr($_REQUEST["telephone"],1), FILTER_VALIDATE_INT)){
+                MessageFlash::ajouter("warning", "Téléphone invalide, veuillez entrer un numéro de téléphone valide. (France +33)");
+                self::afficherFormulaireCreation();
                 return;
             }
-            $estAdmin = false;
+        } else {
+            $_REQUEST["telephone"] = null;
         }
 
         if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)){
@@ -99,7 +98,8 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         if ($_REQUEST["password"] == $_REQUEST["passwordConfirmation"]){
-            $utilisateur = new Client($_REQUEST["login"],"",$_REQUEST["password"],$_REQUEST["nom"],$_REQUEST["prenom"], $estAdmin, $_REQUEST["email"], MotDePasse::genererChaineAleatoire(), $raw = false);
+            $utilisateur = new Utilisateur(null,$_REQUEST["login"],$_REQUEST["email"],$_REQUEST["telephone"] ?? null,$_REQUEST["password"],$_REQUEST["nom"],$_REQUEST["prenom"], MotDePasse::genererChaineAleatoire(20), MotDePasse::genererChaineAleatoire(20),null, $raw = false);
+
             if (VerificationEmail::envoiEmailValidation($utilisateur)){
                 (new UtilisateurRepository())->ajouter($utilisateur);
 

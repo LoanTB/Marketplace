@@ -73,6 +73,28 @@ abstract class AbstractRepository{
         }
     }
 
+    public function recupererParUniqueDansRequest(): ?AbstractDataObject{
+        if (self::requestContainsUnique()){
+            $uniqueValue = self::requestUniqueValue();
+            $uniqueIndex = self::requestUniqueIndice();
+        } else {
+            return null;
+        }
+        $sql = /** @lang OracleSqlPlus */
+            "SELECT * from {$this->getNomTable()} WHERE {$this->getUniques()[$uniqueIndex]} = :{$this->getUniques()[$uniqueIndex]}";
+        $pdoStatement = dataBase::getPdo()->prepare($sql);
+        $values = array(
+            $this->getUniques()[$uniqueIndex] => $uniqueValue,
+        );
+        $pdoStatement->execute($values);
+        $dataFormatTableau = $pdoStatement->fetch();
+        if (!$dataFormatTableau){
+            return null;
+        } else {
+            return $this->construireDepuisTableau($dataFormatTableau);
+        }
+    }
+
     public function supprimerParUnique(string $uniqueValue,int $uniqueIndex) : void {
         $sql = /** @lang OracleSqlPlus */
             "DELETE FROM {$this->getNomTable()} WHERE {$this->getUniques()[$uniqueIndex]} = :{$this->getUniques()[$uniqueIndex]}";
@@ -87,7 +109,7 @@ abstract class AbstractRepository{
     public function ajouter(AbstractDataObject $object) : void {
         $sql = /** @lang OracleSqlPlus */
             "INSERT INTO {$this->getNomTable()} (";
-        foreach ($this->getNomsColonnes() as $nomColone){
+        foreach ($this->getNomsColonnes() as $nomColone){ // TODO : Faire en sorte que l'ID autoincrémenté ne soit pas spécifié lors de la création
             $sql = $sql."{$nomColone},";
         }
         $sql = substr($sql,0,-1).") VALUES (";

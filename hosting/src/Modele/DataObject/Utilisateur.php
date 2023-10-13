@@ -4,20 +4,18 @@ namespace App\Ecommerce\Modele\DataObject;
 use App\Ecommerce\Lib\MotDePasse;
 
 class Utilisateur extends AbstractDataObject {
-
-    private int $id_compte;
+    private ?int $id_compte;
     private string $login;
     private string $email;
-    private string $telephone;
+    private ?string $telephone;
     private string $password;
     private string $nom;
     private string $prenom;
     private string $nonce_email;
     private string $nonce_telephone;
-    private bool $admin;
-    private int $id_image;
+    private ?int $id_image;
 
-    public function __construct(int $id_compte, string $login, string $email,string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, int $id_image, bool $raw = true){
+    public function __construct(?int $id_compte, string $login, string $email,?string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, ?int $id_image, bool $raw = true){
         if ($raw) {
             $this->id_compte = $id_compte;
             $this->login = $login;
@@ -28,7 +26,6 @@ class Utilisateur extends AbstractDataObject {
             $this->prenom = $prenom;
             $this->nonce_email = $nonce_email;
             $this->nonce_telephone = $nonce_telephone;
-            $this->admin = $admin;
             $this->id_image = $id_image;
         } else {
             $this->setIdCompte($id_compte);
@@ -40,7 +37,6 @@ class Utilisateur extends AbstractDataObject {
             $this->setPrenom($prenom);
             $this->setNonceEmail($nonce_email);
             $this->setNonceTelephone($nonce_telephone);
-            $this->setAdmin($admin);
             $this->setIdImage($id_image);
         }
     }
@@ -56,7 +52,6 @@ class Utilisateur extends AbstractDataObject {
             "prenom" => $this->getPrenom(),
             "nonce_email" => $this->getNonceEmail(),
             "nonce_telephone" => $this->getNonceTelephone(),
-            "admin" => $this->getAdmin(),
             "id_image" => $this->getIdImage()
         );
     }
@@ -64,7 +59,7 @@ class Utilisateur extends AbstractDataObject {
     /**
      * @return int
      */
-    public function getIdCompte(): int
+    public function getIdCompte(): ?int
     {
         return $this->id_compte;
     }
@@ -72,7 +67,7 @@ class Utilisateur extends AbstractDataObject {
     /**
      * @param int $id_compte
      */
-    public function setIdCompte(int $id_compte): void
+    public function setIdCompte(?int $id_compte): void
     {
         $this->id_compte = $id_compte;
     }
@@ -112,7 +107,7 @@ class Utilisateur extends AbstractDataObject {
     /**
      * @return string
      */
-    public function getTelephone(): string
+    public function getTelephone(): ?string
     {
         return $this->telephone;
     }
@@ -120,7 +115,7 @@ class Utilisateur extends AbstractDataObject {
     /**
      * @param string $telephone
      */
-    public function setTelephone(string $telephone): void
+    public function setTelephone(?string $telephone): void
     {
         $this->telephone = $telephone;
     }
@@ -206,25 +201,9 @@ class Utilisateur extends AbstractDataObject {
     }
 
     /**
-     * @return bool
-     */
-    public function getAdmin(): bool
-    {
-        return $this->admin;
-    }
-
-    /**
-     * @param bool $admin
-     */
-    public function setAdmin(bool $admin): void
-    {
-        $this->admin = $admin;
-    }
-
-    /**
      * @return int
      */
-    public function getIdImage(): int
+    public function getIdImage(): ?int
     {
         return $this->id_image;
     }
@@ -232,7 +211,7 @@ class Utilisateur extends AbstractDataObject {
     /**
      * @param int $id_image
      */
-    public function setIdImage(int $id_image): void
+    public function setIdImage(?int $id_image): void
     {
         $this->id_image = $id_image;
     }

@@ -2,37 +2,33 @@
     <fieldset>
         <legend>Formulaire enregistrement utilisateur :</legend>
         <p>
-            <label for="login_id">Login</label> :
-            <input type="text" placeholder="pesco" name="login" id="login_id" required/>
+            <label for="login_utilisateur_id">Login</label> :
+            <input type="text" value="" name="login" id="login_utilisateur_id" required/>
         </p>
         <p>
-            <label for="email_id">Email</label>
-            <input type="email" value="" placeholder="pesco@yopmail.com" name="email" id="email_id" required>
+            <label for="email_utilisateur_id">Email</label> :
+            <input type="email" value="" name="email" id="email_utilisateur_id" required>
         </p>
         <p>
-            <label for="password_id">Phrase de passe</label>
-            <input type="password" value="" placeholder="" name="password" id="password_id" required>
+            <label for="telephone_utilisateur_id">Téléphone</label> :
+            <input type="tel" value="" name="telephone" id="telephone_utilisateur_id">
         </p>
         <p>
-            <label for="passwordConfirmation_id">Vérification de la phrase de passe</label>
-            <input type="password" value="" placeholder="" name="passwordConfirmation" id="passwordConfirmation_id" required>
+            <label for="password_utilisateur_id">Phrase de passe</label> :
+            <input type="password" value="" name="password" id="password_utilisateur_id" required>
         </p>
         <p>
-            <label for="nom_id">Nom</label> :
-            <input type="text" placeholder="Escobar" name="nom" id="nom_id" required/>
+            <label for="passwordConfirmation_utilisateur_id">Confirmation phrase de passe</label> :
+            <input type="password" value="" name="passwordConfirmation" id="passwordConfirmation_utilisateur_id" required>
         </p>
         <p>
-            <label for="prenom_id">Prenom</label> :
-            <input type="text" placeholder="Pablo" name="prenom" id="prenom_id" required/>
+            <label for="nom_utilisateur_id">Nom</label> :
+            <input type="text" value="" name="nom" id="nom_utilisateur_id" required/>
         </p>
-        <?php
-        if (\App\Ecommerce\Lib\ConnexionUtilisateur::estAdministrateur()){
-            echo '<p>';
-            echo '<label for="estAdmin_id">Administrateur</label>';
-            echo '<input type="checkbox" placeholder="" name="estAdmin" id="estAdmin_id">';
-            echo '</p>';
-        }
-        ?>
+        <p>
+            <label for="prenom_utilisateur_id">Prenom</label> :
+            <input type="text" value="" name="prenom" id="prenom_utilisateur_id" required/>
+        </p>
         <input type='hidden' name='action' value='creerDepuisFormulaire'>
         <input type='hidden' name='controleur' value='utilisateur'>
         <p>

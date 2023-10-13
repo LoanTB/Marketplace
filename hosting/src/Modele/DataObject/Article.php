@@ -7,17 +7,17 @@ class Article extends AbstractDataObject {
     private string $description;
     private float $prix;
     private int $quantite;
-    private int $id_client_vendeur;
+    private int $id_utilisateur_vendeur;
     private int $id_admin_certificateur;
 
-    public function __construct(?int $id_article, string $nom, string $description, float $prix, int $quantite, int $id_client_vendeur, ?int $id_admin_certificateur, bool $raw = true){
+    public function __construct(?int $id_article, string $nom, string $description, float $prix, int $quantite, int $id_utilisateur_vendeur, ?int $id_admin_certificateur, bool $raw = true){
         if ($raw) {
             $this->id_article = $id_article;
             $this->nom = $nom;
             $this->description = $description;
             $this->prix = $prix;
             $this->quantite = $quantite;
-            $this->id_client_vendeur = $id_client_vendeur;
+            $this->id_utilisateur_vendeur = $id_utilisateur_vendeur;
             $this->id_admin_certificateur = $id_admin_certificateur;
         } else {
             $this->setIdArticle($id_article);
@@ -25,7 +25,7 @@ class Article extends AbstractDataObject {
             $this->setDescription($description);
             $this->setPrix($prix);
             $this->setQuantite($quantite);
-            $this->setIdClientVendeur($id_client_vendeur);
+            $this->setIdUtilisateurVendeur($id_utilisateur_vendeur);
             $this->setIdAdminCertificateur($id_admin_certificateur);
         }
     }
@@ -37,7 +37,7 @@ class Article extends AbstractDataObject {
             "description" => $this->getDescription(),
             "prix" => $this->getPrix(),
             "quantite" => $this->getQuantite(),
-            "id_client_vendeur" => $this->getIdClientVendeur(),
+            "id_utilisateur_vendeur" => $this->getIdUtilisateurVendeur(),
             "id_admin_certificateur" => $this->getIdAdminCertificateur()
         );
     }
@@ -92,14 +92,14 @@ class Article extends AbstractDataObject {
         $this->quantite = $quantite;
     }
 
-    public function getIdClientVendeur(): int
+    public function getIdUtilisateurVendeur(): int
     {
-        return $this->id_client_vendeur;
+        return $this->id_utilisateur_vendeur;
     }
 
-    public function setIdClientVendeur(int $id_client_vendeur): void
+    public function setIdUtilisateurVendeur(int $id_utilisateur_vendeur): void
     {
-        $this->id_client_vendeur = $id_client_vendeur;
+        $this->id_utilisateur_vendeur = $id_utilisateur_vendeur;
     }
 
     public function getIdAdminCertificateur(): int
