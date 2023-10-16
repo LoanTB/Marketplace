@@ -59,7 +59,7 @@ class ControleurArticle extends ControleurGenerique {
     }
 
     public static function creerDepuisFormulaire() : void {
-        if (!isset($_REQUEST["nom"]) or !isset($_REQUEST["description"]) or !isset($_REQUEST["prix"]) or !isset($_REQUEST["quantite"])){
+        if (!isset($_REQUEST["nom"]) or !isset($_REQUEST["description"]) or !isset($_REQUEST["prix"]) or !isset($_REQUEST["quantite"]) or !ConnexionUtilisateur::estConnecte()){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
