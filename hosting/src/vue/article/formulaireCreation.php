@@ -7,7 +7,7 @@
         </p>
         <p>
             <label for="description_article_id">Description</label>
-            <input type="text" value="" placeholder="pesco@yopmail.com" name="description" id="description_article_id" required>
+            <input type="text" value="" name="description" id="description_article_id" required>
         </p>
         <p>
             <label for="prix_article_id">Prix</label>
