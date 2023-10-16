@@ -101,7 +101,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             $utilisateur = new Utilisateur(null,$_REQUEST["login"],$_REQUEST["email"],$_REQUEST["telephone"] ?? null,$_REQUEST["password"],$_REQUEST["nom"],$_REQUEST["prenom"], MotDePasse::genererChaineAleatoire(20), MotDePasse::genererChaineAleatoire(20),null, $raw = false);
 
             if (VerificationEmail::envoiEmailValidation($utilisateur)){
-                (new UtilisateurRepository())->ajouter($utilisateur);
+                (new UtilisateurRepository())->ajouter($utilisateur); // TODO : Faire en sorte que l'ajout d'un utilisateur fasse l'ajout d'un compte car héritage
 
                 MessageFlash::ajouter("success","L'utilisateur a bien été créé, un mail de validation a été envoyé. <a href='http://".explode('@', $utilisateur->getEmailAValider())[0].".yopmail.com'>Consultez la boite mail</a>");
             } else {
