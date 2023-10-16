@@ -109,16 +109,20 @@ abstract class AbstractRepository{
     public function ajouter(AbstractDataObject $object) : void {
         $sql = /** @lang OracleSqlPlus */
             "INSERT INTO {$this->getNomTable()} (";
-        foreach ($this->getNomsColonnes() as $nomColone){ // TODO : Faire en sorte que l'ID autoincrémenté ne soit pas spécifié lors de la création
-            $sql = $sql."{$nomColone},";
+        foreach ($this->getNomsColonnes() as $nomColone){
+            if ($object->formatTableau()[$nomColone] != null){
+                $sql = $sql."{$nomColone},";
+            }
         }
         $sql = substr($sql,0,-1).") VALUES (";
         foreach ($this->getNomsColonnes() as $nomColone){
-            $sql = $sql.":{$nomColone},";
+            if ($object->formatTableau()[$nomColone] != null){
+                $sql = $sql.":{$nomColone},";
+            }
         }
         $sql = substr($sql,0,-1).")";
         $pdoStatement = dataBase::getPdo()->prepare($sql);
-        $pdoStatement->execute($object->formatTableau());
+        $pdoStatement->execute($object->formatTableau(false));
         $pdoStatement->fetch();
     }
 

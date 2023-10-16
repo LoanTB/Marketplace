@@ -21,7 +21,6 @@ class UtilisateurRepository extends AbstractRepository{
         "prenom",
         "nonce_email",
         "nonce_telephone",
-        "admin",
         "id_image"
     );
 
