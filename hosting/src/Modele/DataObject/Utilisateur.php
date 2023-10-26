@@ -13,9 +13,10 @@ class Utilisateur extends AbstractDataObject {
     private string $prenom;
     private string $nonce_email;
     private string $nonce_telephone;
-    private ?int $id_image;
+    private bool $admin;
+    private string $url_image;
 
-    public function __construct(?int $id_compte, string $login, string $email,?string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, ?int $id_image, bool $raw = true){
+    public function __construct(?int $id_compte, string $login, string $email,?string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, string $url_image, bool $raw = true){
         if ($raw) {
             $this->id_compte = $id_compte;
             $this->login = $login;
@@ -26,7 +27,8 @@ class Utilisateur extends AbstractDataObject {
             $this->prenom = $prenom;
             $this->nonce_email = $nonce_email;
             $this->nonce_telephone = $nonce_telephone;
-            $this->id_image = $id_image;
+            $this->admin = $admin;
+            $this->url_image = $url_image;
         } else {
             $this->setIdCompte($id_compte);
             $this->setLogin($login);
@@ -37,7 +39,8 @@ class Utilisateur extends AbstractDataObject {
             $this->setPrenom($prenom);
             $this->setNonceEmail($nonce_email);
             $this->setNonceTelephone($nonce_telephone);
-            $this->setIdImage($id_image);
+            $this->setAdmin($admin);
+            $this->setUrlImage($url_image);
         }
     }
 
@@ -53,7 +56,8 @@ class Utilisateur extends AbstractDataObject {
                 "prenom" => $this->getPrenom(),
                 "nonce_email" => $this->getNonceEmail(),
                 "nonce_telephone" => $this->getNonceTelephone(),
-                "id_image" => $this->getIdImage()
+                "admin" => $this->getAdmin(),
+                "url_image" => $this->getUrlImage()
             );
         } else {
             $tableau = $this->formatTableau(true);
@@ -64,11 +68,10 @@ class Utilisateur extends AbstractDataObject {
             }
             return $tableau;
         }
-
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getIdCompte(): ?int
     {
@@ -76,7 +79,7 @@ class Utilisateur extends AbstractDataObject {
     }
 
     /**
-     * @param int $id_compte
+     * @param int|null $id_compte
      */
     public function setIdCompte(?int $id_compte): void
     {
@@ -116,7 +119,7 @@ class Utilisateur extends AbstractDataObject {
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getTelephone(): ?string
     {
@@ -124,7 +127,7 @@ class Utilisateur extends AbstractDataObject {
     }
 
     /**
-     * @param string $telephone
+     * @param string|null $telephone
      */
     public function setTelephone(?string $telephone): void
     {
@@ -144,7 +147,7 @@ class Utilisateur extends AbstractDataObject {
      */
     public function setPassword(string $password): void
     {
-        $this->password = $password;
+        $this->password = MotDePasse::hacher($password);
     }
 
     /**
@@ -212,18 +215,34 @@ class Utilisateur extends AbstractDataObject {
     }
 
     /**
-     * @return int
+     * @return bool
      */
-    public function getIdImage(): ?int
+    public function getAdmin(): bool
     {
-        return $this->id_image;
+        return $this->admin;
     }
 
     /**
-     * @param int $id_image
+     * @param bool $admin
      */
-    public function setIdImage(?int $id_image): void
+    public function setAdmin(bool $admin): void
     {
-        $this->id_image = $id_image;
+        $this->admin = $admin;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getUrlImage(): string
+    {
+        return $this->url_image;
+    }
+
+    /**
+     * @param string $url_image
+     */
+    public function setUrlImage(string $url_image): void
+    {
+        $this->url_image = $url_image;
     }
 }

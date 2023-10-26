@@ -29,7 +29,7 @@ class ArticleRepository extends AbstractRepository{
         return $this->nomsColonnes;
     }
 
-    protected function construireDepuisTableau(array $objetFormatTableau) : Article {
-        return new Article($objetFormatTableau["id_article"],$objetFormatTableau["nom"],$objetFormatTableau["description"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["id_compte_utilisateur"],$objetFormatTableau["id_compte_admin"]);
+    protected function construireDepuisTableau(array $objetFormatTableau,bool $raw) : Article {
+        return new Article($objetFormatTableau["id_article"],$objetFormatTableau["nom"],$objetFormatTableau["description"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["id_compte_utilisateur"],$objetFormatTableau["id_compte_admin"],$raw);
     }
 }

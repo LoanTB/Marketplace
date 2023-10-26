@@ -69,21 +69,49 @@ class ControleurUtilisateur extends ControleurGenerique {
 
 
     public static function creerDepuisFormulaire() : void {
-        if (!isset($_REQUEST["login"]) or !isset($_REQUEST["email"]) or !isset($_REQUEST["password"]) or !isset($_REQUEST["nom"]) or !isset($_REQUEST["prenom"])){
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
-            return;
+        $infos = array();
+        $utilisateurRepository = new UtilisateurRepository();
+        foreach ($utilisateurRepository->getNotNull() as $key){
+            if (!isset($_REQUEST[$key])){
+                ControleurGenerique::alerterAccesNonAutorise();
+                self::afficherListe();
+                return;
+            } else {
+                $infos[$key] = $_REQUEST[$key];
+            }
+        }
+        $infos["nonce_email"] = MotDePasse::genererChaineAleatoire(20);
+
+        if (isset($_REQUEST["admin"]) and $_REQUEST["admin"] == "true"){
+            if (ConnexionUtilisateur::estAdministrateur()){
+                $infos["admin"] = true;
+            } else {
+                ControleurGenerique::alerterAccesNonAutorise();
+                self::afficherListe();
+                return;
+            }
+        } else {
+            $infos["admin"] = false;
         }
 
-        if (isset($_REQUEST["telephone"]) and $_REQUEST["telephone"] != ""){
-            if (count($_REQUEST["telephone"]) != 12 or $_REQUEST["telephone"][0] != "+" or !filter_var(substr($_REQUEST["telephone"],1), FILTER_VALIDATE_INT)){
-                MessageFlash::ajouter("warning", "Téléphone invalide, veuillez entrer un numéro de téléphone valide. (France +33)");
+        if (isset($_REQUEST["url_image"])){
+            $infos["url_image"] = $_REQUEST["url_image"];
+        } else {
+            $infos["url_image"] = "";
+        }
+
+        if (isset($_REQUEST["telephone_number"]) and $_REQUEST["telephone_number"] != "" and isset($_REQUEST["telephone_country"]) and $_REQUEST["telephone_country"] != ""){
+            if (preg_match("/^[0-9]{9}$/", $_REQUEST["telephone_number"]) and preg_match("/^[0-9]{1,2}$/", $_REQUEST["telephone_country"])){
+                $infos["telephone"] = "+".$_REQUEST["telephone_country"].$_REQUEST["telephone_number"];
+            } else {
+                MessageFlash::ajouter("warning", "Téléphone invalide, veuillez entrer un numéro de téléphone valide.");
                 self::afficherFormulaireCreation();
                 return;
             }
         } else {
-            $_REQUEST["telephone"] = null;
+            $infos["telephone"] = null;
         }
+        $infos["nonce_telephone"] = MotDePasse::genererChaineAleatoire(20);
 
         if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)){
             MessageFlash::ajouter("warning", "Email invalide, veuillez entrer une email valide.");
@@ -98,12 +126,20 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         if ($_REQUEST["password"] == $_REQUEST["passwordConfirmation"]){
-            $utilisateur = new Utilisateur(null,$_REQUEST["login"],$_REQUEST["email"],$_REQUEST["telephone"] ?? null,$_REQUEST["password"],$_REQUEST["nom"],$_REQUEST["prenom"], MotDePasse::genererChaineAleatoire(20), MotDePasse::genererChaineAleatoire(20),null, $raw = false);
+            $infos["id_compte"] = null;
+            foreach ($utilisateurRepository->getNomsColonnes() as $key){
+                if (!array_key_exists($key,$infos)){
+                    $infos[$key] = $_REQUEST[$key];
+                }
+            }
+            $utilisateur = $utilisateurRepository->construireDepuisTableau($infos,false);
 
             if (VerificationEmail::envoiEmailValidation($utilisateur)){
-                (new UtilisateurRepository())->ajouter($utilisateur); // TODO : Faire en sorte que l'ajout d'un utilisateur fasse l'ajout d'un compte car héritage
-
-                MessageFlash::ajouter("success","L'utilisateur a bien été créé, un mail de validation a été envoyé. <a href='http://".explode('@', $utilisateur->getEmailAValider())[0].".yopmail.com'>Consultez la boite mail</a>");
+                if ($utilisateurRepository->ajouter($utilisateur)){
+                    MessageFlash::ajouter("warning", "Le compte n'as pas pu être créé, veuillez réessayer plus tard.");
+                } else {
+                    MessageFlash::ajouter("success","L'utilisateur a bien été créé, un mail de validation a été envoyé. <a href='http://".explode('@', $utilisateur->getEmail())[0].".yopmail.com'>Consultez la boite mail</a>");
+                }
             } else {
                 MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyée, veuillez réessayer plus tard.");
             }

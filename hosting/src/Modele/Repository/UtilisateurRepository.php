@@ -1,6 +1,8 @@
 <?php
 namespace App\Ecommerce\Modele\Repository;
+
 use App\Ecommerce\Modele\DataObject\Utilisateur;
+
 class UtilisateurRepository extends AbstractRepository{
     private string $nomTable = "Utilisateur";
 
@@ -9,6 +11,14 @@ class UtilisateurRepository extends AbstractRepository{
         "login",
         "email",
         "telephone"
+    );
+
+    private array $notNull = array(
+        "login",
+        "email",
+        "password",
+        "nom",
+        "prenom"
     );
 
     private array $nomsColonnes = array(
@@ -21,7 +31,8 @@ class UtilisateurRepository extends AbstractRepository{
         "prenom",
         "nonce_email",
         "nonce_telephone",
-        "id_image"
+        "admin",
+        "url_image"
     );
 
     protected function getNomTable(): string {
@@ -30,11 +41,14 @@ class UtilisateurRepository extends AbstractRepository{
     protected function getUniques(): array {
         return $this->uniques;
     }
-    protected function getNomsColonnes(): array{
+    public function getNotNull(): array{
+        return $this->notNull;
+    }
+    public function getNomsColonnes(): array{
         return $this->nomsColonnes;
     }
 
-    protected function construireDepuisTableau(array $objetFormatTableau) : Utilisateur {
-        return new Utilisateur($objetFormatTableau["id_compte"], $objetFormatTableau["login"], $objetFormatTableau["email"], $objetFormatTableau["telephone"], $objetFormatTableau["password"], $objetFormatTableau["nom"], $objetFormatTableau["prenom"], $objetFormatTableau["nonce_email"], $objetFormatTableau["nonce_telephone"], $objetFormatTableau["admin"], $objetFormatTableau["id_image"]);
+    public function construireDepuisTableau(array $objetFormatTableau,bool $raw) : Utilisateur {
+        return new Utilisateur($objetFormatTableau["id_compte"], $objetFormatTableau["login"], $objetFormatTableau["email"], $objetFormatTableau["telephone"], $objetFormatTableau["password"], $objetFormatTableau["nom"], $objetFormatTableau["prenom"], $objetFormatTableau["nonce_email"], $objetFormatTableau["nonce_telephone"], $objetFormatTableau["admin"], $objetFormatTableau["url_image"], $raw);
     }
 }

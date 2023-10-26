@@ -2,6 +2,7 @@
 namespace App\Ecommerce\Modele\Repository;
 use App\Ecommerce\Modele\DataObject\AbstractDataObject;
 use App\Ecommerce\Lib\ConnexionBaseDeDonnee as dataBase;
+use PDOException;
 
 abstract class AbstractRepository{
     protected abstract function getNomTable(): string;
@@ -48,7 +49,7 @@ abstract class AbstractRepository{
         $pdoStatement = dataBase::getPdo()->query(/** @lang OracleSqlPlus */ "SELECT * FROM {$this->getNomTable()}");
         $AbstractDataObject = [];
         foreach ($pdoStatement as $dataFormatTableau) {
-            $AbstractDataObject[] = $this->construireDepuisTableau($dataFormatTableau);
+            $AbstractDataObject[] = $this->construireDepuisTableau($dataFormatTableau,true);
         }
         return $AbstractDataObject;
     }
@@ -60,16 +61,21 @@ abstract class AbstractRepository{
     public function recupererParUnique(string $uniqueValue,int $uniqueIndex): ?AbstractDataObject{
         $sql = /** @lang OracleSqlPlus */
             "SELECT * from {$this->getNomTable()} WHERE {$this->getUniques()[$uniqueIndex]} = :{$this->getUniques()[$uniqueIndex]}";
-        $pdoStatement = dataBase::getPdo()->prepare($sql);
-        $values = array(
-            $this->getUniques()[$uniqueIndex] => $uniqueValue,
-        );
-        $pdoStatement->execute($values);
-        $dataFormatTableau = $pdoStatement->fetch();
-        if (!$dataFormatTableau){
+        try {
+            $pdoStatement = dataBase::getPdo()->prepare($sql);
+            $values = array(
+                $this->getUniques()[$uniqueIndex] => $uniqueValue,
+            );
+            $pdoStatement->execute($values);
+            $dataFormatTableau = $pdoStatement->fetch();
+            if (!$dataFormatTableau){
+                return null;
+            } else {
+                return $this->construireDepuisTableau($dataFormatTableau,true);
+            }
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
             return null;
-        } else {
-            return $this->construireDepuisTableau($dataFormatTableau);
         }
     }
 
@@ -82,31 +88,68 @@ abstract class AbstractRepository{
         }
         $sql = /** @lang OracleSqlPlus */
             "SELECT * from {$this->getNomTable()} WHERE {$this->getUniques()[$uniqueIndex]} = :{$this->getUniques()[$uniqueIndex]}";
-        $pdoStatement = dataBase::getPdo()->prepare($sql);
-        $values = array(
-            $this->getUniques()[$uniqueIndex] => $uniqueValue,
-        );
-        $pdoStatement->execute($values);
-        $dataFormatTableau = $pdoStatement->fetch();
-        if (!$dataFormatTableau){
+        try {
+            $pdoStatement = dataBase::getPdo()->prepare($sql);
+            $values = array(
+                $this->getUniques()[$uniqueIndex] => $uniqueValue,
+            );
+            $pdoStatement->execute($values);
+            $dataFormatTableau = $pdoStatement->fetch();
+            if (!$dataFormatTableau){
+                return null;
+            } else {
+                return $this->construireDepuisTableau($dataFormatTableau,true);
+            }
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
             return null;
-        } else {
-            return $this->construireDepuisTableau($dataFormatTableau);
         }
     }
 
-    public function supprimerParUnique(string $uniqueValue,int $uniqueIndex) : void {
+    public function supprimerParUnique(string $uniqueValue,int $uniqueIndex) : bool {
         $sql = /** @lang OracleSqlPlus */
             "DELETE FROM {$this->getNomTable()} WHERE {$this->getUniques()[$uniqueIndex]} = :{$this->getUniques()[$uniqueIndex]}";
-        $pdoStatement = dataBase::getPdo()->prepare($sql);
-        $values = array(
-            $this->getUniques()[$uniqueIndex] => $uniqueValue,
-        );
-        $pdoStatement->execute($values);
-        $pdoStatement->fetch();
+
+        try {
+            $pdoStatement = dataBase::getPdo()->prepare($sql);
+            $values = array(
+                $this->getUniques()[$uniqueIndex] => $uniqueValue,
+            );
+            $pdoStatement->execute($values);
+            $pdoStatement->fetch();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return true;
+        }
+        return false;
     }
 
-    public function ajouter(AbstractDataObject $object) : void {
+    public function supprimerParUniqueDansRequest() : bool {
+        if (self::requestContainsUnique()){
+            $uniqueValue = self::requestUniqueValue();
+            $uniqueIndex = self::requestUniqueIndice();
+        } else {
+            return true;
+        }
+
+        $sql = /** @lang OracleSqlPlus */
+            "DELETE FROM {$this->getNomTable()} WHERE {$this->getUniques()[$uniqueIndex]} = :{$this->getUniques()[$uniqueIndex]}";
+
+        try {
+            $pdoStatement = dataBase::getPdo()->prepare($sql);
+            $values = array(
+                $this->getUniques()[$uniqueIndex] => $uniqueValue,
+            );
+            $pdoStatement->execute($values);
+            $pdoStatement->fetch();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return true;
+        }
+        return false;
+    }
+
+    public function ajouter(AbstractDataObject $object) : bool {
         $sql = /** @lang OracleSqlPlus */
             "INSERT INTO {$this->getNomTable()} (";
         foreach ($this->getNomsColonnes() as $nomColone){
@@ -121,21 +164,33 @@ abstract class AbstractRepository{
             }
         }
         $sql = substr($sql,0,-1).")";
-        $pdoStatement = dataBase::getPdo()->prepare($sql);
-        $pdoStatement->execute($object->formatTableau(false));
-        $pdoStatement->fetch();
+        try {
+            $pdoStatement = dataBase::getPdo()->prepare($sql);
+            $pdoStatement->execute($object->formatTableau(false));
+            $pdoStatement->fetch();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return true;
+        }
+        return false;
     }
 
-    public function mettreAJour(AbstractDataObject $object): void {
+    public function mettreAJour(AbstractDataObject $object): bool {
         $sql = "UPDATE {$this->getNomTable()} SET";
         foreach ($this->getNomsColonnes() as $nomColone){
             $sql = $sql." {$nomColone} = :{$nomColone}, ";
         }
         $sql = substr($sql,0,-2)." WHERE {$this->getUniques()[0]} = :{$this->getUniques()[0]}";
-        $pdoStatement = dataBase::getPdo()->prepare($sql);
-        $pdoStatement->execute($object->formatTableau());
-        $pdoStatement->fetch();
+        try {
+            $pdoStatement = dataBase::getPdo()->prepare($sql);
+            $pdoStatement->execute($object->formatTableau());
+            $pdoStatement->fetch();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return true;
+        }
+        return false;
     }
 
-    protected abstract function construireDepuisTableau(array $objetFormatTableau) : AbstractDataObject;
+    protected abstract function construireDepuisTableau(array $objetFormatTableau,bool $raw) : AbstractDataObject;
 }
