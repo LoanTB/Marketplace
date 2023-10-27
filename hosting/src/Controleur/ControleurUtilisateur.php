@@ -135,10 +135,19 @@ class ControleurUtilisateur extends ControleurGenerique {
             $utilisateur = $utilisateurRepository->construireDepuisTableau($infos,false);
 
             if (VerificationEmail::envoiEmailValidation($utilisateur)){
-                if ($utilisateurRepository->ajouter($utilisateur)){
-                    MessageFlash::ajouter("warning", "Le compte n'as pas pu être créé, veuillez réessayer plus tard.");
+                $sqlreturn = $utilisateurRepository->ajouter($utilisateur);
+                if ($sqlreturn == "") {
+                    MessageFlash::ajouter("success", "L'utilisateur a bien été créé, un mail de validation a été envoyé. <a href='https://yopmail.com'>Consultez la boite mail</a>");
+                } else if ($sqlreturn == "23000") {
+                    MessageFlash::ajouter("warning", "Le login ou l'email ou le numéro de téléphone est déjà utilisé.");
+                    self::afficherFormulaireCreation();
+                    return;
+                } else if ($sqlreturn == "22001"){ // TODO (Pour tout le monde) : Ajouter d'autres explications exceptions pour que l'utilisateur comprenne ce qu'il a mal fait
+                    MessageFlash::ajouter("warning", "Une information trop longue à été entrée, veuillez la raccourcir.");
+                    self::afficherFormulaireCreation();
+                    return;
                 } else {
-                    MessageFlash::ajouter("success","L'utilisateur a bien été créé, un mail de validation a été envoyé. <a href='http://".explode('@', $utilisateur->getEmail())[0].".yopmail.com'>Consultez la boite mail</a>");
+                    MessageFlash::ajouter("warning", "Le compte n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
                 }
             } else {
                 MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyée, veuillez réessayer plus tard.");
