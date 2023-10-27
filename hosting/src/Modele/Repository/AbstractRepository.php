@@ -26,7 +26,7 @@ abstract class AbstractRepository{
         $uniques = $this->getUniques();
         foreach ($uniques as $unique){
             if (isset($_REQUEST[$unique])){
-                return $unique;
+                return $_REQUEST[$unique];
             }
         }
         return "";
@@ -131,7 +131,7 @@ abstract class AbstractRepository{
         $sql = substr($sql,0,-1).")";
         try {
             $pdoStatement = dataBase::getPdo()->prepare($sql);
-            $pdoStatement->execute($object->formatTableau(false));
+            $pdoStatement->execute($object->formatTableau(true));
             $pdoStatement->fetch();
         } catch (PDOException $e) {
             return $e->getCode();

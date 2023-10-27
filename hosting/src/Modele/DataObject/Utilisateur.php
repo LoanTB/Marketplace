@@ -56,7 +56,7 @@ class Utilisateur extends AbstractDataObject {
                 "prenom" => $this->getPrenom(),
                 "nonce_email" => $this->getNonceEmail(),
                 "nonce_telephone" => $this->getNonceTelephone(),
-                "admin" => $this->getAdmin(),
+                "admin" => $this->getAdmin()*1,
                 "url_image" => $this->getUrlImage()
             );
         } else {

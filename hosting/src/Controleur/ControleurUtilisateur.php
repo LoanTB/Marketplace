@@ -125,52 +125,97 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        if ($_REQUEST["password"] == $_REQUEST["passwordConfirmation"]){
-            $infos["id_compte"] = null;
-            foreach ($utilisateurRepository->getNomsColonnes() as $key){
-                if (!array_key_exists($key,$infos)){
-                    $infos[$key] = $_REQUEST[$key];
-                }
-            }
-            $utilisateur = $utilisateurRepository->construireDepuisTableau($infos,false);
-
-            if (VerificationEmail::envoiEmailValidation($utilisateur)){
-                $sqlreturn = $utilisateurRepository->ajouter($utilisateur);
-                if ($sqlreturn == "") {
-                    MessageFlash::ajouter("success", "L'utilisateur a bien été créé, un mail de validation a été envoyé. <a href='https://yopmail.com'>Consultez la boite mail</a>");
-                } else if ($sqlreturn == "23000") {
-                    MessageFlash::ajouter("warning", "Le login ou l'email ou le numéro de téléphone est déjà utilisé.");
-                    self::afficherFormulaireCreation();
-                    return;
-                } else if ($sqlreturn == "22001"){ // TODO (Pour tout le monde) : Ajouter d'autres explications exceptions pour que l'utilisateur comprenne ce qu'il a mal fait
-                    MessageFlash::ajouter("warning", "Une information trop longue à été entrée, veuillez la raccourcir.");
-                    self::afficherFormulaireCreation();
-                    return;
-                } else {
-                    MessageFlash::ajouter("warning", "Le compte n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
-                }
-            } else {
-                MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyée, veuillez réessayer plus tard.");
-            }
-            self::afficherListe();
-        } else {
+        if ($_REQUEST["password"] != $_REQUEST["passwordConfirmation"]){
             MessageFlash::ajouter("warning", "Les mots de passes sont différents");
             self::afficherFormulaireCreation();
+            return;
         }
-    }
 
-    public static function mettreAJour() : void {
-        if (!isset($_REQUEST["login"]) or !isset($_REQUEST["oldPassword"]) or !isset($_REQUEST["nom"]) or !isset($_REQUEST["prenom"]) or !isset($_REQUEST["email"])){
-            ControleurGenerique::alerterAccesNonAutorise();
+        $infos["id_compte"] = null;
+        foreach ($utilisateurRepository->getNomsColonnes() as $key){
+            if (!array_key_exists($key,$infos)){
+                $infos[$key] = $_REQUEST[$key];
+            }
+        }
+        $utilisateur = $utilisateurRepository->construireDepuisTableau($infos,false);
+
+        $sqlreturn = $utilisateurRepository->ajouter($utilisateur);
+
+        if ($sqlreturn == "23000") {
+            MessageFlash::ajouter("warning", "Le login ou l'email ou le numéro de téléphone est déjà utilisé.");
+            self::afficherFormulaireCreation();
+            return;
+        } else if ($sqlreturn == "22001"){ // TODO (Pour tout le monde) : Ajouter d'autres explications exceptions pour que l'utilisateur comprenne ce qu'il a mal fait
+            MessageFlash::ajouter("warning", "Une information trop longue à été entrée, veuillez la raccourcir.");
+            self::afficherFormulaireCreation();
+            return;
+        } else if ($sqlreturn != "") {
+            MessageFlash::ajouter("warning", "Le compte n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
             self::afficherListe();
             return;
         }
 
+        if (VerificationEmail::envoiEmailValidation($utilisateur)){
+            MessageFlash::ajouter("success", "L'utilisateur a bien été créé. Un mail de validation a été envoyé : <a href='https://yopmail.com'>Consultez la boite mail</a>");
+        } else {
+            $utilisateurRepository->supprimerParUniqueDansRequest();
+            MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyé, la création du compte à été annulé, veuillez réessayer plus tard.");
+        }
+
+        self::afficherListe();
+    }
+
+    public static function mettreAJour() : void {
         if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["login"]) and !ConnexionUtilisateur::estAdministrateur()){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
+
+        $infos = array();
+        $utilisateurRepository = new UtilisateurRepository();
+        foreach ($utilisateurRepository->getNotNull() as $key){
+            if (!isset($_REQUEST[$key])){
+                ControleurGenerique::alerterAccesNonAutorise();
+                self::afficherListe();
+                return;
+            } else {
+                $infos[$key] = $_REQUEST[$key];
+            }
+        }
+
+        $infos["nonce_email"] = MotDePasse::genererChaineAleatoire(20);
+
+        if (isset($_REQUEST["admin"]) and $_REQUEST["admin"] == "true"){
+            if (ConnexionUtilisateur::estAdministrateur()){
+                $infos["admin"] = true;
+            } else {
+                ControleurGenerique::alerterAccesNonAutorise();
+                self::afficherListe();
+                return;
+            }
+        } else {
+            $infos["admin"] = false;
+        }
+
+        if (isset($_REQUEST["url_image"])){
+            $infos["url_image"] = $_REQUEST["url_image"];
+        } else {
+            $infos["url_image"] = "";
+        }
+
+        if (isset($_REQUEST["telephone_number"]) and $_REQUEST["telephone_number"] != "" and isset($_REQUEST["telephone_country"]) and $_REQUEST["telephone_country"] != ""){
+            if (preg_match("/^[0-9]{9}$/", $_REQUEST["telephone_number"]) and preg_match("/^[0-9]{1,2}$/", $_REQUEST["telephone_country"])){
+                $infos["telephone"] = "+".$_REQUEST["telephone_country"].$_REQUEST["telephone_number"];
+            } else {
+                MessageFlash::ajouter("warning", "Téléphone invalide, veuillez entrer un numéro de téléphone valide.");
+                self::afficherFormulaireMiseAJour();
+                return;
+            }
+        } else {
+            $infos["telephone"] = null;
+        }
+        $infos["nonce_telephone"] = MotDePasse::genererChaineAleatoire(20);
 
         if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)){
             MessageFlash::ajouter("warning", "Email invalide, veuillez entrer une email valide.");
@@ -184,92 +229,75 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        if (ConnexionUtilisateur::estAdministrateur()){
-            $estAdmin = isset($_REQUEST["estAdmin"]);
-        } else {
-            if (isset($_REQUEST["estAdmin"])){
-                ControleurGenerique::alerterAccesNonAutorise();
-                self::afficherListe();
-                return;
-            }
-            $estAdmin = false;
-        }
-
-        if (MotDePasse::verifier($_REQUEST["oldPassword"],(new UtilisateurRepository())->recupererParClePrimaire($_REQUEST["login"])->getPassword())){
-            $utilisateur = (new UtilisateurRepository())->recupererParClePrimaire($_REQUEST["login"]);
-            if (isset($_REQUEST["password"])){
-                if ($_REQUEST["password"] == $_REQUEST["passwordConfirmation"]){
-                    $utilisateur->setPassword($_REQUEST["password"]);
-                } else {
-                    MessageFlash::ajouter("warning", "Les mots de passes sont différents");
-                    self::afficherFormulaireMiseAJour();
-                    return;
-                }
-            } else {
-                $utilisateur->setPassword($_REQUEST["oldPassword"]);
-            }
-        } else {
-            MessageFlash::ajouter("warning", "Mot de passse incorrecte !");
+        if ($_REQUEST["password"] != $_REQUEST["passwordConfirmation"]){
+            MessageFlash::ajouter("warning", "Les mots de passes sont différents.");
             self::afficherFormulaireMiseAJour();
             return;
         }
 
-        $utilisateur->setNom($_REQUEST["nom"]);
-        $utilisateur->setPrenom($_REQUEST["prenom"]);
-        $utilisateur->setEstAdmin($estAdmin);
+        $infos["id_compte"] = null;
+        foreach ($utilisateurRepository->getNomsColonnes() as $key){
+            if (!array_key_exists($key,$infos)){
+                $infos[$key] = $_REQUEST[$key];
+            }
+        }
+        $oldUtilisateur = $utilisateurRepository->recupererParUniqueDansRequest();
 
-        if ($utilisateur->getEmail() == $_REQUEST["email"]){
-            $utilisateur->setEmail($_REQUEST["email"]);
-            $utilisateur->setEmailAValider("");
-            $utilisateur->setNonce("");
-            (new UtilisateurRepository())->mettreAJour($utilisateur);
-            MessageFlash::ajouter("success", "L'utilisateur avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été mise à jour");
+        if (!MotDePasse::verifier($infos["password"],$oldUtilisateur->getPassword())){
+            MessageFlash::ajouter("warning", "Mot de passe incorrecte.");
+            self::afficherFormulaireMiseAJour();
+            return;
+        }
+
+        $newUtilisateur = $utilisateurRepository->construireDepuisTableau($infos,false);
+        if ($newUtilisateur->getEmail() == $oldUtilisateur->getEmail()){
+            $newUtilisateur->setNonceEmail($oldUtilisateur->getNonceEmail());
+        }
+        if ($newUtilisateur->getTelephone() == $oldUtilisateur->getTelephone()){
+            $newUtilisateur->setNonceTelephone($oldUtilisateur->getNonceTelephone());
+        }
+
+        $sqlreturn = $utilisateurRepository->mettreAJour($newUtilisateur);
+
+        if ($sqlreturn == "") {
+            if ($newUtilisateur->getEmail() == $oldUtilisateur->getEmail()) {
+                MessageFlash::ajouter("success", "L'utilisateur a bien été modifié.");
+            }
+        } else if ($sqlreturn == "23000") {
+            MessageFlash::ajouter("warning", "Le login ou l'email ou le numéro de téléphone est déjà utilisé.");
+            self::afficherFormulaireMiseAJour();
+            return;
+        } else if ($sqlreturn == "22001"){ // TODO (Pour tout le monde) : Ajouter d'autres explications exceptions pour que l'utilisateur comprenne ce qu'il a mal fait
+            MessageFlash::ajouter("warning", "Une information trop longue à été entrée, veuillez la raccourcir.");
+            self::afficherFormulaireMiseAJour();
+            return;
         } else {
-            $utilisateur->setEmail("");
-            $utilisateur->setEmailAValider($_REQUEST["email"]);
-            $utilisateur->setNonce(MotDePasse::genererChaineAleatoire());
-            if (VerificationEmail::envoiEmailValidation($utilisateur)){
-                (new UtilisateurRepository())->mettreAJour($utilisateur);
-                MessageFlash::ajouter("success", "L'utilisateur avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été mise à jour, un mail de validation a été envoyé pour confirmer la nouvelle email. <a href='http://".explode('@', $utilisateur->getEmailAValider())[0].".yopmail.com'>Consultez la boite mail</a>");
-                self::deconnecter();
-                return;
+            MessageFlash::ajouter("warning", "Le compte n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
+            self::afficherListe();
+            return;
+        }
+
+        if ($newUtilisateur->getEmail() != $oldUtilisateur->getEmail()) {
+            if (VerificationEmail::envoiEmailValidation($newUtilisateur)) {
+                MessageFlash::ajouter("success","L'utilisateur a bien été modifié. L'email, un nouveau code de verification vous a été envoyé : <a href='https://yopmail.com'>Consultez la boite mail</a>");
             } else {
+                $utilisateurRepository->mettreAJour($oldUtilisateur);
                 MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyée, veuillez réessayer plus tard.");
             }
         }
+
         self::afficherListe();
     }
 
-    public static function supprimer() : void {
-        if (!isset($_REQUEST["login"])){
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
-            return;
-        }
-
-        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["login"]) and !ConnexionUtilisateur::estAdministrateur()){
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
-            return;
-        }
-
-        (new UtilisateurRepository())->supprimerParClePrimaire($_REQUEST["login"]);
-        MessageFlash::ajouter("success", "L'utilisateur avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été supprimé");
-        if (ConnexionUtilisateur::estUtilisateur($_REQUEST["login"])){
-            self::deconnecter();
-        } else {
-            self::afficherListe();
-        }
-    }
-
     public static function connecter() : void {
+        $utilisateurRepository = new UtilisateurRepository();
         if (!isset($_REQUEST["login"]) or !isset($_REQUEST["password"])){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        $utilisateur = (new UtilisateurRepository())->recupererParClePrimaire($_REQUEST["login"]);
+        $utilisateur = $utilisateurRepository->recupererParUniqueDansRequest();
         if ($utilisateur == null){
             MessageFlash::ajouter("warning", "L'utilisateur n'existe pas");
             self::formulaireConnexion();
@@ -280,7 +308,7 @@ class ControleurUtilisateur extends ControleurGenerique {
                 return;
             }
             if (MotDePasse::verifier($_REQUEST["password"],$utilisateur->getPassword())){
-                ConnexionUtilisateur::connecter($_REQUEST["login"]);
+                ConnexionUtilisateur::connecter($utilisateur->getIdCompte());
                 MessageFlash::ajouter("success", "Connexion réussie !");
                 self::afficherListe();
             } else {
@@ -302,7 +330,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             self::afficherListe();
             return;
         }
-        if (VerificationEmail::traiterEmailValidation($_REQUEST["login"],$_REQUEST["nonce"])){
+        if (VerificationEmail::traiterEmailValidation($_REQUEST["nonce"])){
             ConnexionUtilisateur::deconnecter();
             MessageFlash::ajouter("success", "Email confirmée, vérification de compte validée.");
             self::afficherListe();
