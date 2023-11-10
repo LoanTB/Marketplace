@@ -10,13 +10,13 @@ class ControleurPanier extends ControleurGenerique {
     public static function afficherListe(): void {
         if (!isset($_REQUEST["idUtilisateur"])) {
             ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurArticle::afficherListe();
             return;
         }
 
         if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["idUtilisateur"])) {
             ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurArticle::afficherListe();
             return;
         }
 
