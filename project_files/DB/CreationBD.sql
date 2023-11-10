@@ -1,6 +1,6 @@
 CREATE TABLE Image(
-                      url VARCHAR(100) ,
-                      PRIMARY KEY(url)
+                      url_image VARCHAR(100) ,
+                      PRIMARY KEY(url_image)
 );
 
 CREATE TABLE Wishlist(
@@ -25,12 +25,12 @@ CREATE TABLE Utilisateur(
                             nonce_email CHAR(20) ,
                             nonce_telephone CHAR(20) ,
                             admin BOOLEAN NOT NULL,
-                            url VARCHAR(100)  NOT NULL,
+                            url_image VARCHAR(100)  NOT NULL,
                             PRIMARY KEY(id_utilisateur),
                             UNIQUE(login),
                             UNIQUE(email),
                             UNIQUE(telephone),
-                            FOREIGN KEY(url) REFERENCES Image(url)
+                            FOREIGN KEY(url_image) REFERENCES Image(url_image)
 );
 
 CREATE TABLE Article(
@@ -57,10 +57,10 @@ CREATE TABLE Commenter(
 
 CREATE TABLE illustrer(
                           id_article INT,
-                          url VARCHAR(100) ,
-                          PRIMARY KEY(id_article, url),
+                          url_image VARCHAR(100) ,
+                          PRIMARY KEY(id_article, url_image),
                           FOREIGN KEY(id_article) REFERENCES Article(id_article),
-                          FOREIGN KEY(url) REFERENCES Image(url)
+                          FOREIGN KEY(url_image) REFERENCES Image(url_image)
 );
 
 CREATE TABLE posseder(
