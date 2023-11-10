@@ -126,13 +126,17 @@ abstract class AbstractRepository{
             $sql = $sql.":{$nomColone},";
         }
         $sql = substr($sql,0,-1).")";
-        try {
-            $pdoStatement = dataBase::getPdo()->prepare($sql);
-            $pdoStatement->execute($object->formatTableau(true));
-            $pdoStatement->fetch();
-        } catch (PDOException $e) {
-            return $e->getCode();
-        }
+
+        $pdoStatement = dataBase::getPdo()->prepare($sql);
+        $pdoStatement->execute($object->formatTableau(true));
+        $pdoStatement->fetch();
+//        try {
+//            $pdoStatement = dataBase::getPdo()->prepare($sql);
+//            $pdoStatement->execute($object->formatTableau(true));
+//            $pdoStatement->fetch();
+//        } catch (PDOException $e) {
+//            return $e->getCode();
+//        }
         return "";
     }
 

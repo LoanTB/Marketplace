@@ -67,8 +67,20 @@ class ControleurArticle extends ControleurGenerique {
             self::afficherListe();
             return;
         }
-        $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),null,$raw = false);
-        (new ArticleRepository())->ajouter($article);
+        $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
+
+        $sqlreturn = (new ArticleRepository())->ajouter($article);
+
+        if ($sqlreturn == "22001"){
+            MessageFlash::ajouter("warning", "Une information trop longue à été entrée, veuillez la raccourcir.");
+            self::afficherFormulaireCreation();
+            return;
+        } else if ($sqlreturn != "") {
+            MessageFlash::ajouter("warning", "Le compte n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
+            self::afficherListe();
+            return;
+        }
+
         MessageFlash::ajouter("success","L'article a bien été mis en ligne.");
         self::afficherListe();
     }
@@ -81,6 +93,7 @@ class ControleurArticle extends ControleurGenerique {
         }
 
         if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["idUtilisateur"])){
+            var_dump('test');
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;

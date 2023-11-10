@@ -16,7 +16,7 @@ class ArticleRepository extends AbstractRepository{
         "description",
         "prix",
         "quantite",
-        "id_utilisateur_vendeur"
+        "id_utilisateur"
     );
 
     protected function getNomTable(): string {
@@ -30,6 +30,6 @@ class ArticleRepository extends AbstractRepository{
     }
 
     protected function construireDepuisTableau(array $objetFormatTableau,bool $raw) : Article {
-        return new Article($objetFormatTableau["id_article"],$objetFormatTableau["nom"],$objetFormatTableau["description"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["id_utilisateur_vendeur"],$raw);
+        return new Article($objetFormatTableau["id_article"],$objetFormatTableau["nom"],$objetFormatTableau["description"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["id_utilisateur"],$raw);
     }
 }
