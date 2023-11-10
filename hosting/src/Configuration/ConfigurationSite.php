@@ -8,7 +8,7 @@ class ConfigurationSite {
     static private array $siteConfiguration = array(
         'expirationSession' => 60*60*24, // Session expire obligatoirement après 24h
         'expirationCookieDefault' => 60*60*24, // Un cookie expire par défault 24h après sa création si non précisé
-        'absoluteURL' => "http://webinfo.iutmontp.univ-montp2.fr/~tremouletl/projet-web/hosting/web/controleurFrontal.php"
+        'absoluteURL' => "http://webinfo.iutmontp.univ-montp2.fr/~tremouletl/web/controleurFrontal.php"
     );
 
     public static function getDebug(): bool {
