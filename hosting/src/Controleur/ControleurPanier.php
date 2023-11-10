@@ -8,13 +8,13 @@ use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 
 class ControleurPanier extends ControleurGenerique {
     public static function afficherListe(): void {
-        if (!isset($_REQUEST["idUtilisateur"])) {
+        if (!isset($_REQUEST["id_utilisateur"])) {
             ControleurGenerique::alerterAccesNonAutorise();
             ControleurArticle::afficherListe();
             return;
         }
 
-        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["idUtilisateur"])) {
+        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["id_utilisateur"])) {
             ControleurGenerique::alerterAccesNonAutorise();
             ControleurArticle::afficherListe();
             return;
@@ -23,24 +23,24 @@ class ControleurPanier extends ControleurGenerique {
         self::afficherVue("vueGenerale.php", [
             "pagetitle" => "Panier",
             "cheminVueBody" => "panier/liste.php",
-            "articles" => (new dansPanierRepository())->recupererArticlesDePanierUtilisateur($_REQUEST["idUtilisateur"])
+            "articles" => (new dansPanierRepository())->recupererArticlesDePanierUtilisateur($_REQUEST["id_utilisateur"])
         ]);
     }
 
     public static function ajouterAuPanier(): void {
-        if (!isset($_REQUEST["idArticle"]) or !isset($_REQUEST["idUtilisateur"])) {
+        if (!isset($_REQUEST["idArticle"]) or !isset($_REQUEST["id_utilisateur"])) {
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["idUtilisateur"])) {
+        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["id_utilisateur"])) {
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        $dansPanier = new dansPanier($_REQUEST["idUtilisateur"], $_REQUEST["idArticle"], $raw = false);
+        $dansPanier = new dansPanier($_REQUEST["id_utilisateur"], $_REQUEST["idArticle"], $raw = false);
         $sqlreturn = (new dansPanierRepository())->ajouter($dansPanier);
 
         if ($sqlreturn == "") {

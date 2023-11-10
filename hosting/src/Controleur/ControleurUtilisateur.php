@@ -26,13 +26,13 @@ class ControleurUtilisateur extends ControleurGenerique {
     }
 
     public static function afficherDetail() : void {
-        if ((new UtilisateurRepository())->requestContainsUnique()){
+        if (!(new UtilisateurRepository())->requestContainsUnique()){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        $utilisateur = (new UtilisateurRepository())->recupererParUnique($_REQUEST[(new UtilisateurRepository())->requestUniqueValue()],(new UtilisateurRepository())->requestUniqueIndice());
+        $utilisateur = (new UtilisateurRepository())->recupererParUniqueDansRequest();
         if ($utilisateur == null){
             MessageFlash::ajouter("warning", "Utilisateur innexistant");
             self::afficherListe();

@@ -18,7 +18,7 @@ use \App\Ecommerce\Lib\ConnexionUtilisateur;
             <li><a href="controleurFrontal.php?action=formulairePreference"><img src="./../ressources/img/heart.png" alt="cœur"></a></li>
             <?php
             if (ConnexionUtilisateur::estConnecte()){
-                echo '<li><a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login='.ConnexionUtilisateur::getIdUtilisateurConnecte().'"><img src="./../ressources/img/user.png" alt="infos utilisateur"></a></li>';
+                echo '<li><a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&id_utilisateur='.ConnexionUtilisateur::getIdUtilisateurConnecte().'"><img src="./../ressources/img/user.png" alt="infos utilisateur"></a></li>';
                 echo '<li><a href="controleurFrontal.php?action=deconnecter&controleur=utilisateur"><img src="./../ressources/img/sortir.png" alt="déconnexion"></a></li>';
             } else {
                 echo '<li><a href="controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur"><img src="./../ressources/img/enter.png" alt="connexion"></a></li>';
