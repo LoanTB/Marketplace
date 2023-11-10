@@ -6,7 +6,9 @@ use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
 use App\Ecommerce\Lib\VerificationEmail;
 use App\Ecommerce\Modele\DataObject\Article;
+use App\Ecommerce\Modele\DataObject\relations\dansPanier;
 use App\Ecommerce\Modele\Repository\ArticleRepository;
+use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 
 class ControleurArticle extends ControleurGenerique {
     public static function afficherListe() : void {
@@ -68,6 +70,25 @@ class ControleurArticle extends ControleurGenerique {
         $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),null,$raw = false);
         (new ArticleRepository())->ajouter($article);
         MessageFlash::ajouter("success","L'article a bien été mis en ligne.");
+        self::afficherListe();
+    }
+
+    public static function ajouterAuPanier() : void {
+        if (!isset($_REQUEST["idArticle"]) or !isset($_REQUEST["idUtilisateur"])){
+            ControleurGenerique::alerterAccesNonAutorise();
+            self::afficherListe();
+            return;
+        }
+
+        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["idUtilisateur"])){
+            ControleurGenerique::alerterAccesNonAutorise();
+            self::afficherListe();
+            return;
+        }
+
+        $dansPanier = new dansPanier($_REQUEST["idArticle"],$_REQUEST["idUtilisateur"],$raw = false);
+        (new dansPanierRepository())->ajouter($dansPanier);
+        MessageFlash::ajouter("success","L'article a bien été ajouté au panier.");
         self::afficherListe();
     }
 

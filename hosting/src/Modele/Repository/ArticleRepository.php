@@ -16,8 +16,7 @@ class ArticleRepository extends AbstractRepository{
         "description",
         "prix",
         "quantite",
-        "id_compte_utilisateur",
-        "id_compte_admin"
+        "id_utilisateur_vendeur"
     );
 
     protected function getNomTable(): string {
@@ -31,6 +30,6 @@ class ArticleRepository extends AbstractRepository{
     }
 
     protected function construireDepuisTableau(array $objetFormatTableau,bool $raw) : Article {
-        return new Article($objetFormatTableau["id_article"],$objetFormatTableau["nom"],$objetFormatTableau["description"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["id_compte_utilisateur"],$objetFormatTableau["id_compte_admin"],$raw);
+        return new Article($objetFormatTableau["id_article"],$objetFormatTableau["nom"],$objetFormatTableau["description"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["id_utilisateur_vendeur"],$raw);
     }
 }
