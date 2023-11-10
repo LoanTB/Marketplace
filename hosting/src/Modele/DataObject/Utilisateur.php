@@ -4,7 +4,7 @@ namespace App\Ecommerce\Modele\DataObject;
 use App\Ecommerce\Lib\MotDePasse;
 
 class Utilisateur extends AbstractDataObject {
-    private ?int $id_compte;
+    private ?int $id_utilisateur;
     private string $login;
     private string $email;
     private ?string $telephone;
@@ -16,9 +16,9 @@ class Utilisateur extends AbstractDataObject {
     private bool $admin;
     private string $url_image;
 
-    public function __construct(?int $id_compte, string $login, string $email,?string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, string $url_image, bool $raw = true){
+    public function __construct(?int $id_utilisateur, string $login, string $email,?string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, string $url_image, bool $raw = true){
         if ($raw) {
-            $this->id_compte = $id_compte;
+            $this->id_utilisateur = $id_utilisateur;
             $this->login = $login;
             $this->email = $email;
             $this->telephone = $telephone;
@@ -30,7 +30,7 @@ class Utilisateur extends AbstractDataObject {
             $this->admin = $admin;
             $this->url_image = $url_image;
         } else {
-            $this->setIdCompte($id_compte);
+            $this->setIdUtilisateur($id_utilisateur);
             $this->setLogin($login);
             $this->setEmail($email);
             $this->setTelephone($telephone);
@@ -46,7 +46,7 @@ class Utilisateur extends AbstractDataObject {
 
     public function formatTableau(): array{
         return array(
-            "id_compte" => $this->getIdCompte(),
+            "id_utilisateur" => $this->getIdUtilisateur(),
             "login" => $this->getLogin(),
             "email" => $this->getEmail(),
             "telephone" => $this->getTelephone(),
@@ -63,17 +63,17 @@ class Utilisateur extends AbstractDataObject {
     /**
      * @return int|null
      */
-    public function getIdCompte(): ?int
+    public function getIdUtilisateur(): ?int
     {
-        return $this->id_compte;
+        return $this->id_utilisateur;
     }
 
     /**
-     * @param int|null $id_compte
+     * @param int|null $id_utilisateur
      */
-    public function setIdCompte(?int $id_compte): void
+    public function setIdUtilisateur(?int $id_utilisateur): void
     {
-        $this->id_compte = $id_compte;
+        $this->id_utilisateur = $id_utilisateur;
     }
 
     /**

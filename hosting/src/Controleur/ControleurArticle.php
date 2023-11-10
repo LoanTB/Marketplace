@@ -99,7 +99,7 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
 
-        $dansPanier = new dansPanier($_REQUEST["idArticle"],$_REQUEST["idUtilisateur"],$raw = false);
+        $dansPanier = new dansPanier($_REQUEST["idUtilisateur"],$_REQUEST["idArticle"],$raw = false);
         (new dansPanierRepository())->ajouter($dansPanier);
         MessageFlash::ajouter("success","L'article a bien été ajouté au panier.");
         self::afficherListe();

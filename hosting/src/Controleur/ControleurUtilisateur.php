@@ -131,7 +131,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        $infos["id_compte"] = null;
+        $infos["id_utilisateur"] = null;
         foreach ($utilisateurRepository->getNomsColonnes() as $key){
             if (!array_key_exists($key,$infos)){
                 $infos[$key] = $_REQUEST[$key];
@@ -235,7 +235,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        $infos["id_compte"] = null;
+        $infos["id_utilisateur"] = null;
         foreach ($utilisateurRepository->getNomsColonnes() as $key){
             if (!array_key_exists($key,$infos)){
                 $infos[$key] = $_REQUEST[$key];
@@ -308,7 +308,7 @@ class ControleurUtilisateur extends ControleurGenerique {
                 return;
             }
             if (MotDePasse::verifier($_REQUEST["password"],$utilisateur->getPassword())){
-                ConnexionUtilisateur::connecter($utilisateur->getIdCompte());
+                ConnexionUtilisateur::connecter($utilisateur->getIdUtilisateur());
                 MessageFlash::ajouter("success", "Connexion réussie !");
                 self::afficherListe();
             } else {
