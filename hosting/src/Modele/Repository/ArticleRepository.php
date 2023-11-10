@@ -1,5 +1,6 @@
 <?php
 namespace App\Ecommerce\Modele\Repository;
+
 use App\Ecommerce\Modele\DataObject\Article;
 
 class ArticleRepository extends AbstractRepository{

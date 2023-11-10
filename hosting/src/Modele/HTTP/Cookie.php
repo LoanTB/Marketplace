@@ -1,5 +1,6 @@
 <?php
 namespace App\Ecommerce\Modele\HTTP;
+
 use App\Ecommerce\Configuration\ConfigurationSite;
 
 class Cookie {

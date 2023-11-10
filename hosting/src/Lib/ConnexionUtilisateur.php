@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Ecommerce\Lib;
 
 use App\Ecommerce\Modele\HTTP\Session;
