@@ -1,6 +1,5 @@
 <?php
 namespace App\Ecommerce\Modele\DataObject;
-
 class Article extends AbstractDataObject {
     private int $id_article;
     private string $nom;

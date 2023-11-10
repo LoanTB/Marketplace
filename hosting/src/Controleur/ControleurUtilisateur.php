@@ -1,14 +1,14 @@
 <?php
 namespace App\Ecommerce\Controleur;
+
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
 use App\Ecommerce\Lib\VerificationEmail;
-use App\Ecommerce\Modele\DataObject\Utilisateur;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 
 class ControleurUtilisateur extends ControleurGenerique {
-    // Déclaration de type de retour void : la fonction ne retourne pas de valeur
+
     public static function afficherListe() : void {
         self::afficherVue("vueGenerale.php",[
             "pagetitle" => "Liste des utilisateurs",

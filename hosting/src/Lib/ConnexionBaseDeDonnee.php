@@ -1,5 +1,6 @@
 <?php
 namespace App\Ecommerce\Lib;
+
 use App\Ecommerce\Configuration\ConfigurationDatabase;
 use \PDO;
 
