@@ -8,9 +8,8 @@ class Article extends AbstractDataObject {
     private float $prix;
     private int $quantite;
     private int $id_utilisateur_vendeur;
-    private int $id_admin_certificateur;
 
-    public function __construct(?int $id_article, string $nom, string $description, float $prix, int $quantite, int $id_utilisateur_vendeur, ?int $id_admin_certificateur, bool $raw = true){
+    public function __construct(?int $id_article, string $nom, string $description, float $prix, int $quantite, int $id_utilisateur_vendeur, bool $raw = true){
         if ($raw) {
             $this->id_article = $id_article;
             $this->nom = $nom;
@@ -18,7 +17,6 @@ class Article extends AbstractDataObject {
             $this->prix = $prix;
             $this->quantite = $quantite;
             $this->id_utilisateur_vendeur = $id_utilisateur_vendeur;
-            $this->id_admin_certificateur = $id_admin_certificateur;
         } else {
             $this->setIdArticle($id_article);
             $this->setNom($nom);
@@ -26,7 +24,6 @@ class Article extends AbstractDataObject {
             $this->setPrix($prix);
             $this->setQuantite($quantite);
             $this->setIdUtilisateurVendeur($id_utilisateur_vendeur);
-            $this->setIdAdminCertificateur($id_admin_certificateur);
         }
     }
 
@@ -38,7 +35,6 @@ class Article extends AbstractDataObject {
             "prix" => $this->getPrix(),
             "quantite" => $this->getQuantite(),
             "id_utilisateur_vendeur" => $this->getIdUtilisateurVendeur(),
-            "id_admin_certificateur" => $this->getIdAdminCertificateur()
         );
     }
 
@@ -100,15 +96,5 @@ class Article extends AbstractDataObject {
     public function setIdUtilisateurVendeur(int $id_utilisateur_vendeur): void
     {
         $this->id_utilisateur_vendeur = $id_utilisateur_vendeur;
-    }
-
-    public function getIdAdminCertificateur(): int
-    {
-        return $this->id_admin_certificateur;
-    }
-
-    public function setIdAdminCertificateur(int $id_admin_certificateur): void
-    {
-        $this->id_admin_certificateur = $id_admin_certificateur;
     }
 }

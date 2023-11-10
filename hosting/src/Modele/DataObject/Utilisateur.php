@@ -44,30 +44,20 @@ class Utilisateur extends AbstractDataObject {
         }
     }
 
-    public function formatTableau(bool $nulls = true): array{
-        if ($nulls){
-            return array(
-                "id_compte" => $this->getIdCompte(),
-                "login" => $this->getLogin(),
-                "email" => $this->getEmail(),
-                "telephone" => $this->getTelephone(),
-                "password" => $this->getPassword(),
-                "nom" => $this->getNom(),
-                "prenom" => $this->getPrenom(),
-                "nonce_email" => $this->getNonceEmail(),
-                "nonce_telephone" => $this->getNonceTelephone(),
-                "admin" => $this->getAdmin()*1,
-                "url_image" => $this->getUrlImage()
-            );
-        } else {
-            $tableau = $this->formatTableau(true);
-            foreach (array_keys($tableau) as $key){
-                if ($tableau[$key] == null){
-                    unset($tableau[$key]);
-                }
-            }
-            return $tableau;
-        }
+    public function formatTableau(): array{
+        return array(
+            "id_compte" => $this->getIdCompte(),
+            "login" => $this->getLogin(),
+            "email" => $this->getEmail(),
+            "telephone" => $this->getTelephone(),
+            "password" => $this->getPassword(),
+            "nom" => $this->getNom(),
+            "prenom" => $this->getPrenom(),
+            "nonce_email" => $this->getNonceEmail(),
+            "nonce_telephone" => $this->getNonceTelephone(),
+            "admin" => $this->getAdmin()*1,
+            "url_image" => $this->getUrlImage()
+        );
     }
 
     /**

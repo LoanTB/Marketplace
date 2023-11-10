@@ -12,10 +12,10 @@ $loader->addNamespace('App\Ecommerce', __DIR__ . '/../src/');
 if (isset($_REQUEST['controleur'])){
     $controleur = $_REQUEST['controleur'];
 } else {
-    if (PreferenceControleur::existe()){
-        $controleur = PreferenceControleur::lire();
+    if (true){
+        $controleur = "article";
     } else {
-        $controleur = "Generique";
+        $controleur = "generique";
     }
 }
 
@@ -30,7 +30,8 @@ if (class_exists(($chemainClass.$nomDeClasseControleur))){
             ($chemainClass.$nomDeClasseControleur)::afficherErreur("Action inconnue");
         }
     } else {
-        ($chemainClass.$nomDeClasseControleur)::afficherErreur("Action indéfinie");
+        ($chemainClass.$nomDeClasseControleur)::afficherListe();
+        //($chemainClass.$nomDeClasseControleur)::afficherErreur("Action indéfinie");
     }
 } else {
     ($chemainClass."ControleurGenerique")::afficherErreur("Classe inconnue");
