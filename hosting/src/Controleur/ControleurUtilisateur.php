@@ -156,7 +156,7 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         if (VerificationEmail::envoiEmailValidation($utilisateur)){
-            MessageFlash::ajouter("success", "L'utilisateur a bien été créé. Un mail de validation a été envoyé : <a href='https://yopmail.com'>Consultez la boite mail</a>");
+            MessageFlash::ajouter("success", "L'utilisateur a bien été créé. Un mail de validation a été envoyé : <a href='https://yopmail.com' target='_blank'>Consultez la boite mail</a>");
         } else {
             $utilisateurRepository->supprimerParUniqueDansRequest();
             MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyé, la création du compte à été annulé, veuillez réessayer plus tard.");

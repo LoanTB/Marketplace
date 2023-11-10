@@ -118,15 +118,11 @@ abstract class AbstractRepository{
         $sql = /** @lang OracleSqlPlus */
             "INSERT INTO {$this->getNomTable()} (";
         foreach ($this->getNomsColonnes() as $nomColone){
-            if ($object->formatTableau()[$nomColone] != null){
-                $sql = $sql."{$nomColone},";
-            }
+            $sql = $sql."{$nomColone},";
         }
         $sql = substr($sql,0,-1).") VALUES (";
         foreach ($this->getNomsColonnes() as $nomColone){
-            if ($object->formatTableau()[$nomColone] != null){
-                $sql = $sql.":{$nomColone},";
-            }
+            $sql = $sql.":{$nomColone},";
         }
         $sql = substr($sql,0,-1).")";
         try {
