@@ -85,26 +85,6 @@ class ControleurArticle extends ControleurGenerique {
         self::afficherListe();
     }
 
-    public static function ajouterAuPanier() : void {
-        if (!isset($_REQUEST["idArticle"]) or !isset($_REQUEST["idUtilisateur"])){
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
-            return;
-        }
-
-        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["idUtilisateur"])){
-            var_dump('test');
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
-            return;
-        }
-
-        $dansPanier = new dansPanier($_REQUEST["idUtilisateur"],$_REQUEST["idArticle"],$raw = false);
-        (new dansPanierRepository())->ajouter($dansPanier);
-        MessageFlash::ajouter("success","L'article a bien été ajouté au panier.");
-        self::afficherListe();
-    }
-
     public static function mettreAJour() : void {
         if (!isset($_REQUEST["login"]) or !isset($_REQUEST["oldPassword"]) or !isset($_REQUEST["nom"]) or !isset($_REQUEST["prenom"]) or !isset($_REQUEST["email"])){
             ControleurGenerique::alerterAccesNonAutorise();
