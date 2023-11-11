@@ -1,5 +1,6 @@
 <?php
 namespace App\Ecommerce\Controleur;
+
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\PreferenceControleur;
 

@@ -16,19 +16,20 @@ use \App\Ecommerce\Lib\ConnexionUtilisateur;
     <nav>
         <ul>
             <li class="icon"><img src="../ressources/img/logo.png" title="Occasion/20" alt="Logo"></li>
-            <li class="new"><div id="navbutton">Nouvelle annonce<div class="svg add-icon"></div></div></li>
+            <li class="new"><a href="controleurFrontal.php?controleur=article&action=afficherFormulaireCreation"><div id="navbutton">Nouvelle annonce<div class="svg add-icon"></div></div></a></li>
             <li class="searchbar"><label id="search"><input placeholder="Rechercher un article"><div class="svg mag-icon"></div></label></li>
             <li class="menubutton"><a href="controleurFrontal.php?action=afficherListe&controleur=article"><div class="svg cart-icon"></div>Articles</a></li>
             <li class="menubutton"><a href="controleurFrontal.php?action=formulairePreference"><div class="svg favorite-icon"></div>Favoris</a></li>
             <li class="menubutton"><a href="
             <?php
             if (ConnexionUtilisateur::estConnecte()){
-                echo 'controleurFrontal.php?action=afficherDetail&controleur=utilisateur&login='.ConnexionUtilisateur::getLoginUtilisateurConnecte().'"><div class="svg account-icon"></div>'.ConnexionUtilisateur::getLoginUtilisateurConnecte();
+                echo 'controleurFrontal.php?action=afficherDetail&controleur=utilisateur&id_utilisateur='.ConnexionUtilisateur::getIdUtilisateurConnecte().'"><div class="svg account-icon"></div>'.ConnexionUtilisateur::getIdUtilisateurConnecte().'</a></li>';
+                // TODO: Correctement implémenter le bouton de déconnexion
+                echo '<li style="display: none"><a href="controleurFrontal.php?action=deconnecter&controleur=utilisateur"><img src="./../ressources/img/sortir.png" alt="déconnexion"></a></li>';
             } else {
-                echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur"><div class="svg account-icon"></div>Compte';
+                echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur"><div class="svg account-icon"></div>Compte</a></li>';
             }
             ?>
-            </a></li>
         </ul>
     </nav>
 </header>

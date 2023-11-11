@@ -1,5 +1,6 @@
 <?php
 namespace App\Ecommerce\Modele\Repository;
+
 use App\Ecommerce\Modele\DataObject\Article;
 
 class ArticleRepository extends AbstractRepository{
@@ -15,8 +16,7 @@ class ArticleRepository extends AbstractRepository{
         "description",
         "prix",
         "quantite",
-        "id_compte_utilisateur",
-        "id_compte_admin"
+        "id_utilisateur"
     );
 
     protected function getNomTable(): string {
@@ -29,7 +29,7 @@ class ArticleRepository extends AbstractRepository{
         return $this->nomsColonnes;
     }
 
-    protected function construireDepuisTableau(array $objetFormatTableau,bool $raw) : Article {
-        return new Article($objetFormatTableau["id_article"],$objetFormatTableau["nom"],$objetFormatTableau["description"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["id_compte_utilisateur"],$objetFormatTableau["id_compte_admin"],$raw);
+    public function construireDepuisTableau(array $objetFormatTableau,bool $raw) : Article {
+        return new Article($objetFormatTableau["id_article"],$objetFormatTableau["nom"],$objetFormatTableau["description"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["id_utilisateur"],$raw);
     }
 }

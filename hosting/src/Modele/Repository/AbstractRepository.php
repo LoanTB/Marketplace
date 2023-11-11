@@ -1,5 +1,6 @@
 <?php
 namespace App\Ecommerce\Modele\Repository;
+
 use App\Ecommerce\Modele\DataObject\AbstractDataObject;
 use App\Ecommerce\Lib\ConnexionBaseDeDonnee as dataBase;
 use PDOException;
@@ -54,11 +55,27 @@ abstract class AbstractRepository{
         return $AbstractDataObject;
     }
 
+    public function recupererParColonne(string|int $colonneValue, int $colonneIndex): array {
+        $sql = /** @lang OracleSqlPlus */
+            "SELECT * from {$this->getNomTable()} WHERE {$this->getNomsColonnes()[$colonneIndex]} = :{$this->getNomsColonnes()[$colonneIndex]}";
+        $pdoStatement = dataBase::getPdo()->prepare($sql);
+        $values = array(
+            $this->getNomsColonnes()[$colonneIndex] => $colonneValue,
+        );
+        $pdoStatement->execute($values);
+        $AbstractDataObject = [];
+        foreach ($pdoStatement as $dataFormatTableau) {
+            $AbstractDataObject[] = $this->construireDepuisTableau($dataFormatTableau,true);
+        }
+        return $AbstractDataObject;
+    }
+
     /**
-     * @param string $uniqueValue,int $uniqueIndex
+     * @param string|int $uniqueValue
+     * @param int $uniqueIndex
      * @return AbstractDataObject|null
      */
-    public function recupererParUnique(string $uniqueValue,int $uniqueIndex): ?AbstractDataObject{
+    public function recupererParUnique(string|int $uniqueValue,int $uniqueIndex): ?AbstractDataObject{
         $sql = /** @lang OracleSqlPlus */
             "SELECT * from {$this->getNomTable()} WHERE {$this->getUniques()[$uniqueIndex]} = :{$this->getUniques()[$uniqueIndex]}";
         try {
@@ -88,7 +105,7 @@ abstract class AbstractRepository{
         return $this->recupererParUnique($uniqueValue, $uniqueIndex);
     }
 
-    public function supprimerParUnique(string $uniqueValue,int $uniqueIndex) : string {
+    public function supprimerParUnique(string|int $uniqueValue,int $uniqueIndex) : string {
         $sql = /** @lang OracleSqlPlus */
             "DELETE FROM {$this->getNomTable()} WHERE {$this->getUniques()[$uniqueIndex]} = :{$this->getUniques()[$uniqueIndex]}";
         try {
@@ -118,15 +135,11 @@ abstract class AbstractRepository{
         $sql = /** @lang OracleSqlPlus */
             "INSERT INTO {$this->getNomTable()} (";
         foreach ($this->getNomsColonnes() as $nomColone){
-            if ($object->formatTableau()[$nomColone] != null){
-                $sql = $sql."{$nomColone},";
-            }
+            $sql = $sql."{$nomColone},";
         }
         $sql = substr($sql,0,-1).") VALUES (";
         foreach ($this->getNomsColonnes() as $nomColone){
-            if ($object->formatTableau()[$nomColone] != null){
-                $sql = $sql.":{$nomColone},";
-            }
+            $sql = $sql.":{$nomColone},";
         }
         $sql = substr($sql,0,-1).")";
         try {

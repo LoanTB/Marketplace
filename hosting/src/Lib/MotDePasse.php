@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Ecommerce\Lib;
 
 class MotDePasse {

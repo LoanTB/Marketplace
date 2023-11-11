@@ -1,14 +1,14 @@
 <?php
 namespace App\Ecommerce\Controleur;
+
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
 use App\Ecommerce\Lib\VerificationEmail;
-use App\Ecommerce\Modele\DataObject\Utilisateur;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 
 class ControleurUtilisateur extends ControleurGenerique {
-    // Déclaration de type de retour void : la fonction ne retourne pas de valeur
+
     public static function afficherListe() : void {
         self::afficherVue("vueGenerale.php",[
             "pagetitle" => "Liste des utilisateurs",
@@ -26,13 +26,13 @@ class ControleurUtilisateur extends ControleurGenerique {
     }
 
     public static function afficherDetail() : void {
-        if ((new UtilisateurRepository())->requestContainsUnique()){
+        if (!(new UtilisateurRepository())->requestContainsUnique()){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        $utilisateur = (new UtilisateurRepository())->recupererParUnique($_REQUEST[(new UtilisateurRepository())->requestUniqueValue()],(new UtilisateurRepository())->requestUniqueIndice());
+        $utilisateur = (new UtilisateurRepository())->recupererParUniqueDansRequest();
         if ($utilisateur == null){
             MessageFlash::ajouter("warning", "Utilisateur innexistant");
             self::afficherListe();
@@ -131,7 +131,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        $infos["id_compte"] = null;
+        $infos["id_utilisateur"] = null;
         foreach ($utilisateurRepository->getNomsColonnes() as $key){
             if (!array_key_exists($key,$infos)){
                 $infos[$key] = $_REQUEST[$key];
@@ -156,7 +156,7 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         if (VerificationEmail::envoiEmailValidation($utilisateur)){
-            MessageFlash::ajouter("success", "L'utilisateur a bien été créé. Un mail de validation a été envoyé : <a href='https://yopmail.com'>Consultez la boite mail</a>");
+            MessageFlash::ajouter("success", "L'utilisateur a bien été créé. Un mail de validation a été envoyé : <a href='https://yopmail.com' target='_blank'>Consultez la boite mail</a>");
         } else {
             $utilisateurRepository->supprimerParUniqueDansRequest();
             MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyé, la création du compte à été annulé, veuillez réessayer plus tard.");
@@ -235,7 +235,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        $infos["id_compte"] = null;
+        $infos["id_utilisateur"] = null;
         foreach ($utilisateurRepository->getNomsColonnes() as $key){
             if (!array_key_exists($key,$infos)){
                 $infos[$key] = $_REQUEST[$key];
@@ -308,7 +308,7 @@ class ControleurUtilisateur extends ControleurGenerique {
                 return;
             }
             if (MotDePasse::verifier($_REQUEST["password"],$utilisateur->getPassword())){
-                ConnexionUtilisateur::connecter($utilisateur->getIdCompte());
+                ConnexionUtilisateur::connecter($utilisateur->getIdUtilisateur());
                 MessageFlash::ajouter("success", "Connexion réussie !");
                 self::afficherListe();
             } else {
