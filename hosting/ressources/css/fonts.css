@@ -1,0 +1,52 @@
+/*  === Google Sans (Medium) variants ===  */
+@font-face {
+    font-family: "Google Sans";
+    src: url("../fonts/GoogleSans-Regular.ttf");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Google Sans Medium";
+    src: url("../fonts/GoogleSans-Medium.ttf");
+    font-style: normal;
+    font-weight: normal;
+}
+
+/*  === Cera Pro variants ===  */
+@font-face {
+    font-family: "Cera Pro";
+    src: url("../fonts/CeraPro-Regular.ttf");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Cera Pro";
+    src: url("../fonts/CeraPro-Italic.ttf");
+    font-style: italic;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Cera Pro";
+    src: url("../fonts/CeraPro-Bold.ttf");
+    font-style: normal;
+    font-weight: bold;
+}
+@font-face {
+    font-family: "Cera Pro";
+    src: url("../fonts/CeraPro-BoldItalic.ttf");
+    font-style: italic;
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Cera Pro Medium";
+    src: url("../fonts/CeraPro-Medium.ttf");
+    font-style: normal;
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Cera Pro Medium";
+    src: url("../fonts/CeraPro-MediumItalic.ttf");
+    font-style: italic;
+    font-weight: normal;
+}
