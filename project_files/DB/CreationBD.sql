@@ -63,28 +63,28 @@ CREATE TABLE illustrer(
                           FOREIGN KEY(url_image) REFERENCES Image(url_image)
 );
 
-CREATE TABLE posseder(
-                         id_utilisateur INT,
+CREATE TABLE enregistrer(
+                            id_utilisateur INT,
+                            id_wishlist INT,
+                            PRIMARY KEY(id_utilisateur, id_wishlist),
+                            FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
+                            FOREIGN KEY(id_wishlist) REFERENCES Wishlist(id_wishlist)
+);
+
+CREATE TABLE contenir(
+                         id_article INT,
                          id_wishlist INT,
-                         PRIMARY KEY(id_utilisateur, id_wishlist),
-                         FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
+                         PRIMARY KEY(id_article, id_wishlist),
+                         FOREIGN KEY(id_article) REFERENCES Article(id_article),
                          FOREIGN KEY(id_wishlist) REFERENCES Wishlist(id_wishlist)
 );
 
-CREATE TABLE souhaiter(
-                          id_article INT,
-                          id_wishlist INT,
-                          PRIMARY KEY(id_article, id_wishlist),
-                          FOREIGN KEY(id_article) REFERENCES Article(id_article),
-                          FOREIGN KEY(id_wishlist) REFERENCES Wishlist(id_wishlist)
-);
-
-CREATE TABLE type_produit(
-                             id_article INT,
-                             nom_type VARCHAR(100) ,
-                             PRIMARY KEY(id_article, nom_type),
-                             FOREIGN KEY(id_article) REFERENCES Article(id_article),
-                             FOREIGN KEY(nom_type) REFERENCES Type(nom_type)
+CREATE TABLE deType(
+                       id_article INT,
+                       nom_type VARCHAR(100) ,
+                       PRIMARY KEY(id_article, nom_type),
+                       FOREIGN KEY(id_article) REFERENCES Article(id_article),
+                       FOREIGN KEY(nom_type) REFERENCES Type(nom_type)
 );
 
 CREATE TABLE dansPanier(
