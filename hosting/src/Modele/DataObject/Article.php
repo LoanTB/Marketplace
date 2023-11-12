@@ -22,7 +22,7 @@ class Article extends AbstractDataObject {
             $this->setDescription($description);
             $this->setPrix($prix);
             $this->setQuantite($quantite);
-            $this->setIdUtilisateurVendeur($id_utilisateur);
+            $this->setIdUtilisateur($id_utilisateur);
         }
     }
 
@@ -33,7 +33,7 @@ class Article extends AbstractDataObject {
             "description" => $this->getDescription(),
             "prix" => $this->getPrix(),
             "quantite" => $this->getQuantite(),
-            "id_utilisateur" => $this->getIdUtilisateurVendeur(),
+            "id_utilisateur" => $this->getIdUtilisateur(),
         );
     }
 
@@ -87,12 +87,12 @@ class Article extends AbstractDataObject {
         $this->quantite = $quantite;
     }
 
-    public function getIdUtilisateurVendeur(): int
+    public function getIdUtilisateur(): int
     {
         return $this->id_utilisateur;
     }
 
-    public function setIdUtilisateurVendeur(int $id_utilisateur): void
+    public function setIdUtilisateur(int $id_utilisateur): void
     {
         $this->id_utilisateur = $id_utilisateur;
     }

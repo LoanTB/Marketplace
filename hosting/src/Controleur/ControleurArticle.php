@@ -6,9 +6,7 @@ use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
 use App\Ecommerce\Lib\VerificationEmail;
 use App\Ecommerce\Modele\DataObject\Article;
-use App\Ecommerce\Modele\DataObject\relations\dansPanier;
 use App\Ecommerce\Modele\Repository\ArticleRepository;
-use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 
 class ControleurArticle extends ControleurGenerique {
     public static function afficherListe() : void {
@@ -92,154 +90,60 @@ class ControleurArticle extends ControleurGenerique {
     }
 
     public static function mettreAJour() : void {
-        if (!isset($_REQUEST["login"]) or !isset($_REQUEST["oldPassword"]) or !isset($_REQUEST["nom"]) or !isset($_REQUEST["prenom"]) or !isset($_REQUEST["email"])){
+        if (!isset($_REQUEST["id_article"]) or !isset($_REQUEST["nom"]) or !isset($_REQUEST["description"]) or !isset($_REQUEST["prix"]) or !isset($_REQUEST["quantite"]) or !ConnexionUtilisateur::estConnecte()){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        if (!ConnexionArticle::estArticle($_REQUEST["login"]) and !ConnexionArticle::estAdministrateur()){
+        $ancienArticle = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"],0);
+
+        if (!ConnexionUtilisateur::estUtilisateur($ancienArticle->getIdUtilisateur())){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)){
-            MessageFlash::ajouter("warning", "Email invalide, veuillez entrer une email valide.");
-            self::afficherFormulaireMiseAJour();
+        $article = new Article($_REQUEST["id_article"],$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
+
+        $sqlreturn = (new ArticleRepository())->mettreAJour($article);
+
+        if ($sqlreturn == "22001"){
+            MessageFlash::ajouter("warning", "Une information trop longue à été entrée, veuillez la raccourcir.");
+            self::afficherFormulaireCreation();
+            return;
+        } else if ($sqlreturn != "") {
+            MessageFlash::ajouter("warning", "L'article n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
+            self::afficherListe();
             return;
         }
 
-        if (explode('@', $_REQUEST["email"])[1] != "yopmail.com"){
-            MessageFlash::ajouter("warning", "Seuls les emails 'yopmail.com' sont autorisées pour le moment.");
-            self::afficherFormulaireMiseAJour();
-            return;
-        }
-
-        if (ConnexionArticle::estAdministrateur()){
-            $estAdmin = isset($_REQUEST["estAdmin"]);
-        } else {
-            if (isset($_REQUEST["estAdmin"])){
-                ControleurGenerique::alerterAccesNonAutorise();
-                self::afficherListe();
-                return;
-            }
-            $estAdmin = false;
-        }
-
-        if (MotDePasse::verifier($_REQUEST["oldPassword"],(new ArticleRepository())->recupererParClePrimaire($_REQUEST["login"])->getPassword())){
-            $article = (new ArticleRepository())->recupererParClePrimaire($_REQUEST["login"]);
-            if (isset($_REQUEST["password"])){
-                if ($_REQUEST["password"] == $_REQUEST["passwordConfirmation"]){
-                    $article->setPassword($_REQUEST["password"]);
-                } else {
-                    MessageFlash::ajouter("warning", "Les mots de passes sont différents");
-                    self::afficherFormulaireMiseAJour();
-                    return;
-                }
-            } else {
-                $article->setPassword($_REQUEST["oldPassword"]);
-            }
-        } else {
-            MessageFlash::ajouter("warning", "Mot de passse incorrecte !");
-            self::afficherFormulaireMiseAJour();
-            return;
-        }
-
-        $article->setNom($_REQUEST["nom"]);
-        $article->setPrenom($_REQUEST["prenom"]);
-        $article->setEstAdmin($estAdmin);
-
-        if ($article->getEmail() == $_REQUEST["email"]){
-            $article->setEmail($_REQUEST["email"]);
-            $article->setEmailAValider("");
-            $article->setNonce("");
-            (new ArticleRepository())->mettreAJour($article);
-            MessageFlash::ajouter("success", "L'article avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été mise à jour");
-        } else {
-            $article->setEmail("");
-            $article->setEmailAValider($_REQUEST["email"]);
-            $article->setNonce(MotDePasse::genererChaineAleatoire());
-            if (VerificationEmail::envoiEmailValidation($article)){
-                (new ArticleRepository())->mettreAJour($article);
-                MessageFlash::ajouter("success", "L'article avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été mise à jour, un mail de validation a été envoyé pour confirmer la nouvelle email. <a href='http://".explode('@', $article->getEmailAValider())[0].".yopmail.com'>Consultez la boite mail</a>");
-                self::deconnecter();
-                return;
-            } else {
-                MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyée, veuillez réessayer plus tard.");
-            }
-        }
+        MessageFlash::ajouter("success","L'article a bien été mis à jour.");
         self::afficherListe();
     }
 
     public static function supprimer() : void {
-        if (!isset($_REQUEST["login"])){
+        if (!isset($_REQUEST["id_article"])){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        if (!ConnexionArticle::estArticle($_REQUEST["login"]) and !ConnexionArticle::estAdministrateur()){
+        $article = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"],0);
+
+        if (!ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        (new ArticleRepository())->supprimerParClePrimaire($_REQUEST["login"]);
-        MessageFlash::ajouter("success", "L'article avec le login ".htmlspecialchars($_REQUEST["login"])." a bien été supprimé");
-        if (ConnexionArticle::estArticle($_REQUEST["login"])){
-            self::deconnecter();
-        } else {
-            self::afficherListe();
-        }
-    }
+        $sqlreturn = (new ArticleRepository())->supprimerParUnique($_REQUEST["id_article"],0);
 
-    public static function connecter() : void {
-        if (!isset($_REQUEST["login"]) or !isset($_REQUEST["password"])){
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
-            return;
-        }
-
-        $article = (new ArticleRepository())->recupererParClePrimaire($_REQUEST["login"]);
-        if ($article == null){
-            MessageFlash::ajouter("warning", "L'article n'existe pas");
-            self::formulaireConnexion();
-        } else {
-            if (!VerificationEmail::aValideEmail($article)){
-                MessageFlash::ajouter("warning", "Veuillez confirmer votre email pour utiliser votre compte.");
-                self::formulaireConnexion();
-                return;
-            }
-            if (MotDePasse::verifier($_REQUEST["password"],$article->getPassword())){
-                ConnexionArticle::connecter($_REQUEST["login"]);
-                MessageFlash::ajouter("success", "Connexion réussie !");
-                self::afficherListe();
-            } else {
-                MessageFlash::ajouter("warning", "Mot de passe incorrect !");
-                self::formulaireConnexion();
-            }
-        }
-    }
-
-    public static function deconnecter() : void {
-        ConnexionArticle::deconnecter();
-        MessageFlash::ajouter("success", "Déonnexion effectuée");
-        self::afficherListe();
-    }
-
-    public static function validerEmail() : void {
-        if (!isset($_REQUEST["login"]) or !isset($_REQUEST["nonce"])){
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
-            return;
-        }
-        if (VerificationEmail::traiterEmailValidation($_REQUEST["login"],$_REQUEST["nonce"])){
-            ConnexionArticle::deconnecter();
-            MessageFlash::ajouter("success", "Email confirmée, vérification de compte validée.");
+        if ($sqlreturn == "") {
+            MessageFlash::ajouter("warning", "L'article n'as pas pu être supprimé (".$sqlreturn."), veuillez réessayer plus tard.");
             self::afficherListe();
         } else {
-            MessageFlash::ajouter("warning", "Email non confirmée, lien de confirmation invalide !");
+            MessageFlash::ajouter("success","L'article a bien été supprimé.");
             self::afficherListe();
         }
     }
