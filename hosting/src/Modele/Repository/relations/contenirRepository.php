@@ -6,27 +6,27 @@ use App\Ecommerce\Modele\DataObject\relations\dansPanier;
 use App\Ecommerce\Modele\Repository\AbstractRepository;
 use App\Ecommerce\Modele\Repository\ArticleRepository;
 
-class dansPanierRepository extends AbstractRepository{
-    private string $nomTable = "dansPanier";
+class contenirRepository extends AbstractRepository{
+    private string $nomTable = "contenir";
 
     private array $uniques = array();
 
     private array $nomsColonnes = array(
-        "id_utilisateur",
+        "id_wishlist",
         "id_article"
     );
 
-    public function recupererPanierUtilisateur(string|int $id_utilisateur): array {
+    public function recupererArticlesWishlist(string|int $id_wishlist): array {
         $sql = "SELECT *
                 from Article
                 WHERE id_article in (
                     SELECT id_article
-                    FROM dansPanier
-                    WHERE id_utilisateur = :id_utilisateur
+                    FROM contenir
+                    WHERE id_wishlist = :id_wishlist
                 )";
         $pdoStatement = dataBase::getPdo()->prepare($sql);
         $values = array(
-            "id_utilisateur" => $id_utilisateur
+            "id_wishlist" => $id_wishlist
         );
         $pdoStatement->execute($values);
         $AbstractDataObject = [];
@@ -47,6 +47,6 @@ class dansPanierRepository extends AbstractRepository{
     }
 
     protected function construireDepuisTableau(array $objetFormatTableau,bool $raw) : dansPanier {
-        return new dansPanier($objetFormatTableau["id_utilisateur"],$objetFormatTableau["id_article"],$raw);
+        return new dansPanier($objetFormatTableau["id_article"],$objetFormatTableau["id_wishlist"],$raw);
     }
 }
