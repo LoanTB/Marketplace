@@ -48,6 +48,12 @@ class ControleurArticle extends ControleurGenerique {
     }
 
     public static function afficherFormulaireCreation() : void {
+        if (!ConnexionUtilisateur::estConnecte()) {
+            ControleurGenerique::alerterAccesNonAutorise();
+            ControleurArticle::afficherListe();
+            return;
+        }
+
         self::afficherVue("vueGenerale.php",[
             "pagetitle" => "Formulaire création articles",
             "cheminVueBody" => "article/formulaireCreation.php"
