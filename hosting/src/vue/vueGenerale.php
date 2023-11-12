@@ -1,6 +1,13 @@
 <?php
 use \App\Ecommerce\Lib\MessageFlash;
 use \App\Ecommerce\Lib\ConnexionUtilisateur;
+use \App\Ecommerce\Modele\Repository\UtilisateurRepository;
+use \App\Ecommerce\Modele\DataObject\Utilisateur;
+
+
+if (ConnexionUtilisateur::estConnecte()) {
+    $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisateur::getIdUtilisateurConnecte(), 0);
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,13 +30,7 @@ use \App\Ecommerce\Lib\ConnexionUtilisateur;
             <li class="menubutton"><a href="controleurFrontal.php?action=afficherListe&controleur=article"><div class="svg cart-icon"></div>Articles</a></li>
             <li class="menubutton"><a href="controleurFrontal.php?action=formulairePreference"><div class="svg favorite-icon"></div>Favoris</a></li>
             <li class="menubutton" onclick="triggerAccountMenu()"><a href="#"><div class="svg account-icon"></div>
-            <?php
-            if (ConnexionUtilisateur::estConnecte()) {
-                echo ConnexionUtilisateur::getIdUtilisateurConnecte();
-            } else {
-                echo 'Compte';
-            }
-            ?>
+            <?php if(ConnexionUtilisateur::estConnecte()){echo $utilisateur->getLogin();}else{echo 'Compte';}?>
             </a></li>
         </ul>
     </nav>
@@ -37,7 +38,7 @@ use \App\Ecommerce\Lib\ConnexionUtilisateur;
         <ul>
             <?php
             if (ConnexionUtilisateur::estConnecte()) {
-                echo '<li class="profilepicture"><img alt="Profile picture" src="../ressources/img/unknown.png">'.ConnexionUtilisateur::getIdUtilisateurConnecte().'</li>
+                echo '<li class="profilepicture"><img alt="Profile picture" src="../ressources/img/unknown.png">'.$utilisateur->getNom().' '.$utilisateur->getPrenom().'</li>
                 <li class="account-menuitem top"><a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&id_utilisateur='.ConnexionUtilisateur::getIdUtilisateurConnecte().'"><div class="svg settings-icon"></div><div class="account-buttons">Préférences</div></a></li><li class="separator"></li>
                 <li class="account-menuitem bottom"><a href="controleurFrontal.php?action=deconnecter&controleur=utilisateur"><div class="svg logout-icon"></div><div class="account-buttons">Déconnexion</div></a></li>';
             } else {
