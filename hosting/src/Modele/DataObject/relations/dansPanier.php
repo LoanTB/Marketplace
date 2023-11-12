@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Ecommerce\Modele\DataObject\relations;
 
 use App\Ecommerce\Modele\DataObject\AbstractDataObject;
