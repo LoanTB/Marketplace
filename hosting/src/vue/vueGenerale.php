@@ -10,6 +10,8 @@ use \App\Ecommerce\Lib\ConnexionUtilisateur;
     <link href="./../ressources/css/svg_assets.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title><?php /* @var $pagetitle */ echo $pagetitle; ?></title>
+
+    <script src="./../ressources/js/menutrigger.js"></script>
 </head>
 <body>
 <header>
@@ -20,18 +22,32 @@ use \App\Ecommerce\Lib\ConnexionUtilisateur;
             <li class="searchbar"><label id="search"><input placeholder="Rechercher un article"><div class="svg mag-icon"></div></label></li>
             <li class="menubutton"><a href="controleurFrontal.php?action=afficherListe&controleur=article"><div class="svg cart-icon"></div>Articles</a></li>
             <li class="menubutton"><a href="controleurFrontal.php?action=formulairePreference"><div class="svg favorite-icon"></div>Favoris</a></li>
-            <li class="menubutton"><a href="
+            <li class="menubutton" onclick="triggerAccountMenu()"><a href="#"><div class="svg account-icon"></div>
             <?php
-            if (ConnexionUtilisateur::estConnecte()){
-                echo 'controleurFrontal.php?action=afficherDetail&controleur=utilisateur&id_utilisateur='.ConnexionUtilisateur::getIdUtilisateurConnecte().'"><div class="svg account-icon"></div>'.ConnexionUtilisateur::getIdUtilisateurConnecte().'</a></li>';
-                // TODO: Correctement implémenter le bouton de déconnexion
-                echo '<li style="display: none"><a href="controleurFrontal.php?action=deconnecter&controleur=utilisateur"><img src="./../ressources/img/sortir.png" alt="déconnexion"></a></li>';
+            if (ConnexionUtilisateur::estConnecte()) {
+                echo ConnexionUtilisateur::getIdUtilisateurConnecte();
             } else {
-                echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur"><div class="svg account-icon"></div>Compte</a></li>';
+                echo 'Compte';
             }
             ?>
+            </a></li>
         </ul>
     </nav>
+    <div id="accountcontrol">
+        <ul>
+            <?php
+            if (ConnexionUtilisateur::estConnecte()) {
+                echo '<li class="profilepicture"><img alt="Profile picture" src="../ressources/img/unknown.png">'.ConnexionUtilisateur::getIdUtilisateurConnecte().'</li>
+                <li class="account-menuitem top"><a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&id_utilisateur='.ConnexionUtilisateur::getIdUtilisateurConnecte().'"><div class="svg settings-icon"></div><div class="account-buttons">Préférences</div></a></li><li class="separator"></li>
+                <li class="account-menuitem bottom"><a href="controleurFrontal.php?action=deconnecter&controleur=utilisateur"><div class="svg logout-icon"></div><div class="account-buttons">Déconnexion</div></a></li>';
+            } else {
+                echo '<li class="profilepicture"><img alt="Profile picture" src="../ressources/img/unknown.png">Non connecté</li>
+                <li class="account-menuitem top bottom"><a href="controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur"><div class="svg key-icon"></div><div class="account-buttons">Connexion</div></a></li>';
+            }
+            ?>
+            <li class="instanceinfo">Version 1.1.0</li>
+        </ul>
+    </div>
 </header>
 <main>
     <?php
@@ -76,7 +92,7 @@ use \App\Ecommerce\Lib\ConnexionUtilisateur;
 
                 </div>
                 <div id="copyright">
-                    <p>Copyleft &copy; 2023 All Wrongs Reserved</p>
+                    <p>Copyleft &#127279; 2023 All Wrongs Reserved</p>
                 </div>
                 </footer>
 </body>

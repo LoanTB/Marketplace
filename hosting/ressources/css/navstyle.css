@@ -9,6 +9,7 @@
     --var-box-shadow-strong: rgba(0,0,0,0.75);
     --var-background-color: rgba(255, 255, 255, 0.75);
     --var-searchbar-hover: var(--var-background-color);
+    --var-accountmenu-bg: var(--var-background-color);
     --var-footer-bg-color: #3b3b42;
     --var-footer-text-color: #a8a8a8;
     --var-searchbar-color: #eaeaea;
@@ -28,6 +29,7 @@
         --var-searchbar-hover: rgb(94, 94, 94);
         --var-searchbar-color: #494949;
         --var-add-button: #13274f;
+        --var-accountmenu-bg: rgba(21, 21, 21, 0.9);
         --var-add-hover: #1a376c;
         --var-text: #ffffff;
     }
@@ -55,6 +57,11 @@ nav ul, .footer, #copyright, main {
 /** ======================================= **/
 
 /** ==== NAVBAR ==== **/
+header {
+    position: sticky;
+    top: 0;
+}
+
 nav ul {
     list-style: none;
     padding-left: 0;
@@ -244,4 +251,105 @@ footer h6 {
     border-top-style: dotted;
     border-top-width: 0.5px;
     margin-top: 30px;
+}
+
+/** === ACCOUNT MENU === **/
+#accountcontrol {
+    display: none;
+    opacity: 0;
+    position: fixed;
+    background-color: var(--var-accountmenu-bg);
+    color: var(--var-text);
+    padding: 0;
+    right: calc(50% - 500px);
+    top: 5px;
+    box-shadow: 0px 0px 11px 1px var(--var-box-shadow-light);
+    border-radius: 8px;
+    min-width: 220px;
+    transition: top 0.25s cubic-bezier(.18,.89,.32,1.28), opacity 0.25s;
+    backdrop-filter: blur(8px);
+}
+@media screen and (max-width: 1000px) {
+    #accountcontrol {
+        right: 5px;
+    }
+}
+
+.account-buttons {
+    margin-left: 5px;
+    margin-right: auto;
+}
+
+#accountcontrol ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 0;
+    margin: 5px;
+    align-items: center;
+}
+
+.profilepicture {
+    flex-direction: column;
+    margin: 15px;
+    font-family: 'Google Sans';
+}
+
+.account-menuitem a .svg {
+    margin-right: 5px;
+    margin-left: auto;
+}
+
+.account-menuitem a {
+    display: flex;
+    flex-direction: row;
+    line-height: 2;
+    gap: 10px;
+    padding: 3px 20px;
+    background-color: var(--var-searchbar-color);
+    width: 100%;
+    transition: background-color 0.1s;
+    text-decoration: none;
+    color: var(--var-text);
+}
+
+.account-menuitem a:hover {
+    background-color: rgb(88, 88, 95);
+}
+
+.account-menuitem.top a {
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+.account-menuitem.bottom a {
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+#accountcontrol li {
+    display: flex;
+    text-align: center;
+    width: 100%;
+}
+
+#accountcontrol img {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.separator {
+    border-top: #000000 1px dashed;
+    height: 0px;
+    background-color: #3b3b42;
+}
+
+.instanceinfo {
+    flex-direction: column;
+    font-size: 10px;
+    margin-top: 5px;
 }
