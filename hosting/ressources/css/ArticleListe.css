@@ -1,0 +1,135 @@
+:root {
+    --var-article-bg: var(--var-accountmenu-bg);
+    --var-article-hover: var(--var-background-color);
+    --var-article-focus: var(--var-background-color);
+    --var-article-border: #ddd;
+}
+
+main, #articleList {
+    flex-direction: column;
+    display: flex;
+    gap: 20px;
+}
+main > h1, main > h3 {
+    margin: 0;
+}
+main > h1 {
+    margin-top: 20px;
+}
+main > h3 {
+    color: var(--var-text-light);
+    font-style: italic;
+    margin-bottom: 10px;
+}
+#articleList {
+    flex-flow: wrap-reverse;
+}
+#articleList > .card {
+    flex: 1;
+    min-width: 200px;
+    max-width: 100%;
+}
+.articleView, .thumbnail {
+    border-radius: 10px;
+}
+
+.articleView {
+    width: 100%;
+    background-color: var(--var-article-bg);
+    padding-bottom: 5px;
+    transition: box-shadow 0.25s, transform 0.25s, background-color 0.25s;
+    
+    @media (prefers-color-scheme: light) {
+        border: var(--var-article-border) solid 0.25px;
+    }
+}
+.articleView:hover {
+    box-shadow: var(--var-box-shadow-light) 0 1px 7px;
+    transform: scale(1.01);
+    background-color: var(--var-article-hover);
+}
+
+.articleView:active {
+    box-shadow: var(--var-box-shadow-light) 0 10px 20px;
+    transform: scale(0.99);
+}
+
+.articleDesc {
+    margin: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.articleDesc h2 {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    color: var(--var-text);
+}
+.articleDesc div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.articleDesc div > * {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: var(--var-text-light);
+}
+.articleDesc h2, .articleDesc div > h4 {
+    overflow: hidden;
+    white-space: nowrap;
+}
+.articleDesc div > h4 {
+    text-overflow: ellipsis;
+}
+
+.thumbnail {
+    height: 150px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.text-overflow-anim {
+    width: fit-content;
+    -webkit-animation:linear marqueelike 17s infinite ;
+    -moz-animation:linear marqueelike 17s infinite ;
+    -o-animation:linear marqueelike 17s infinite ;
+    animation:linear marqueelike 17s infinite ;
+}
+@keyframes marqueelike {
+    0% {transform: translateX(0);}
+    10% {transform: translateX(0);}
+    50% {transform: translateX(-100%);}
+    50.01% {transform: translateX(100%);}
+}
+.editOptions {
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 5px;
+    position: absolute;
+}
+.editOptions > a .svg {
+    margin: 5px;
+    width: 20px;
+    height: 20px;
+    transition: transform 0.1s, background-color 0.1s;
+}
+.editOptions a .svg:hover {
+    transform: scale(1.15);
+}
+.editOptions a .edit-icon-fill:hover {
+    transform: scale(1.15) rotate(-25deg);
+}
+.editOptions a .delete-icon-fill:hover {
+    background-color: red;
+}
+.editOptions a .edit-icon-fill:hover {
+    background-color: lightseagreen;
+}
+.articleView:has(.delete-icon-fill:hover) {
+    background-color: rgba(255, 0, 0, 0.25);
+}
+.articleView:has(.edit-icon-fill:hover) {
+    background-color: rgba(32, 178, 171, 0.25);
+}

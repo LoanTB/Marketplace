@@ -17,10 +17,12 @@
     --var-add-button: #83aff3;
     --var-add-hover: #477dd2;
     --var-text: #000000;
+    --var-text-light: rgb(64, 64, 64);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
+        --var-text-light: rgb(189, 189, 189);
         --var-icon-color: white;
         --var-box-shadow-med: rgba(255, 255, 255, 0.5);
         --var-box-shadow-light: rgba(255, 255, 255,0.25);
@@ -53,6 +55,9 @@ nav ul, .footer, #copyright, main {
     max-width: var(--var-max-page-width);
     width: 100%;
     margin: auto;
+}
+a {
+    text-decoration: none;
 }
 /** ======================================= **/
 

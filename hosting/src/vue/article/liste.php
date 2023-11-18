@@ -1,12 +1,47 @@
 <?php
 use \App\Ecommerce\Lib\ConnexionUtilisateur;
+use \App\Ecommerce\Modele\Repository\UtilisateurRepository;
+use \App\Ecommerce\Modele\DataObject\Utilisateur;
 /* @var $articles */
+echo '<link rel="stylesheet" href="../ressources/css/ArticleListe.css">';
+
+echo '<h1>Articles mis en vente</h1>
+    <h3>Parcourez la liste des articles mis en ligne sur la plateforme</h3>
+    <div id="articleList">';
+
 foreach ($articles as $article) {
-    echo '<p> Article '.htmlspecialchars($article->getNom()).' : '.htmlspecialchars($article->getDescription()).' coute '.htmlspecialchars($article->getPrix()).' avec comme identifiant <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '">' . htmlspecialchars($article->getIdArticle()) . '</a>';
-    if (ConnexionUtilisateur::estAdministrateur()) {
-        echo ' (<a href="controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&login=' . rawurlencode($article->getIdArticle()) . '">modifier</a><a href="controleurFrontal.php?controleur=article&action=supprimer&login=' . rawurlencode($article->getIdArticle()) . '">supprimer</a>)</p>';
+    if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
+        echo '<div class="card">';
     } else {
-        echo '</p>';
+        echo '<a class="card" href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '">';
+    }
+    echo '<div class="articleView">';
+
+    if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
+        echo '<div class="editOptions">
+        <a href="controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&login=' . rawurlencode($article->getIdArticle()) . '"><div class="svg edit-icon-fill"></div></a>
+        <a href="controleurFrontal.php?controleur=article&action=supprimer&login=' . rawurlencode($article->getIdArticle()) . '"><div class="svg delete-icon-fill"></div></a>
+        </div>
+        <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '">';
+    }
+    /* Remplacer par un appel à l'image illustrative du produit */
+    echo '<div class="thumbnail" style="background-image: url(' . '\'https://picsum.photos/300/200\'' . ')"></div>';
+
+    echo '<div class="articleDesc">
+    <h2 class="overflowable">' . htmlspecialchars($article->getNom()) . '
+    </h2><div><h4>';
+    $userEntity = (new UtilisateurRepository)->recupererParUnique($article->getIdUtilisateur(), 0);
+    echo $userEntity->getPrenom() . ' ' . $userEntity->getNom();
+    echo '</h4>
+    <p class="price">' . htmlspecialchars($article->getPrix()).' €
+    </p></div></div>';
+
+    if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
+        echo '</a></div>';
+    } else {
+        echo '</div></a>';
     }
 }
-echo '<p><a href="controleurFrontal.php?controleur=article&action=afficherFormulaireCreation">Créer un article</a></p>';
+echo '</div><script src="../ressources/js/overflowtrigger.js"></script>';
+
+/* Inutilisé : Description du produit -> htmlspecialchars($article->getDescription()) */
