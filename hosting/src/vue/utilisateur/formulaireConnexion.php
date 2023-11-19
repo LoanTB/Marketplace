@@ -20,6 +20,6 @@
             </fieldset>
         </form>
         <p>Pas encore inscrit ?</p>
-        <a href="#">Créer un compte</a>
+        <a href="controleurFrontal.php?controleur=utilisateur&action=afficherFormulaireCreation">Créer un compte</a>
     </div>
 </div>
