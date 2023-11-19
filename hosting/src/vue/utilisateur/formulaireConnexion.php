@@ -1,18 +1,25 @@
-<form method="<?php if(\App\Ecommerce\Configuration\ConfigurationSite::getDebug()){echo "GET";}else{echo "POST";}?>" action="controleurFrontal.php">
-    <fieldset>
-        <legend>Formulaire connexion utilisateur :</legend>
-        <p>
-            <label for="login_id">Login</label> :
-            <input type="text" placeholder="pesco" name="login" id="login_id" required/>
-        </p>
-        <p>
-            <label for="password_id">Phrase de passe</label> :
-            <input type="password" value="" placeholder="" name="password" id="password_id" required>
-        </p>
-        <input type='hidden' name='action' value='connecter'>
-        <input type='hidden' name='controleur' value='utilisateur'>
-        <p>
-            <input type="submit" value="Envoyer" />
-        </p>
-    </fieldset>
-</form><?php
+<link href="../ressources/css/Login.css" rel="stylesheet">
+<div id="horizontalPane">
+    <div id="imageDiv">
+        <img src="../ressources/img/login.png">
+    </div>
+    <div id="loginForm">
+        <form method="<?php if(\App\Ecommerce\Configuration\ConfigurationSite::getDebug()){echo "GET";}else{echo "POST";}?>" action="controleurFrontal.php">
+            <h1>Connexion à votre compte</h1>
+            <fieldset>
+                <legend>Tirez le meilleur parti de FutureMarket en vous connectant à votre compte</legend>
+                <div class="entries">
+                    <input type="text" placeholder="Identifiant" name="login" id="login_id" required>
+                    <input type="password" value="" placeholder="Mot de passe" name="password" id="password_id" required>
+                    <input type="hidden" name="action" value="connecter">
+                    <input type="hidden" name="controleur" value="utilisateur">
+                </div>
+                <div>
+                    <input type="submit" value="Connexion">
+                </div>
+            </fieldset>
+        </form>
+        <p>Pas encore inscrit ?</p>
+        <a href="#">Créer un compte</a>
+    </div>
+</div>
