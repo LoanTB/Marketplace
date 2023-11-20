@@ -45,4 +45,34 @@ class ControleurPanier extends ControleurGenerique {
             self::afficherListe();
         }
     }
+
+    public static function supprimerDuPanier(): void {
+        if (!isset($_REQUEST["id_article"])) {
+            ControleurGenerique::alerterAccesNonAutorise();
+            self::afficherListe();
+            return;
+        }
+
+        if (!ConnexionUtilisateur::estConnecte()) {
+            ControleurGenerique::alerterAccesNonAutorise();
+            self::afficherListe();
+            return;
+        }
+
+        if ((new dansPanierRepository())->recupererParColonne($_REQUEST["id_article"],1) == null) {
+            ControleurGenerique::alerterAccesNonAutorise();
+            self::afficherListe();
+            return;
+        }
+
+        $sqlreturn = (new dansPanierRepository())->supprimerParColonne($_REQUEST["id_article"],1);
+
+        if ($sqlreturn == "") {
+            MessageFlash::ajouter("success", "L'article a bien été supprimé du panier.");
+            self::afficherListe();
+        } else {
+            MessageFlash::ajouter("warning", "L'article n'as pas pu être supprimer du panier (".$sqlreturn."), veuillez réessayer plus tard.");
+            self::afficherListe();
+        }
+    }
 }
