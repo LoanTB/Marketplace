@@ -37,7 +37,7 @@ foreach ($articles as $article) {
     </p></div></div>';
 
     if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
-        echo '</a></div>';
+        echo '</a></div></div>';
     } else {
         echo '</div></a>';
     }
