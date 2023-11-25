@@ -1,0 +1,212 @@
+:root {
+    --var-sidebar-bg-color: #f0f0f0;
+    --var-fav-button: #f03eab;
+    --var-fav-border: #f03eab8a;
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --var-sidebar-bg-color: #3a3a3a;
+        --var-fav-button: #a01d6c;
+        --var-fav-border: #a01d6c8a;
+    }
+}
+
+#articleTitle {
+  grid-row: 1;
+  grid-column: 1;
+  margin: auto 0;
+}
+#picturesZone {
+  grid-row: 2;
+  grid-column: 1;
+}
+#articleDescription {
+  grid-row: 3;
+  grid-column: 1;
+}
+#sidebarPrice {
+  grid-row: 1;
+  grid-column: 2;
+  flex-direction: row;
+}
+#sidebarAuthor {
+  grid-row: 2;
+  grid-column: 2;
+}
+
+#mainClass {
+  display: grid;
+  gap: 20px;
+}
+#authorProps {
+  display: flex;
+  gap: 20px;
+}
+#price {
+  font-size: 30px;
+  margin: 20px 5px;
+  text-align: center;
+  flex: 1;
+}
+#authorProps > img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+#authorProps {
+  align-items: center;
+  gap: 10px;
+  margin: 10px 5px;
+}
+.annonceProps {
+  margin-top: auto;
+  font-size: 14px;
+}
+.annonceProps > p {
+  margin: 5px;
+  text-align: center;
+}
+#authorDesc > * {
+  margin: 0;
+}
+#authorDesc > p {
+  font-size: 15px;
+}
+#authorDesc > h3 {
+  font-size: 22px;
+}
+.sidebarItem {
+    width: 320px;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    height: auto;
+    border-radius: 10px;
+    background-color: var(--var-sidebar-bg-color);
+    padding: 10px;
+}
+.CTAbuttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+}
+.CTAbuttons > a {
+    padding: 5px;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.25s;
+}
+#picturesZone {
+  height: 400px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+#picturesZone > :first-child {
+  grid-column: 1;
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+#picturesZone > :nth-child(2) {
+  grid-column: 2;
+  grid-row: 1;
+}
+#picturesZone > :last-child {
+  grid-column: 2;
+  grid-row: 2;
+}
+#picturesZone > * {
+  border-radius: 8px;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+
+/* === CUSTOM BUTTON PROPS === */
+#addToCart {
+  justify-content: center;
+    padding: 10px 0;
+    border-radius: 8px;
+    width: 100%;
+    color: white;
+    font-family: 'Google Sans Medium';
+    border: 0;
+    background-color: var(--var-cta-button);
+    box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+    letter-spacing: 1.25px;
+    text-transform: uppercase;
+    font-size: 15px;
+    transition: all .5s ease;
+   }
+   
+   #addToCart:hover {
+    letter-spacing: 1.75px;
+    background-color: var(--var-cta-hover);
+    color: hsl(0, 0%, 100%);
+    box-shadow: var(--var-cta-hover) 0px 7px 29px 0px;
+   }
+   
+   #addToCart:active {
+    letter-spacing: 1.75px;
+    background-color: var(--var-cta-hover);
+    color: hsl(0, 0%, 100%);
+    box-shadow: var(--var-cta-hover) 0px 0px 0px 0px;
+    transform: translateY(10px);
+    transition: 100ms;
+   }
+
+/* === FAVORITE PROPS === */
+.animated-button {
+  position: relative;
+  display: inline-block;
+  padding: 12px 0;
+  width: 100%;
+  border: none;
+  font-size: 16px;
+  background-color: inherit;
+  border-radius: 10px;
+  font-weight: 600;
+  color: var(--var-box-shadow-med);
+  box-shadow: 0 0 0 2px var(--var-box-shadow-light);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.animated-button span:last-child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background-color: var(--var-fav-button);
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.animated-button span:first-child {
+  position: relative;
+  z-index: 1;
+}
+
+.animated-button:hover {
+  box-shadow: 0 0 0 5px var(--var-fav-border);
+  color: #ffffff;
+}
+
+.animated-button:active {
+  scale: 0.95;
+}
+
+.animated-button:hover span:last-child {
+  width: 100%;
+  height: 250px;
+  opacity: 1;
+}
