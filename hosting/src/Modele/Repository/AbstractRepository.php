@@ -105,6 +105,23 @@ abstract class AbstractRepository{
         return $this->recupererParUnique($uniqueValue, $uniqueIndex);
     }
 
+    public function supprimerParColonne(string|int $colonneValue, int $colonneIndex): string
+    {
+        $sql = /** @lang OracleSqlPlus */
+            "DELETE FROM {$this->getNomTable()} WHERE {$this->getNomsColonnes()[$colonneIndex]} = :{$this->getNomsColonnes()[$colonneIndex]}";
+        try {
+            $pdoStatement = dataBase::getPdo()->prepare($sql);
+            $values = array(
+                $this->getNomsColonnes()[$colonneIndex] => $colonneValue,
+            );
+            $pdoStatement->execute($values);
+            $pdoStatement->fetch();
+        } catch (PDOException $e) {
+            return $e->getCode();
+        }
+        return "";
+    }
+
     public function supprimerParUnique(string|int $uniqueValue,int $uniqueIndex) : string {
         $sql = /** @lang OracleSqlPlus */
             "DELETE FROM {$this->getNomTable()} WHERE {$this->getUniques()[$uniqueIndex]} = :{$this->getUniques()[$uniqueIndex]}";

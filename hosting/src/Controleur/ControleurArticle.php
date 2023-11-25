@@ -26,13 +26,13 @@ class ControleurArticle extends ControleurGenerique {
     }
 
     public static function afficherDetail() : void {
-        if ((new ArticleRepository())->requestContainsUnique()){
+        if (!((new ArticleRepository())->requestContainsUnique())){
             ControleurGenerique::alerterAccesNonAutorise();
             self::afficherListe();
             return;
         }
 
-        $article = (new ArticleRepository())->recupererParUnique($_REQUEST[(new ArticleRepository())->requestUniqueValue()],(new ArticleRepository())->requestUniqueIndice());
+        $article = (new ArticleRepository())->recupererParUniqueDansRequest();
         if ($article == null){
             MessageFlash::ajouter("warning", "Article innexistant");
             self::afficherListe();

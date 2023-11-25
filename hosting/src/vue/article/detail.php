@@ -1,12 +1,13 @@
 <?php
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
-/* @var $article */
+use App\Ecommerce\Lib\ConnexionUtilisateur;
+/* @var $article \App\Ecommerce\Modele\DataObject\Article */
 
 $userEntity = (new UtilisateurRepository)->recupererParUnique($article->getIdUtilisateur(), 0);
 echo '
 <div id="mainClass">
     <link rel="stylesheet" href="../ressources/css/ArticleDetail.css">
-    
+
     <h1 id="articleTitle">'.htmlspecialchars($article->getNom()).'</h1>
 
     <div id="picturesZone">
@@ -33,7 +34,15 @@ echo '
             </div>
         </div>
         <div class="CTAbuttons">
-            <a id="addToCart">Ajouter au panier</a>
+            <a id="addToCart" href="';
+
+if (ConnexionUtilisateur::estConnecte()) {
+	echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle()));
+} else {
+	echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur';
+}
+
+echo '">Ajouter au panier</a>
             <button class="animated-button">
                 <span>Ajouter aux favoris</span>
                 <span></span>
