@@ -18,6 +18,8 @@
     --var-add-hover: #477dd2;
     --var-text: #000000;
     --var-text-light: rgb(64, 64, 64);
+    --var-cta-button: #37b53e;
+    --var-cta-hover: #1c7721;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,6 +36,8 @@
         --var-accountmenu-bg: rgba(21, 21, 21, 0.9);
         --var-add-hover: #1a376c;
         --var-text: #ffffff;
+        --var-cta-button: #257228;
+        --var-cta-hover: rgb(43, 170, 49);
     }
 }
 
