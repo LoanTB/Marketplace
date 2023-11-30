@@ -27,8 +27,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
     public static function afficherDetail() : void {
         if (!(new UtilisateurRepository())->requestContainsUnique()){
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
@@ -73,8 +72,7 @@ class ControleurUtilisateur extends ControleurGenerique {
         $utilisateurRepository = new UtilisateurRepository();
         foreach ($utilisateurRepository->getNotNull() as $key){
             if (!isset($_REQUEST[$key])){
-                ControleurGenerique::alerterAccesNonAutorise();
-                self::afficherListe();
+                ControleurGenerique::accesNonAutorise();
                 return;
             } else {
                 $infos[$key] = $_REQUEST[$key];
@@ -86,8 +84,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             if (ConnexionUtilisateur::estAdministrateur()){
                 $infos["admin"] = true;
             } else {
-                ControleurGenerique::alerterAccesNonAutorise();
-                self::afficherListe();
+                ControleurGenerique::accesNonAutorise();
                 return;
             }
         } else {
@@ -167,8 +164,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
     public static function mettreAJour() : void {
         if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["login"]) and !ConnexionUtilisateur::estAdministrateur()){
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
@@ -176,8 +172,7 @@ class ControleurUtilisateur extends ControleurGenerique {
         $utilisateurRepository = new UtilisateurRepository();
         foreach ($utilisateurRepository->getNotNull() as $key){
             if (!isset($_REQUEST[$key])){
-                ControleurGenerique::alerterAccesNonAutorise();
-                self::afficherListe();
+                ControleurGenerique::accesNonAutorise();
                 return;
             } else {
                 $infos[$key] = $_REQUEST[$key];
@@ -190,8 +185,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             if (ConnexionUtilisateur::estAdministrateur()){
                 $infos["admin"] = true;
             } else {
-                ControleurGenerique::alerterAccesNonAutorise();
-                self::afficherListe();
+                ControleurGenerique::accesNonAutorise();
                 return;
             }
         } else {
@@ -292,8 +286,7 @@ class ControleurUtilisateur extends ControleurGenerique {
     public static function connecter() : void {
         $utilisateurRepository = new UtilisateurRepository();
         if (!isset($_REQUEST["login"]) or !isset($_REQUEST["password"])){
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
@@ -326,8 +319,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
     public static function validerEmail() : void {
         if (!isset($_REQUEST["login"]) or !isset($_REQUEST["nonce"])){
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
         if (VerificationEmail::traiterEmailValidation($_REQUEST["nonce"])){

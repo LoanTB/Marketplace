@@ -9,8 +9,7 @@ use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 class ControleurPanier extends ControleurGenerique {
     public static function afficherListe(): void {
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::alerterAccesNonAutorise();
-            ControleurArticle::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
@@ -23,14 +22,12 @@ class ControleurPanier extends ControleurGenerique {
 
     public static function ajouterAuPanier(): void {
         if (!isset($_REQUEST["id_article"])) {
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
@@ -48,20 +45,17 @@ class ControleurPanier extends ControleurGenerique {
 
     public static function supprimerDuPanier(): void {
         if (!isset($_REQUEST["id_article"])) {
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
         if ((new dansPanierRepository())->recupererParColonne($_REQUEST["id_article"],1) == null) {
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 

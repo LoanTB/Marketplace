@@ -31,7 +31,17 @@ class ControleurGenerique {
         ("App\\Ecommerce\\Controleur\\Controleur".ucfirst(PreferenceControleur::lire()))::afficherListe();
     }
 
-    public static function alerterAccesNonAutorise() : void {
+    public static function accesNonAutorise() : void {
         MessageFlash::ajouter("danger", "Tentative d'accès illégitime détectée. Cette action sera signalée.");
+        self::redirigerVersMain();
+    }
+
+    public static function redirigerVersMain() : void {
+        ControleurArticle::afficherListe();
+    }
+
+    public static function refresh() : void {
+        header("Location: ".$_SERVER['PHP_SELF']);
+        exit;
     }
 }

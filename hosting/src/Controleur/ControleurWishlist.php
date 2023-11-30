@@ -12,8 +12,7 @@ use App\Ecommerce\Modele\Repository\WishlistRepository;
 class ControleurWishlist extends ControleurGenerique {
     public static function afficherListe(): void {
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::alerterAccesNonAutorise();
-            ControleurArticle::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
@@ -26,8 +25,7 @@ class ControleurWishlist extends ControleurGenerique {
 
     public static function ajouterWishlist(): void {
         if (!isset($_REQUEST["nom"]) or !ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
@@ -56,14 +54,12 @@ class ControleurWishlist extends ControleurGenerique {
 
     public static function ajouterArticleDansWishlist(): void {
         if (!isset($_REQUEST["id_article"]) or !isset($_REQUEST["id_wishlist"]) or !ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
         if (!self::estEnregistrerDeWishlist($_REQUEST["id_wishlist"])){
-            ControleurGenerique::alerterAccesNonAutorise();
-            self::afficherListe();
+            ControleurGenerique::accesNonAutorise();
             return;
         }
 
