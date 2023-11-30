@@ -15,6 +15,7 @@ if (ConnexionUtilisateur::estConnecte()) {
     <link href="./../ressources/css/navstyle.css" rel="stylesheet">
     <link href="./../ressources/css/bootstrapAlerts.css" rel="stylesheet">
     <link href="./../ressources/css/svg_assets.css" rel="stylesheet">
+    <link href="./../ressources/css/animations.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title><?php /* @var $pagetitle */ echo $pagetitle; ?></title>
 

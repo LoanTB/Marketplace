@@ -1,8 +1,5 @@
 <link href="../ressources/css/Authentication.css" rel="stylesheet">
-<div id="horizontalPane">
-    <div id="imageDiv">
-        <img src="../ressources/img/register.gif">
-    </div>
+<div id="bgFilter">
     <div id="loginForm">
         <form method="<?php if(\App\Ecommerce\Configuration\ConfigurationSite::getDebug()){echo "GET";}else{echo "POST";}?>" action="controleurFrontal.php">
             <h1>Créer un compte</h1>
@@ -90,7 +87,9 @@
                 </div>
             </fieldset>
         </form>
-        <p>Déjà inscrit ?</p>
-        <a href="controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur">Créer un compte</a>
+        <div id="modalFooter">
+            <p>Déjà inscrit ?</p>
+            <a href="controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur">Se connecter</a>
+        </div>
     </div>
 </div>

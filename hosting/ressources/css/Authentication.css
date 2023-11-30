@@ -1,8 +1,35 @@
-#horizontalPane {
-    margin: 30px 0;
+:root {
+    --var-input-border: var(--var-box-shadow-light);
+    --var-separator-modal: rgba(155, 155, 155, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --var-input-border: transparent;
+        --var-separator-modal: rgba(100, 100, 100, 0.75);
+    }
+}
+
+main {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex: auto;
+    background-image: url("../img/register.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    flex-direction: column;
+}
+#bgFilter {
+    padding: 30px 0;
     display: flex;
     flex-direction: row;
     gap: 10px;
+    flex: 1;
+    backdrop-filter: brightness(70%);
 }
 #imageDiv {
     flex: 1;
@@ -10,7 +37,7 @@
     margin-bottom: 75px;
 }
 @media (max-width: 800px) {
-    #horizontalPane {
+    #bgFilter {
         flex-direction: column;
     }
     #imageDiv {
@@ -23,12 +50,15 @@
 }
 #loginForm {
     flex: 1;
-}
-form {
+    max-width: calc(var(--var-max-page-width) / 2);
     box-shadow: 0 2px 16px -3px var(--var-box-shadow-light);
     border-radius: 10px;
     padding: 20px;
+    background-color: var(--var-background-color);
+    backdrop-filter: blur(30px);
+    margin: auto;
 }
+
 fieldset {
     border: none;
     padding: 0;
@@ -44,11 +74,10 @@ fieldset {
 form input[type="text"], form input[type="password"], form input[type="email"], form select {
     background-color: var(--var-searchbar-color);
     padding: 8px;
-    border: none;
     border-radius: 8px;
     color: var(--var-text);
     font-family: 'Cera Pro';
-    border: transparent solid 0.5px;
+    border: var(--var-input-border) solid 0.5px;
     transition: box-shadow 0.25s, background-color 0.25s, border-color 0.25s;
 }
 form input[type="text"]:focus, form input[type="password"]:focus, form input[type="email"]:focus, form select:focus {
@@ -78,6 +107,12 @@ form input[type="submit"]:hover, form input[type="submit"]:focus {
     outline: none;
 }
 
+fieldset {
+    margin-bottom: 30px;
+}
+#modalFooter {
+    padding-top: 20px;
+}
 
 .entries, .entryFrame {
     margin-top: 20px;
@@ -91,8 +126,7 @@ form input[type="submit"]:hover, form input[type="submit"]:focus {
 #loginForm p {
     font-size: 15px;
     text-align: center;
-    margin-bottom: 10px;
-    margin-top: 30px;
+    margin: 0 0 10px 0;
 }
 #loginForm a {
     border: var(--var-cta-hover) solid 0.5px;
@@ -108,4 +142,10 @@ form input[type="submit"]:hover, form input[type="submit"]:focus {
     background-color: var(--var-cta-hover);
     color: white;
     outline: none;
+}
+
+#modalFooter {
+    width: 75%;
+    margin: auto;
+    border-top: solid var(--var-separator-modal) 0.5px;
 }
