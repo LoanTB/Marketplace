@@ -133,11 +133,10 @@ class ControleurArticle extends ControleurGenerique {
         $sqlreturn = (new ArticleRepository())->supprimerParUnique($_REQUEST["id_article"],0);
 
         if ($sqlreturn == "") {
-            MessageFlash::ajouter("warning", "L'article n'as pas pu être supprimé (".$sqlreturn."), veuillez réessayer plus tard.");
-            self::afficherListe();
-        } else {
             MessageFlash::ajouter("success","L'article a bien été supprimé.");
-            self::afficherListe();
+        } else {
+            MessageFlash::ajouter("warning", "L'article n'as pas pu être supprimé (".$sqlreturn."), veuillez réessayer plus tard.");
         }
+        ControleurGenerique::redirigerVersMain();
     }
 }

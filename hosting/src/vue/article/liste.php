@@ -19,8 +19,8 @@ foreach ($articles as $article) {
 
     if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
         echo '<div class="editOptions">
-        <a href="controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&login=' . rawurlencode($article->getIdArticle()) . '"><div class="svg edit-icon-fill"></div></a>
-        <a href="controleurFrontal.php?controleur=article&action=supprimer&login=' . rawurlencode($article->getIdArticle()) . '"><div class="svg delete-icon-fill"></div></a>
+        <a href="controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&id_article=' . rawurlencode($article->getIdArticle()) . '"><div class="svg edit-icon-fill"></div></a>
+        <a href="controleurFrontal.php?controleur=article&action=supprimer&id_article=' . rawurlencode($article->getIdArticle()) . '"><div class="svg delete-icon-fill"></div></a>
         </div>
         <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '">';
     }
