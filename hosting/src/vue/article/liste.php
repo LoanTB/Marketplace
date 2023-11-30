@@ -3,7 +3,8 @@ use \App\Ecommerce\Lib\ConnexionUtilisateur;
 use \App\Ecommerce\Modele\Repository\UtilisateurRepository;
 use \App\Ecommerce\Modele\DataObject\Utilisateur;
 /* @var $articles */
-echo '<link rel="stylesheet" href="../ressources/css/ArticleListe.css">';
+echo '<link rel="stylesheet" href="../ressources/css/ArticleListe.css">
+<link rel="stylesheet" href="../ressources/css/listAnimation.css">';
 
 echo '<h1>Articles mis en vente</h1>
     <h3>Parcourez la liste des articles mis en ligne sur la plateforme</h3>
@@ -11,9 +12,9 @@ echo '<h1>Articles mis en vente</h1>
 
 foreach ($articles as $article) {
     if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
-        echo '<div class="card">';
+        echo '<div class="card animationList">';
     } else {
-        echo '<a class="card" href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '">';
+        echo '<a class="card animationList" href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '">';
     }
     echo '<div class="articleView">';
 
