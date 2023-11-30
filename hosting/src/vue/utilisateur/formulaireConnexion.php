@@ -1,4 +1,4 @@
-<link href="../ressources/css/Login.css" rel="stylesheet">
+<link href="../ressources/css/Authentication.css" rel="stylesheet">
 <div id="horizontalPane">
     <div id="imageDiv">
         <img src="../ressources/img/login.png">
