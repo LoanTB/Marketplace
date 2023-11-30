@@ -33,7 +33,7 @@ class ControleurArticle extends ControleurGenerique {
 
         $article = (new ArticleRepository())->recupererParUniqueDansRequest();
         if ($article == null){
-            MessageFlash::ajouter("warning", "Article innexistant");
+            MessageFlash::ajouter("warning", "L'article demandé est introuvable !");
             self::afficherListe();
         } else {
             self::afficherVue("vueGenerale.php",[
@@ -124,6 +124,10 @@ class ControleurArticle extends ControleurGenerique {
         }
 
         $article = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"],0);
+        if (is_null($article)) {
+            MessageFlash::ajouter("warning", "L'article demandé est introuvable !");
+            self::afficherListe();
+        }
 
         if (!ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())){
             ControleurGenerique::accesNonAutorise();

@@ -38,11 +38,14 @@ main > h3 {
     background-color: var(--var-article-bg);
     padding-bottom: 5px;
     transition: box-shadow 0.25s, transform 0.25s, background-color 0.25s;
-    
-    @media (prefers-color-scheme: light) {
+}
+
+@media (prefers-color-scheme: light) {
+    .articleView {
         border: var(--var-article-border) solid 0.25px;
     }
 }
+
 .articleView:hover {
     box-shadow: var(--var-box-shadow-light) 0 1px 7px;
     transform: scale(1.01);
