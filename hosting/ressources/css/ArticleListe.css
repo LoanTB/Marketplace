@@ -133,3 +133,6 @@ main > h3 {
 .articleView:has(.edit-icon-fill:hover) {
     background-color: rgba(32, 178, 171, 0.25);
 }
+.price {
+    min-width: fit-content;
+}
