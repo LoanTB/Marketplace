@@ -16,7 +16,7 @@ class ControleurWishlist extends ControleurGenerique {
             return;
         }
 
-        self::afficherVue("vueGenerale.php", [
+        self::afficherNouvelleVue("vueGenerale.php", [
             "pagetitle" => "Wishlists",
             "cheminVueBody" => "wishlist/liste.php",
             "wishlists" => (new enregistrerRepository())->recupererWishlistsUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte())

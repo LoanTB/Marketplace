@@ -56,6 +56,6 @@ echo '">Ajouter au panier</a>
 </div>
 ';
 echo "<a href='controleurFrontal.php?controleur=commenter&action=ajouterCommentaire&id_article=".$article->getIdArticle()."&titre=LE DEV A PAS ENCORE FAIT SON BOULOT&note=0.25&texte=Il faut travailler PLUS ENCORE PLUS'> Ajouter le commentaire LE DEV A PAS ENCORE FAIT SON BOULOT 25% content avec comme texte 'Il faut travailler PLUS ENCORE PLUS' !</a>";
-foreach (\App\Ecommerce\Controleur\ControleurCommenter::recupererListeCommentaires() as $commentaire){
+foreach (\App\Ecommerce\Controleur\ControleurCommenter::recupererListeCommentaires($article->getIdArticle()) as $commentaire){
     echo "<p>".$commentaire->getTitre()." [".($commentaire->getNote()*5)."/5] : ".$commentaire->getTexte()." </p>";
 }
