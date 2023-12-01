@@ -3,8 +3,8 @@ namespace App\Ecommerce\Controleur;
 
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
-use App\Ecommerce\Modele\DataObject\relations\Commenter;
-use App\Ecommerce\Modele\Repository\relations\CommenterRepository;
+use App\Ecommerce\Modele\DataObject\Commenter;
+use App\Ecommerce\Modele\Repository\CommenterRepository;
 
 class ControleurCommenter extends ControleurGenerique {
     public static function recupererListeCommentaires(): array {
