@@ -5,18 +5,18 @@
     --var-article-border: #ddd;
 }
 
-main, #articleList {
+main, #articleList, #enteteListe {
     flex-direction: column;
     display: flex;
     gap: 20px;
 }
-main > h1, main > h3 {
+#enteteListe > h1, #enteteListe > h3 {
     margin: 0;
 }
-main > h1 {
+#enteteListe > h1 {
     margin-top: 20px;
 }
-main > h3 {
+#enteteListe > h3 {
     color: var(--var-text-light);
     font-style: italic;
     margin-bottom: 10px;

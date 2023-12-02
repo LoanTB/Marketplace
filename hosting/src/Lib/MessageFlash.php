@@ -8,9 +8,9 @@ class MessageFlash {
     private static string $cleFlash = "_messagesFlash";
 
     // $type parmi "success", "info", "warning" ou "danger"
-    public static function ajouter(string $type, string $message) : void {
+    public static function ajouter(string $type, string $message, string $additionalContent = "") : void {
         $values = self::lireTousMessages();
-        $values[] = '<div class="alert alert-'.$type.' popup-anim">'.$message.'</div>';
+        $values[] = '<div class="alert alert-'.$type.' popup-anim"><div>'.$message.'</div>'.$additionalContent.'</div>';
         Session::getInstance()->enregistrer(MessageFlash::$cleFlash,$values);
     }
 

@@ -5,8 +5,8 @@ use \App\Ecommerce\Modele\DataObject\Utilisateur;
 /* @var $articles */
 echo '<link rel="stylesheet" href="../ressources/css/ArticleListe.css">';
 
-echo '<h1>Articles mis en vente</h1>
-    <h3>Parcourez la liste des articles mis en ligne sur la plateforme</h3>
+echo '<div id="enteteListe"><h1>Articles mis en vente</h1>
+    <h3>Parcourez la liste des articles mis en ligne sur la plateforme</h3></div>
     <div id="articleList">';
 
 foreach ($articles as $article) {
