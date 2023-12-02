@@ -70,6 +70,22 @@ abstract class AbstractRepository{
         return $AbstractDataObject;
     }
 
+    public function recupererParDeuxColonne(string|int $colonneValueA, int $colonneIndexA, string|int $colonneValueB, int $colonneIndexB): array {
+        $sql = /** @lang OracleSqlPlus */
+            "SELECT * from {$this->getNomTable()} WHERE {$this->getNomsColonnes()[$colonneIndexA]} = :{$this->getNomsColonnes()[$colonneIndexA]} and {$this->getNomsColonnes()[$colonneIndexB]} = :{$this->getNomsColonnes()[$colonneIndexB]}";
+        $pdoStatement = dataBase::getPdo()->prepare($sql);
+        $values = array(
+            $this->getNomsColonnes()[$colonneIndexA] => $colonneValueA,
+            $this->getNomsColonnes()[$colonneIndexB] => $colonneValueB
+        );
+        $pdoStatement->execute($values);
+        $AbstractDataObject = [];
+        foreach ($pdoStatement as $dataFormatTableau) {
+            $AbstractDataObject[] = $this->construireDepuisTableau($dataFormatTableau,true);
+        }
+        return $AbstractDataObject;
+    }
+
     /**
      * @param string|int $uniqueValue
      * @param int $uniqueIndex
@@ -113,6 +129,23 @@ abstract class AbstractRepository{
             $pdoStatement = dataBase::getPdo()->prepare($sql);
             $values = array(
                 $this->getNomsColonnes()[$colonneIndex] => $colonneValue,
+            );
+            $pdoStatement->execute($values);
+            $pdoStatement->fetch();
+        } catch (PDOException $e) {
+            return $e->getCode();
+        }
+        return "";
+    }
+
+    public function supprimerParDeuxColonne(string|int $colonneValueA, int $colonneIndexA, string|int $colonneValueB, int $colonneIndexB): string {
+        $sql = /** @lang OracleSqlPlus */
+            "DELETE FROM {$this->getNomTable()} WHERE {$this->getNomsColonnes()[$colonneIndexA]} = :{$this->getNomsColonnes()[$colonneIndexA]} and {$this->getNomsColonnes()[$colonneIndexB]} = :{$this->getNomsColonnes()[$colonneIndexB]}";
+        try {
+            $pdoStatement = dataBase::getPdo()->prepare($sql);
+            $values = array(
+                $this->getNomsColonnes()[$colonneIndexA] => $colonneValueA,
+                $this->getNomsColonnes()[$colonneIndexB] => $colonneValueB
             );
             $pdoStatement->execute($values);
             $pdoStatement->fetch();

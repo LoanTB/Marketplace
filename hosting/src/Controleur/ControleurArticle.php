@@ -18,6 +18,18 @@ class ControleurArticle extends ControleurGenerique {
         ]);
     }
 
+    public static function afficherListeRecherche() : void {
+        if (!isset($_REQUEST["recherche"])){
+            ControleurGenerique::accesNonAutorise();
+            return;
+        }
+        self::afficherNouvelleVue("vueGenerale.php",[
+            "pagetitle" => "Boutique",
+            "cheminVueBody" => "article/liste.php",
+            "articles" => (new ArticleRepository())->recupererRecherche($_REQUEST["recherche"])
+        ]);
+    }
+
     public static function afficherErreur(string $messageErreur = "") : void {
         self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Erreur",

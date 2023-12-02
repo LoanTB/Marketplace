@@ -10,6 +10,11 @@ use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 class ControleurUtilisateur extends ControleurGenerique {
 
     public static function afficherListe() : void {
+        if (!ConnexionUtilisateur::estAdministrateur()){
+            ControleurGenerique::accesNonAutorise();
+            return;
+        }
+
         self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Liste des utilisateurs",
             "cheminVueBody" => "utilisateur/liste.php",
@@ -26,7 +31,7 @@ class ControleurUtilisateur extends ControleurGenerique {
     }
 
     public static function afficherDetail() : void {
-        if (!(new UtilisateurRepository())->requestContainsUnique()){
+        if (!(new UtilisateurRepository())->requestContainsUnique() || !ConnexionUtilisateur::estAdministrateur()){
             ControleurGenerique::accesNonAutorise();
             return;
         }
@@ -148,7 +153,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         } else if ($sqlreturn != "") {
             MessageFlash::ajouter("warning", "Le compte n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
-            self::afficherListe();
+            ControleurGenerique::rediriger();
             return;
         }
 
@@ -158,8 +163,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             $utilisateurRepository->supprimerParUniqueDansRequest();
             MessageFlash::ajouter("warning", "L'email de confirmation n'a pas pu être envoyé, la création du compte à été annulé, veuillez réessayer plus tard.");
         }
-
-        self::afficherListe();
+        ControleurGenerique::rediriger();
     }
 
     public static function mettreAJour() : void {
@@ -267,7 +271,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         } else {
             MessageFlash::ajouter("warning", "Le compte n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
-            self::afficherListe();
+            ControleurGenerique::rediriger();
             return;
         }
 
@@ -279,8 +283,7 @@ class ControleurUtilisateur extends ControleurGenerique {
                 MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyée, veuillez réessayer plus tard.");
             }
         }
-
-        self::afficherListe();
+        ControleurGenerique::rediriger();
     }
 
     public static function connecter() : void {
@@ -325,10 +328,10 @@ class ControleurUtilisateur extends ControleurGenerique {
         if (VerificationEmail::traiterEmailValidation($_REQUEST["nonce"])){
             ConnexionUtilisateur::deconnecter();
             MessageFlash::ajouter("success", "Email confirmée, vérification de compte validée.");
-            self::afficherListe();
+            ControleurGenerique::rediriger();
         } else {
             MessageFlash::ajouter("warning", "Email non confirmée, lien de confirmation invalide !");
-            self::afficherListe();
+            ControleurGenerique::rediriger();
         }
     }
 }
