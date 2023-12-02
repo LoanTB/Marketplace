@@ -43,10 +43,10 @@ if (ConnexionUtilisateur::estConnecte()) {
 }
 
 echo '">Ajouter au panier</a>
-            <button class="animated-button">
+            <a class="animated-button">
                 <span>Ajouter aux favoris</span>
                 <span></span>
-            </button>
+            </a>
         </div>
         <!--<div class="annonceProps">
             <p><strong>Mise en ligne :</strong> 24 octobre à 12h00</p>

@@ -124,7 +124,3 @@ input:focus {
 .animated-button:hover {
     box-shadow: 0 0 0 5px #a01d1d7a;
 }
-
-#addToCart {
-    padding: 15px 0;
-}

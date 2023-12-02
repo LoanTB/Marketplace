@@ -18,18 +18,11 @@
   gap: 15px;
   align-items: center;
 }
-.CTAbuttons > a {
-  padding: 5px;
-  height: 2em;
-  display: flex;
-  align-items: center;
-  transition: background-color 0.25s;
-}
 
 /* === PRIMARY BUTTON PROPS === */
 #addToCart {
     justify-content: center;
-    padding: 10px 0;
+    padding: 15px 0;
     border-radius: 8px;
     width: 100%;
     color: white;
@@ -41,6 +34,8 @@
     text-transform: uppercase;
     font-size: 15px;
     transition: all .5s ease;
+    display: flex;
+    align-items: center;
   }
   
   #addToCart:hover {
@@ -65,8 +60,9 @@
     display: inline-block;
     padding: 12px 0;
     width: 100%;
+    text-align: center;
     border: none;
-    font-size: 16px;
+    font-size: 18px;
     background-color: inherit;
     border-radius: 10px;
     font-weight: 600;

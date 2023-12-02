@@ -53,10 +53,10 @@
                             <h3><?php echo $utilisateur->getNom().' '.$utilisateur->getPrenom(); ?></h3>
                         </div>
                     </div>
-                    <button class="animated-button">
+                    <a href="controleurFrontal.php?action=afficherListe&controleur=article" class="animated-button">
                         <span>Annuler</span>
                         <span></span>
-                    </button>
+                    </a>
                     <input type="submit" value="Publier l'annonce" id="addToCart">
                 </div>
                 <!--

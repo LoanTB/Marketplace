@@ -11,11 +11,11 @@ if (count($articles) === 0) {
 } else {
     echo '<h3>Articles que vous êtes sur le point d\'acheter</h3>
           <div class="CTAbuttons">
-            <a id="addToCart" href="finaliserAchat">Finaliser la commande</a>
-            <button class="animated-button">
+            <a id="addToCart">Finaliser la commande</a>
+            <a href="controleurFrontal.php?controleur=panier&action=vider" class="animated-button">
                 <span>Vider le panier</span>
                 <span></span>
-            </button>
+            </a>
         </div>';
 }
 
@@ -32,7 +32,7 @@ foreach ($articles as $article) {
                     </div>
                 </a>
                 <div class="rowActions">
-                    <p class="price">'.htmlspecialchars($article->getPrix()).'</p>
+                    <p class="price">'.htmlspecialchars($article->getPrix()).' €</p>
                     <a href="controleurFrontal.php?controleur=panier&action=supprimerDuPanier&id_article=' . rawurlencode($article->getIdArticle()) . '" class="svg close-icon"></a>
                 </div>
             </div>
