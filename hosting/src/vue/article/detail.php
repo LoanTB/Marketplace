@@ -48,10 +48,10 @@ echo '">Ajouter au panier</a>
                 <span></span>
             </button>
         </div>
-        <div class="annonceProps">
+        <!--<div class="annonceProps">
             <p><strong>Mise en ligne :</strong> 24 octobre à 12h00</p>
             <p><strong>Mise à jour :</strong> 17 novembre à 17h24</p>
-        </div>
+        </div>-->
     </div>
 </div>
 ';

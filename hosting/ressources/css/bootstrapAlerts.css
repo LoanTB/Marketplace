@@ -3,15 +3,17 @@
 
 .alert {
     padding: 15px 25px;
-    margin: auto;
     border: 1px solid transparent;
     border-radius: 50px;
-    position: sticky;
+    position: fixed;
     top: 70px;
     width: fit-content;
     max-width: 700px;
     align-items: center;
     display: flex;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
 }
 
 .alert > a:hover {

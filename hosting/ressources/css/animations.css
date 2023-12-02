@@ -1,7 +1,7 @@
 .popup-anim {
     animation-fill-mode: forwards;
-    -webkit-animation: scale-in-center 0.5s cubic-bezier(.18,.89,.32,1.28) both, slide-out-bck-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) 5s both;
-    animation: scale-in-center 0.5s cubic-bezier(.18,.89,.32,1.28) both, slide-out-bck-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) 5s both;
+    -webkit-animation: scale-in-center-popup 0.5s cubic-bezier(.18,.89,.32,1.28) both, slide-out-bck-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) 5s both;
+    animation: scale-in-center-popup 0.5s cubic-bezier(.18,.89,.32,1.28) both, slide-out-bck-top 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) 5s both;
 }
 
 .animationList {
@@ -74,15 +74,15 @@
  * animation scale-in-center
  * ----------------------------------------
  */
-@keyframes scale-in-center {
+@keyframes scale-in-center-popup {
     0% {
-        -webkit-transform: scale(0.75);
-        transform: scale(0.75);
+        -webkit-transform: scale(0.75) translateX(-68.75%);
+        transform: scale(0.75) translateX(-68.75%);
         opacity: 0;
     }
     100% {
-        -webkit-transform: scale(1);
-        transform: scale(1);
+        -webkit-transform: scale(1) translateX(-50%);
+        transform: scale(1) translateX(-50%);
         opacity: 1;
     }
 }
@@ -106,11 +106,6 @@
     }
 }
 
-/**
- * ----------------------------------------
- * animation scale-in-center
- * ----------------------------------------
- */
 @keyframes scale-in-center {
     0% {
         -webkit-transform: scale(0.75);
