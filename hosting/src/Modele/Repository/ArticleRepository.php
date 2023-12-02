@@ -21,10 +21,9 @@ class ArticleRepository extends AbstractRepository{
     );
 
     public function recupererRecherche(string $recherche): array {
-        $pdoStatement = dataBase::getPdo()->prepare("SELECT * FROM Article WHERE Title LIKE '%:recherche%' OR Description LIKE '%:recherchee%'");
+        $pdoStatement = dataBase::getPdo()->prepare("SELECT * FROM Article WHERE nom LIKE :recherche OR description LIKE :recherche");
         $pdoStatement->execute(array(
-            "recherche" => $recherche,
-            "recherchee" => $recherche
+            "recherche" => "%".$recherche."%"
         ));
         $articles = [];
         foreach ($pdoStatement as $dataFormatTableau) {
