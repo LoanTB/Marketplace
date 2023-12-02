@@ -206,8 +206,11 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         if (isset($_REQUEST["telephone_number"]) and $_REQUEST["telephone_number"] != "" and isset($_REQUEST["telephone_country"]) and $_REQUEST["telephone_country"] != ""){
-            if (preg_match("/^[0-9]{9}$/", $_REQUEST["telephone_number"]) and preg_match("/^[0-9]{1,2}$/", $_REQUEST["telephone_country"])){
-                $infos["telephone"] = "+".$_REQUEST["telephone_country"].$_REQUEST["telephone_number"];
+            if (strlen($_REQUEST["telephone_country"]) == 1) {
+                $_REQUEST["telephone_country"] = "0" . $_REQUEST["telephone_country"];
+            }
+            if (preg_match("/^[0-9]{9}$/", $_REQUEST["telephone_number"]) && preg_match("/^[0-9]{2}$/", $_REQUEST["telephone_country"])) {
+                $infos["telephone"] = "+" . $_REQUEST["telephone_country"] . $_REQUEST["telephone_number"];
             } else {
                 MessageFlash::ajouter("warning", "Téléphone invalide, veuillez entrer un numéro de téléphone valide.");
                 self::afficherFormulaireMiseAJour();
