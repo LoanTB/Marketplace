@@ -75,4 +75,66 @@ class ControleurWishlist extends ControleurGenerique {
             self::afficherListe();
         }
     }
+
+    public static function recupererFavoris(): ?Wishlist {
+        if (!ConnexionUtilisateur::estConnecte()) {
+            ControleurGenerique::accesNonAutorise();
+            return null;
+        }
+        $wishlists = (new enregistrerRepository())->recupererWishlistsUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte());
+        foreach ($wishlists as $wishlist){
+            if ($wishlist->getNom() == "favoris"){
+                return $wishlist;
+            }
+        }
+        if ((new WishlistRepository())->ajouterPourUtilisateur(new Wishlist(null, "favoris", $raw = false),ConnexionUtilisateur::getIdUtilisateurConnecte()) != ""){
+            return null;
+        }
+        return self::recupererFavoris();
+    }
+
+    public static function afficherFavoris(): void{
+        if (!ConnexionUtilisateur::estConnecte()) {
+            ControleurGenerique::accesNonAutorise();
+            return;
+        }
+
+        $favoris = self::recupererFavoris();
+        if ($favoris == null){
+            MessageFlash::ajouter("warning", "Recupération des favoris échouée (WFAVERROR), veuillez réessayer plus tard.");
+            return;
+        }
+
+        self::afficherNouvelleVue("vueGenerale.php", [
+            "pagetitle" => "Favoris",
+            "cheminVueBody" => "wishlist/listeArticles.php",
+            "wishlist" => $favoris,
+            "articles" => (new contenirRepository())->recupererArticlesWishlist($favoris->getIdWishlist())
+        ]);
+    }
+
+    public static function ajouterArticleAuxFavoris(): void {
+        if (!isset($_REQUEST["id_article"]) or !ConnexionUtilisateur::estConnecte()) {
+            ControleurGenerique::accesNonAutorise();
+            return;
+        }
+
+        $favoris = self::recupererFavoris()->getIdWishlist();
+
+        if ($favoris == null){
+            MessageFlash::ajouter("warning", "L'article n'as pas pu être ajouter aux favoris (WFAVERROR), veuillez réessayer plus tard.");
+            return;
+        }
+
+        $contenir = new contenir($_REQUEST["id_article"],$favoris);
+
+        $sqlreturn = (new contenirRepository())->ajouter($contenir);
+
+        if ($sqlreturn == "") {
+            MessageFlash::ajouter("success", "L'article à bien été ajouter aux favoris");
+        } else {
+            MessageFlash::ajouter("warning", "L'article n'as pas pu être ajouter aux favoris (".$sqlreturn."), veuillez réessayer plus tard.");
+        }
+        ControleurGenerique::rediriger();
+    }
 }

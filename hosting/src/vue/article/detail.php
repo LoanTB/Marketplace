@@ -44,7 +44,15 @@ if (ConnexionUtilisateur::estConnecte()) {
 
 echo '">Ajouter au panier</a>
             <a class="animated-button">
-                <span>Ajouter aux favoris</span>
+                <a id="addToFav" href="';
+
+if (ConnexionUtilisateur::estConnecte()) {
+    echo 'controleurFrontal.php?controleur=wishlist&action=ajouterArticleAuxFavoris&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle()));
+} else {
+    echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur';
+}
+
+echo '">Ajouter aux favoris</a>
                 <span></span>
             </a>
         </div>
