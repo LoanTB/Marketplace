@@ -1,0 +1,72 @@
+@import url("ArticleListe.css");
+@import url("Buttons.css");
+
+main {
+    flex-direction: column;
+}
+
+#enteteListe {
+    display: grid;
+    justify-content: space-between;
+}
+#enteteListe > * {
+    grid-column: 1;
+}
+
+#enteteListe .CTAbuttons {
+    grid-column: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    width: 300px;
+    margin-top: auto;
+}
+
+#articleList {
+    flex-direction: column-reverse;
+}
+
+.articleView {
+    padding-bottom: 0;
+}
+
+.articleDesc {
+    display: flex;
+    margin: 0;
+    padding: 10px 15px;
+    flex: auto;
+    flex-direction: column;
+}
+
+.articleDesc h2 {
+    text-overflow: ellipsis;
+}
+.authorRow {
+    margin-bottom: 5px;
+}
+
+.rowActions {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+}
+
+.listItem {
+    display: flex;
+    flex-direction: row;
+}
+  
+.thumbnail {
+    width: 150px;
+    min-width: 150px;
+    height: auto;
+}
+
+.price {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.close-icon {
+    margin-right: 30px;
+}

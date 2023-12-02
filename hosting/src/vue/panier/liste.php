@@ -1,12 +1,41 @@
 <?php
 use \App\Ecommerce\Lib\ConnexionUtilisateur;
 /* @var $articles */
-foreach ($articles as $article) {
-    echo '<p> Article '.htmlspecialchars($article->getNom()).' : '.htmlspecialchars($article->getDescription()).' coute '.htmlspecialchars($article->getPrix()).' avec comme identifiant <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '">' . htmlspecialchars($article->getIdArticle()) . '</a> <a href="controleurFrontal.php?controleur=panier&action=supprimerDuPanier&id_article=' . rawurlencode($article->getIdArticle()) . '" >Supprimer du panier</a>';
-    if (ConnexionUtilisateur::estAdministrateur()) {
-        echo ' (<a href="controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&login=' . rawurlencode($article->getIdArticle()) . '">modifier</a><a href="controleurFrontal.php?controleur=article&action=supprimer&login=' . rawurlencode($article->getIdArticle()) . '">supprimer</a>)</p>';
-    } else {
-        echo '</p>';
-    }
+
+echo '<link rel="stylesheet" href="../ressources/css/SimpleListe.css">
+    <div id="enteteListe">
+        <h1>Votre panier</h1>';
+
+if (count($articles) === 0) {
+    echo "<h3>Votre panier est vide !</h3>";
+} else {
+    echo '<h3>Articles que vous êtes sur le point d\'acheter</h3>
+          <div class="CTAbuttons">
+            <a id="addToCart" href="finaliserAchat">Finaliser la commande</a>
+            <button class="animated-button">
+                <span>Vider le panier</span>
+                <span></span>
+            </button>
+        </div>';
 }
-echo '<p><a href="controleurFrontal.php?controleur=article&action=afficherFormulaireCreation">Créer un article</a></p>';
+
+echo '</div><div id="articleList">';
+
+foreach ($articles as $article) {
+    echo '<div class="card animationList" href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=7">
+            <div class="listItem articleView">
+                <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '" class="thumbnail" style="background-image: url(\'https://picsum.photos/300/200\')"></a>
+                <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '" class="articleDesc">
+                    <h2>'.htmlspecialchars($article->getNom()).'</h2>
+                    <div class="authorRow">
+                        <h4>Auteur</h4>
+                    </div>
+                </a>
+                <div class="rowActions">
+                    <p class="price">'.htmlspecialchars($article->getPrix()).'</p>
+                    <a href="controleurFrontal.php?controleur=panier&action=supprimerDuPanier&id_article=' . rawurlencode($article->getIdArticle()) . '" class="svg close-icon"></a>
+                </div>
+            </div>
+        </div>';
+}
+echo '</div>';
