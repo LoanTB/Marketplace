@@ -3,16 +3,12 @@ namespace App\Ecommerce\Controleur;
 
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
-use App\Ecommerce\Modele\DataObject\relations\Commenter;
-use App\Ecommerce\Modele\Repository\relations\CommenterRepository;
+use App\Ecommerce\Modele\DataObject\Commenter;
+use App\Ecommerce\Modele\Repository\CommenterRepository;
 
 class ControleurCommenter extends ControleurGenerique {
-    public static function recupererListeCommentaires(): array {
-        if (!isset($_REQUEST["id_article"])) {
-            ControleurGenerique::accesNonAutorise();
-            return [];
-        }
-        return (new CommenterRepository())->recupererParColonne($_REQUEST["id_article"],1);
+    public static function recupererListeCommentaires(string $id_article): array {
+        return (new CommenterRepository())->recupererParColonne($id_article,1);
     }
 
     public static function ajouterCommentaire(): void {
@@ -29,6 +25,6 @@ class ControleurCommenter extends ControleurGenerique {
         } else {
             MessageFlash::ajouter("warning", "Le commentaire n'a pas pu être posté (".$sqlreturn."), veuillez réessayer plus tard.");
         }
-        ControleurGenerique::refresh();
+        ControleurGenerique::rediriger();
     }
 }

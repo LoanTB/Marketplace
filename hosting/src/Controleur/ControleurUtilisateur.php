@@ -10,7 +10,7 @@ use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 class ControleurUtilisateur extends ControleurGenerique {
 
     public static function afficherListe() : void {
-        self::afficherVue("vueGenerale.php",[
+        self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Liste des utilisateurs",
             "cheminVueBody" => "utilisateur/liste.php",
             "utilisateurs" => (new UtilisateurRepository())->recuperer()
@@ -18,7 +18,7 @@ class ControleurUtilisateur extends ControleurGenerique {
     }
 
     public static function afficherErreur(string $messageErreur = "") : void {
-        self::afficherVue("vueGenerale.php",[
+        self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Erreur",
             "cheminVueBody" => "utilisateur/erreur.php",
             "messageErreur" => $messageErreur
@@ -36,7 +36,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             MessageFlash::ajouter("warning", "Utilisateur innexistant");
             self::afficherListe();
         } else {
-            self::afficherVue("vueGenerale.php",[
+            self::afficherNouvelleVue("vueGenerale.php",[
                 "pagetitle" => "Détails de l'utilisateur",
                 "cheminVueBody" => "utilisateur/detail.php",
                 "utilisateur" => $utilisateur
@@ -45,21 +45,21 @@ class ControleurUtilisateur extends ControleurGenerique {
     }
 
     public static function afficherFormulaireCreation() : void {
-        self::afficherVue("vueGenerale.php",[
+        self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Formulaire création utilisateurs",
             "cheminVueBody" => "utilisateur/formulaireCreation.php"
         ]);
     }
 
     public static function afficherFormulaireMiseAJour() : void {
-        self::afficherVue("vueGenerale.php",[
+        self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Formulaire modification utilisateurs",
             "cheminVueBody" => "utilisateur/formulaireMiseAJour.php"
         ]);
     }
 
     public static function formulaireConnexion() : void {
-        self::afficherVue("vueGenerale.php",[
+        self::afficherVueAvecConservationPointControle("vueGenerale.php",[
             "pagetitle" => "Formulaire connexion utilisateurs",
             "cheminVueBody" => "utilisateur/formulaireConnexion.php"
         ]);
@@ -303,7 +303,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             if (MotDePasse::verifier($_REQUEST["password"],$utilisateur->getPassword())){
                 ConnexionUtilisateur::connecter($utilisateur->getIdUtilisateur());
                 MessageFlash::ajouter("success", "Connexion réussie !");
-                ControleurArticle::afficherListe();
+                ControleurGenerique::rediriger();
             } else {
                 MessageFlash::ajouter("warning", "Mot de passe incorrect !");
                 self::formulaireConnexion();
@@ -314,7 +314,7 @@ class ControleurUtilisateur extends ControleurGenerique {
     public static function deconnecter() : void {
         ConnexionUtilisateur::deconnecter();
         MessageFlash::ajouter("success", "Déonnexion effectuée");
-        self::afficherListe();
+        ControleurGenerique::rediriger();
     }
 
     public static function validerEmail() : void {

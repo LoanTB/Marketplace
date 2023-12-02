@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Ecommerce\Modele\DataObject\relations;
-
-use App\Ecommerce\Modele\DataObject\AbstractDataObject;
+namespace App\Ecommerce\Modele\DataObject;
 
 class Commenter extends AbstractDataObject{
     private int $id_utilisateur;
@@ -30,7 +28,10 @@ class Commenter extends AbstractDataObject{
     public function formatTableau(): array{
         return array(
             "id_utilisateur" => $this->getIdUtilisateur(),
-            "id_article" => $this->getIdArticle()
+            "id_article" => $this->getIdArticle(),
+            "titre" => $this->getTitre(),
+            "texte" => $this->getTexte(),
+            "note" => $this->getNote()
         );
     }
 

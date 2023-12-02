@@ -1,8 +1,7 @@
 <?php
-namespace App\Ecommerce\Modele\Repository\relations;
+namespace App\Ecommerce\Modele\Repository;
 
-use App\Ecommerce\Modele\DataObject\relations\Commenter;
-use App\Ecommerce\Modele\Repository\AbstractRepository;
+use App\Ecommerce\Modele\DataObject\Commenter;
 
 class CommenterRepository extends AbstractRepository{
     private string $nomTable = "Commenter";

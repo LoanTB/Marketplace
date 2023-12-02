@@ -13,7 +13,7 @@ class ControleurPanier extends ControleurGenerique {
             return;
         }
 
-        self::afficherVue("vueGenerale.php", [
+        self::afficherNouvelleVue("vueGenerale.php", [
             "pagetitle" => "Panier",
             "cheminVueBody" => "panier/liste.php",
             "articles" => (new dansPanierRepository())->recupererPanierUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte())

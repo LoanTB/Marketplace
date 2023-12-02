@@ -4,13 +4,14 @@ namespace App\Ecommerce\Controleur;
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
+use App\Ecommerce\Lib\Redirections;
 use App\Ecommerce\Lib\VerificationEmail;
 use App\Ecommerce\Modele\DataObject\Article;
 use App\Ecommerce\Modele\Repository\ArticleRepository;
 
 class ControleurArticle extends ControleurGenerique {
     public static function afficherListe() : void {
-        self::afficherVue("vueGenerale.php",[
+        self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Boutique",
             "cheminVueBody" => "article/liste.php",
             "articles" => (new ArticleRepository())->recuperer()
@@ -18,7 +19,7 @@ class ControleurArticle extends ControleurGenerique {
     }
 
     public static function afficherErreur(string $messageErreur = "") : void {
-        self::afficherVue("vueGenerale.php",[
+        self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Erreur",
             "cheminVueBody" => "article/erreur.php",
             "messageErreur" => $messageErreur
@@ -36,7 +37,7 @@ class ControleurArticle extends ControleurGenerique {
             MessageFlash::ajouter("warning", "L'article demandé est introuvable !");
             self::afficherListe();
         } else {
-            self::afficherVue("vueGenerale.php",[
+            self::afficherVueAvecPointControle("vueGenerale.php",[
                 "pagetitle" => "Détails de l'article",
                 "cheminVueBody" => "article/detail.php",
                 "article" => $article
@@ -50,14 +51,14 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
 
-        self::afficherVue("vueGenerale.php",[
+        self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Formulaire création articles",
             "cheminVueBody" => "article/formulaireCreation.php"
         ]);
     }
 
     public static function afficherFormulaireMiseAJour() : void {
-        self::afficherVue("vueGenerale.php",[
+        self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Formulaire modification articles",
             "cheminVueBody" => "article/formulaireMiseAJour.php"
         ]);
