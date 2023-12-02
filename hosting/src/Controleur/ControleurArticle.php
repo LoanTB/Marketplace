@@ -81,6 +81,19 @@ class ControleurArticle extends ControleurGenerique {
             ControleurGenerique::accesNonAutorise("C");
             return;
         }
+
+        if ($_REQUEST["prix"] <= 0){
+            MessageFlash::ajouter("warning", "Le prix ne peut pas être plus petit ou égale à 0.");
+            self::afficherFormulaireCreation();
+            return;
+        }
+
+        if ($_REQUEST["quantite"] <= 0){
+            MessageFlash::ajouter("warning", "La quantité ne peut pas être plus petite ou égale à 0.");
+            self::afficherFormulaireCreation();
+            return;
+        }
+
         $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
 
         $sqlreturn = (new ArticleRepository())->ajouter($article);
@@ -112,13 +125,25 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
 
+        if ($_REQUEST["prix"] <= 0){
+            MessageFlash::ajouter("warning", "Le prix ne peut pas être plus petit ou égale à 0.");
+            self::afficherFormulaireMiseAJour();
+            return;
+        }
+
+        if ($_REQUEST["quantite"] <= 0){
+            MessageFlash::ajouter("warning", "La quantité ne peut pas être plus petite ou égale à 0.");
+            self::afficherFormulaireMiseAJour();
+            return;
+        }
+
         $article = new Article($_REQUEST["id_article"],$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
 
         $sqlreturn = (new ArticleRepository())->mettreAJour($article);
 
         if ($sqlreturn == "22001"){
             MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
-            self::afficherFormulaireCreation();
+            self::afficherFormulaireMiseAJour();
             return;
         } else if ($sqlreturn != "") {
             MessageFlash::ajouter("warning", "L'article n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
