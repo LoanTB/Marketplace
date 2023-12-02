@@ -12,7 +12,7 @@ use App\Ecommerce\Modele\Repository\WishlistRepository;
 class ControleurWishlist extends ControleurGenerique {
     public static function afficherListe(): void {
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("Y");
             return;
         }
 
@@ -25,7 +25,7 @@ class ControleurWishlist extends ControleurGenerique {
 
     public static function ajouterWishlist(): void {
         if (!isset($_REQUEST["nom"]) or !ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("AC");
             return;
         }
 
@@ -54,12 +54,12 @@ class ControleurWishlist extends ControleurGenerique {
 
     public static function ajouterArticleDansWishlist(): void {
         if (!isset($_REQUEST["id_article"]) or !isset($_REQUEST["id_wishlist"]) or !ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("AA");
             return;
         }
 
         if (!self::estEnregistrerDeWishlist($_REQUEST["id_wishlist"])){
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("AB");
             return;
         }
 
@@ -76,9 +76,56 @@ class ControleurWishlist extends ControleurGenerique {
         }
     }
 
+    public static function supprimerArticleDeWishlist(): void {
+        if (!isset($_REQUEST["id_article"]) or !isset($_REQUEST["id_wishlist"]) or !ConnexionUtilisateur::estConnecte()) {
+            ControleurGenerique::accesNonAutorise("AF");
+            return;
+        }
+
+        if (!self::estEnregistrerDeWishlist($_REQUEST["id_wishlist"])){
+            ControleurGenerique::accesNonAutorise("AG");
+            return;
+        }
+
+        $contenir = new contenir($_REQUEST["id_article"],$_REQUEST["id_wishlist"]);
+
+        $sqlreturn = (new contenirRepository())->supprimer($contenir);
+
+        if ($sqlreturn == "") {
+            MessageFlash::ajouter("success", "L'article à bien été ajouter à la liste des souhaits");
+        } else {
+            MessageFlash::ajouter("warning", "L'article n'as pas pu être ajouter à la lite des souhaits (".$sqlreturn."), veuillez réessayer plus tard.");
+        }
+        ControleurGenerique::rediriger();
+    }
+
+    public static function supprimerArticleDesFavoris(): void {
+        if (!isset($_REQUEST["id_article"]) or !ConnexionUtilisateur::estConnecte()) {
+            ControleurGenerique::accesNonAutorise("AE");
+            return;
+        }
+
+        $favoris = self::recupererFavoris();
+        if ($favoris == null){
+            MessageFlash::ajouter("warning", "Suppression du favoris échoué (WFAVERROR), veuillez réessayer plus tard.");
+            return;
+        }
+
+        $contenir = new contenir($_REQUEST["id_article"],$favoris->getIdWishlist());
+
+        $sqlreturn = (new contenirRepository())->supprimer($contenir);
+
+        if ($sqlreturn == "") {
+            MessageFlash::ajouter("success", "L'article à bien été supprimé des favoris");
+        } else {
+            MessageFlash::ajouter("warning", "L'article n'as pas pu être supprimé des favoris (".$sqlreturn."), veuillez réessayer plus tard.");
+        }
+        ControleurGenerique::rediriger();
+    }
+
     public static function recupererFavoris(): ?Wishlist {
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("AD");
             return null;
         }
         $wishlists = (new enregistrerRepository())->recupererWishlistsUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte());
@@ -95,7 +142,7 @@ class ControleurWishlist extends ControleurGenerique {
 
     public static function afficherFavoris(): void{
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("X");
             return;
         }
 
@@ -115,7 +162,7 @@ class ControleurWishlist extends ControleurGenerique {
 
     public static function ajouterArticleAuxFavoris(): void {
         if (!isset($_REQUEST["id_article"]) or !ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("Z");
             return;
         }
 

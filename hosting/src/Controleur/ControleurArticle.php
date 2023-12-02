@@ -40,7 +40,7 @@ class ControleurArticle extends ControleurGenerique {
 
     public static function afficherDetail() : void {
         if (!((new ArticleRepository())->requestContainsUnique())){
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("A");
             return;
         }
 
@@ -59,7 +59,7 @@ class ControleurArticle extends ControleurGenerique {
 
     public static function afficherFormulaireCreation() : void {
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("B");
             return;
         }
 
@@ -78,7 +78,7 @@ class ControleurArticle extends ControleurGenerique {
 
     public static function creerDepuisFormulaire() : void {
         if (!isset($_REQUEST["nom"]) or !isset($_REQUEST["description"]) or !isset($_REQUEST["prix"]) or !isset($_REQUEST["quantite"]) or !ConnexionUtilisateur::estConnecte()){
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("C");
             return;
         }
         $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
@@ -101,14 +101,14 @@ class ControleurArticle extends ControleurGenerique {
 
     public static function mettreAJour() : void {
         if (!isset($_REQUEST["id_article"]) or !isset($_REQUEST["nom"]) or !isset($_REQUEST["description"]) or !isset($_REQUEST["prix"]) or !isset($_REQUEST["quantite"]) or !ConnexionUtilisateur::estConnecte()){
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("D");
             return;
         }
 
         $ancienArticle = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"],0);
 
         if (!ConnexionUtilisateur::estUtilisateur($ancienArticle->getIdUtilisateur())){
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("E");
             return;
         }
 
@@ -132,7 +132,7 @@ class ControleurArticle extends ControleurGenerique {
 
     public static function supprimer() : void {
         if (!isset($_REQUEST["id_article"])){
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("F");
             return;
         }
 
@@ -143,7 +143,7 @@ class ControleurArticle extends ControleurGenerique {
         }
 
         if (!ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())){
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("G");
             return;
         }
 

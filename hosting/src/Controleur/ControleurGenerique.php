@@ -1,6 +1,7 @@
 <?php
 namespace App\Ecommerce\Controleur;
 
+use App\Ecommerce\Configuration\ConfigurationSite;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\PreferenceControleur;
 use App\Ecommerce\Lib\Redirections;
@@ -46,8 +47,12 @@ class ControleurGenerique {
         ("App\\Ecommerce\\Controleur\\Controleur".ucfirst(PreferenceControleur::lire()))::afficherListe();
     }
 
-    public static function accesNonAutorise() : void {
-        MessageFlash::ajouter("danger", "Tentative d'accès illégitime détectée. Cette action sera signalée.");
+    public static function accesNonAutorise(string $zone) : void {
+        if (ConfigurationSite::getDebug()){
+            MessageFlash::ajouter("danger", "Tentative d'accès illégitime zone $zone détectée. Cette action sera signalée.");
+        } else {
+            MessageFlash::ajouter("danger", "Tentative d'accès illégitime détectée. Cette action sera signalée.");
+        }
         self::redirigerVersMain();
     }
 

@@ -4,19 +4,12 @@ use \App\Ecommerce\Lib\ConnexionUtilisateur;
 
 echo '<link rel="stylesheet" href="../ressources/css/SimpleListe.css">
     <div id="enteteListe">
-        <h1>Votre panier</h1>';
+        <h1>Vos favoris</h1>';
 
 if (count($articles) === 0) {
-    echo "<h3>Votre panier est vide !</h3>";
+    echo "<h3>Vous n'avez pas de favoris pour le moment !</h3>";
 } else {
-    echo '<h3>Articles que vous êtes sur le point d\'acheter</h3>
-          <div class="CTAbuttons">
-            <a id="addToCart">Finaliser la commande</a>
-            <a href="controleurFrontal.php?controleur=panier&action=vider" class="animated-button">
-                <span>Vider le panier</span>
-                <span></span>
-            </a>
-        </div>';
+    echo '<h3>Articles en favoris</h3>';
 }
 
 echo '</div><div id="articleList">';
@@ -33,7 +26,7 @@ foreach ($articles as $article) {
                 </a>
                 <div class="rowActions">
                     <p class="price">'.htmlspecialchars($article->getPrix()).' €</p>
-                    <a href="controleurFrontal.php?controleur=panier&action=supprimerDuPanier&id_article=' . rawurlencode($article->getIdArticle()) . '" class="svg close-icon"></a>
+                    <a href="controleurFrontal.php?controleur=wishlist&action=supprimerArticleDesFavoris&id_article=' . rawurlencode($article->getIdArticle()) . '" class="svg close-icon"></a>
                 </div>
             </div>
         </div>';

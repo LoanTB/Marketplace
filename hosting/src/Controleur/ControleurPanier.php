@@ -23,12 +23,12 @@ class ControleurPanier extends ControleurGenerique {
 
     public static function ajouterAuPanier(): void {
         if (!isset($_REQUEST["id_article"])) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("I");
             return;
         }
 
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("J");
             return;
         }
 
@@ -46,17 +46,17 @@ class ControleurPanier extends ControleurGenerique {
 
     public static function supprimerDuPanier(): void {
         if (!isset($_REQUEST["id_article"])) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("K");
             return;
         }
 
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("L");
             return;
         }
 
         if ((new dansPanierRepository())->recupererParDeuxColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0,$_REQUEST["id_article"],1) == null) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("M");
             return;
         }
 
@@ -73,7 +73,7 @@ class ControleurPanier extends ControleurGenerique {
 
     public static function vider(): void {
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("N");
             return;
         }
 

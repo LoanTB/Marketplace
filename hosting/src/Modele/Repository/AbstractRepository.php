@@ -202,6 +202,23 @@ abstract class AbstractRepository{
         return "";
     }
 
+    public function supprimer(AbstractDataObject $object) : string {
+        $sql = /** @lang OracleSqlPlus */
+            "DELETE FROM {$this->getNomTable()} WHERE ";
+        foreach ($this->getNomsColonnes() as $nomColone){
+            $sql = $sql."{$nomColone} = :{$nomColone} and ";
+        }
+        $sql = substr($sql,0,-5);
+        try {
+            $pdoStatement = dataBase::getPdo()->prepare($sql);
+            $pdoStatement->execute($object->formatTableau(true));
+            $pdoStatement->fetch();
+        } catch (PDOException $e) {
+            return $e->getCode();
+        }
+        return "";
+    }
+
     public function mettreAJour(AbstractDataObject $object): string {
         $sql = "UPDATE {$this->getNomTable()} SET";
         foreach ($this->getNomsColonnes() as $nomColone){

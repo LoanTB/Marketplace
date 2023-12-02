@@ -13,7 +13,7 @@ class ControleurCommenter extends ControleurGenerique {
 
     public static function ajouterCommentaire(): void {
         if (!ConnexionUtilisateur::estConnecte() or !isset($_REQUEST["id_article"]) or !isset($_REQUEST["titre"]) or !isset($_REQUEST["texte"]) or !isset($_REQUEST["note"])) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurGenerique::accesNonAutorise("H");
             return;
         }
 
