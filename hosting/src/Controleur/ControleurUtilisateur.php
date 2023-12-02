@@ -124,7 +124,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        if (explode('@', $_REQUEST["email"])[1] != "yopmail.com"){
+        if (preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $_REQUEST["email"]) and explode('@', $_REQUEST["email"])[1] != "yopmail.com"){
             MessageFlash::ajouter("warning", "Seuls les emails 'yopmail.com' sont autorisées pour le moment.");
             self::afficherFormulaireCreation();
             return;
@@ -227,7 +227,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        if (explode('@', $_REQUEST["email"])[1] != "yopmail.com"){
+        if (preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $_REQUEST["email"]) and explode('@', $_REQUEST["email"])[1] != "yopmail.com"){
             MessageFlash::ajouter("warning", "Seuls les emails 'yopmail.com' sont autorisées pour le moment.");
             self::afficherFormulaireMiseAJour();
             return;
@@ -294,12 +294,19 @@ class ControleurUtilisateur extends ControleurGenerique {
 
     public static function connecter() : void {
         $utilisateurRepository = new UtilisateurRepository();
-        if (!isset($_REQUEST["login"]) or !isset($_REQUEST["password"])){
+        if (!isset($_REQUEST["unique"]) or !isset($_REQUEST["password"])){
             ControleurGenerique::accesNonAutorise("Q");
             return;
         }
 
-        $utilisateur = $utilisateurRepository->recupererParUniqueDansRequest();
+        if (preg_match("/^\+\d{11}$/", $_REQUEST["unique"])){
+            $utilisateur = $utilisateurRepository->recupererParUnique($_REQUEST["unique"],3);
+        }else if (preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $_REQUEST["unique"])){
+            $utilisateur = $utilisateurRepository->recupererParUnique($_REQUEST["unique"],2);
+        } else {
+            $utilisateur = $utilisateurRepository->recupererParUnique($_REQUEST["unique"],1);
+        }
+
         if ($utilisateur == null){
             MessageFlash::ajouter("warning", "L'utilisateur n'existe pas");
             self::formulaireConnexion();

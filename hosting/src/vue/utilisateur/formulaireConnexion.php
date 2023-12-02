@@ -6,7 +6,7 @@
             <fieldset>
                 <legend>Tirez le meilleur parti de FutureMarket en vous connectant à votre compte</legend>
                 <div class="entries">
-                    <input type="text" placeholder="Identifiant" name="login" id="login_id" required>
+                    <input type="text" placeholder="Identifiant/Email/Telephone" name="unique" id="unique_id" required>
                     <input type="password" value="" placeholder="Mot de passe" name="password" id="password_id" required>
                     <input type="hidden" name="action" value="connecter">
                     <input type="hidden" name="controleur" value="utilisateur">
