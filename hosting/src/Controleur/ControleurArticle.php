@@ -86,7 +86,7 @@ class ControleurArticle extends ControleurGenerique {
         $sqlreturn = (new ArticleRepository())->ajouter($article);
 
         if ($sqlreturn == "22001"){
-            MessageFlash::ajouter("warning", "Une information trop longue à été entrée, veuillez la raccourcir.");
+            MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
             self::afficherFormulaireCreation();
             return;
         } else if ($sqlreturn != "") {
@@ -117,7 +117,7 @@ class ControleurArticle extends ControleurGenerique {
         $sqlreturn = (new ArticleRepository())->mettreAJour($article);
 
         if ($sqlreturn == "22001"){
-            MessageFlash::ajouter("warning", "Une information trop longue à été entrée, veuillez la raccourcir.");
+            MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
             self::afficherFormulaireCreation();
             return;
         } else if ($sqlreturn != "") {

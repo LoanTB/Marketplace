@@ -18,7 +18,7 @@ CREATE TABLE Utilisateur(
                             id_utilisateur INT AUTO_INCREMENT,
                             login VARCHAR(100)  NOT NULL,
                             email VARCHAR(200) ,
-                            telephone CHAR(11) ,
+                            telephone CHAR(12) ,
                             password CHAR(64)  NOT NULL,
                             nom VARCHAR(200) ,
                             prenom VARCHAR(200) ,
