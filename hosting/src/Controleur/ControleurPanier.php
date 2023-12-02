@@ -55,12 +55,12 @@ class ControleurPanier extends ControleurGenerique {
             return;
         }
 
-        if ((new dansPanierRepository())->recupererParColonne($_REQUEST["id_article"],1) == null) {
+        if ((new dansPanierRepository())->recupererParDeuxColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0,$_REQUEST["id_article"],1) == null) {
             ControleurGenerique::accesNonAutorise();
             return;
         }
 
-        $sqlreturn = (new dansPanierRepository())->supprimerParColonne($_REQUEST["id_article"],1);
+        $sqlreturn = (new dansPanierRepository())->supprimerParDeuxColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0,$_REQUEST["id_article"],1);
 
         if ($sqlreturn == "") {
             MessageFlash::ajouter("success", "L'article a bien été supprimé du panier.");
