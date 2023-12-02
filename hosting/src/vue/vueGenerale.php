@@ -28,7 +28,7 @@ if (ConnexionUtilisateur::estConnecte()) {
             <li class="icon"><a href="controleurFrontal.php?action=afficherListe&controleur=article"><img src="../ressources/img/logo.png" title="Occasion/20" alt="Logo"></a></li>
             <li class="new"><a href="<?php if(ConnexionUtilisateur::estConnecte()){echo 'controleurFrontal.php?controleur=article&action=afficherFormulaireCreation';}else{echo 'controleurFrontal.php?controleur=utilisateur&action=afficherFormulaireCreation';}?>"><div id="navbutton">Nouvelle annonce<div class="svg add-icon"></div></div></a></li>
             <li class="searchbar"><label id="search"><input placeholder="Rechercher un article"><div class="svg mag-icon"></div></label></li>
-            <li class="menubutton"><a href="controleurFrontal.php?action=afficherListe&controleur=article"><div class="svg cart-icon"></div>Articles</a></li>
+            <li class="menubutton"><a href="controleurFrontal.php?action=afficherListe&controleur=panier"><div class="svg cart-icon"></div>Panier</a></li>
             <li class="menubutton"><a href="controleurFrontal.php?action=formulairePreference"><div class="svg favorite-icon"></div>Favoris</a></li>
             <li class="menubutton" onclick="triggerAccountMenu()"><a href="#"><div class="svg account-icon"></div>
             <?php if(ConnexionUtilisateur::estConnecte()){echo $utilisateur->getLogin();}else{echo 'Compte';}?>

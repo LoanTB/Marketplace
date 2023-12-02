@@ -1,6 +1,7 @@
 <?php
 namespace App\Ecommerce\Controleur;
 
+use App\Ecommerce\Controleur\ControleurUtilisateur;
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Modele\DataObject\relations\dansPanier;
@@ -9,7 +10,7 @@ use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 class ControleurPanier extends ControleurGenerique {
     public static function afficherListe(): void {
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise();
+            ControleurUtilisateur::formulaireConnexion();
             return;
         }
 
