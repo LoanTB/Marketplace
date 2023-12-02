@@ -20,7 +20,7 @@ class ControleurArticle extends ControleurGenerique {
 
     public static function afficherListeRecherche() : void {
         if (!isset($_REQUEST["recherche"])){
-            ControleurGenerique::accesNonAutorise();
+            self::afficherListe();
             return;
         }
         self::afficherNouvelleVue("vueGenerale.php",[
