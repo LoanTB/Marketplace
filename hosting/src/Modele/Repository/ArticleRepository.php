@@ -1,6 +1,7 @@
 <?php
 namespace App\Ecommerce\Modele\Repository;
 
+use App\Ecommerce\Lib\ConnexionBaseDeDonnee as dataBase;
 use App\Ecommerce\Modele\DataObject\Article;
 
 class ArticleRepository extends AbstractRepository{
@@ -18,6 +19,18 @@ class ArticleRepository extends AbstractRepository{
         "quantite",
         "id_utilisateur"
     );
+
+    public function recupererRecherche(string $recherche): array {
+        $pdoStatement = dataBase::getPdo()->prepare("SELECT * FROM Article WHERE Title LIKE '%:recherche%' OR Description LIKE '%:recherche%'");
+        $pdoStatement->execute(array(
+            "recherche" => $recherche
+        ));
+        $articles = [];
+        foreach ($pdoStatement as $dataFormatTableau) {
+            $articles[] = $this->construireDepuisTableau($dataFormatTableau,true);
+        }
+        return $articles;
+    }
 
     protected function getNomTable(): string {
         return $this->nomTable;
