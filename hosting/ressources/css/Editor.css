@@ -1,0 +1,130 @@
+@keyframes enphasis {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+
+}
+.imagePlaceholder {
+    background-color: transparent;
+    transition: background-color 0.25s;
+    border: gray dashed 2px;
+    display: flex;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.isImageHere {
+    border: none;
+    animation: enphasis 0.25s ease-in-out;
+}
+
+.isImageHere .svg {
+    display: none;
+}
+
+.imagePlaceholder .svg {
+    width: 25%;
+    height: 25%;
+    background-color: grey;
+    z-index: -1;
+}
+input[type="file"] {
+    display: none;
+}
+
+.imagePlaceholder:hover {
+    background-color: rgba(128, 128, 128, 0.25);
+}
+
+textarea {
+    width: 100%;
+    min-height: 200px;
+    resize: vertical;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: var(--var-sidebar-bg-color);
+    border: none;
+    color: var(--var-text);
+    font-family: "Cera Pro";
+    transition: box-shadow 0.2s;
+}
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 10px -3px var(--var-box-shadow-med);
+}
+
+#articleTitle input {
+    font-size: 32px;
+}
+
+#price {
+    font-size: 30px;
+    width: 100%;
+    appearance: textfield;
+}
+#devise {
+    font-size: 30px;
+    margin: auto 10px;
+}
+
+#articleTitle input, #price {
+    font-weight: bold;
+    font-family: "Cera Pro";
+    color: var(--var-text);
+}
+
+input {
+    background: none;
+    border: none;
+    border-bottom: transparent solid 1px;
+    transition: border-bottom 0.25s;
+}
+
+input:focus {
+    outline: none;
+    border-bottom: var(--var-background-color) solid 1px;
+}
+
+#quantitySelector, #quantitySelector > div {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin: 5px;
+    align-items: center;
+}
+
+#qty {
+    padding: 10px 20px;
+    background-color: var(--var-background-color);
+    color: var(--var-text);
+    border-radius: 10px;
+    width: 30%;
+    text-align: center;
+    appearance: textfield;
+}  
+
+.CTAbuttons {
+    align-items: start;
+}
+
+#sidebarAuthor {
+    justify-content: space-between;
+}
+.animated-button span:last-child {
+    background-color: #a01d1d;
+}
+.animated-button:hover {
+    box-shadow: 0 0 0 5px #a01d1d7a;
+}
+
+#addToCart {
+    padding: 15px 0;
+}
