@@ -95,22 +95,22 @@ class Article extends AbstractDataObject {
         $this->quantite = $quantite;
     }
 
-    public function getDateCreation(): int
+    public function getDateCreation(): string
     {
         return $this->dateCreation;
     }
 
-    public function setDateCreation(int $dateCreation): void
+    public function setDateCreation(string $dateCreation): void
     {
         $this->dateCreation = $dateCreation;
     }
 
-    public function getDateModification(): int
+    public function getDateModification(): string
     {
         return $this->dateModification;
     }
 
-    public function setDateModification(int $dateModification): void
+    public function setDateModification(string $dateModification): void
     {
         $this->dateModification = $dateModification;
     }
