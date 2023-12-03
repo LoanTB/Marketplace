@@ -12,7 +12,7 @@ class ControleurCommenter extends ControleurGenerique {
         return (new CommenterRepository())->recupererParColonne($id_article,1);
     }
 
-    public static function recupererMonCommentaires(string $id_article, string $id_utilisateur): ?Commenter {
+    public static function recupererCommentaireUtilisateur(string $id_article, string $id_utilisateur): ?Commenter {
         $commentaires = self::recupererListeCommentaires($id_article);
         foreach ($commentaires as $commentaire){
             if ($commentaire->getIdUtilisateur() == $id_utilisateur){
@@ -22,7 +22,7 @@ class ControleurCommenter extends ControleurGenerique {
         return null;
     }
 
-    public static function recupererTousSaufMonCommentaires(string $id_article, string $id_utilisateur): array {
+    public static function recupererListeSaufCommentaireUtilisateur(string $id_article, string $id_utilisateur): array {
         $commentaires = self::recupererListeCommentaires($id_article);
         $selection = [];
         foreach ($commentaires as $commentaire){
