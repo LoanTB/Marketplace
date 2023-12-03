@@ -27,6 +27,25 @@ class ControleurArticle extends ControleurGenerique {
         ]);
     }
 
+    public static function afficherDetail() : void {
+        if (!((new ArticleRepository())->requestContainsUnique())){
+            ControleurGenerique::accesNonAutorise("A");
+            return;
+        }
+
+        $article = (new ArticleRepository())->recupererParUniqueDansRequest();
+        if ($article == null){
+            MessageFlash::ajouter("warning", "L'article demandé est introuvable !");
+            self::afficherListe();
+        } else {
+            self::afficherVueAvecPointControle("vueGenerale.php",[
+                "pagetitle" => "Détails de l'article",
+                "cheminVueBody" => "article/detail.php",
+                "article" => $article
+            ]);
+        }
+    }
+
     public static function afficherErreur(string $messageErreur = "") : void {
         self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Erreur",
