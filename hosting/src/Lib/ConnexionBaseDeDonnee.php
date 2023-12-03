@@ -2,7 +2,7 @@
 namespace App\Ecommerce\Lib;
 
 use App\Ecommerce\Configuration\ConfigurationDatabase;
-use \PDO;
+use PDO;
 
 class ConnexionBaseDeDonnee {
     private static $instance = null;

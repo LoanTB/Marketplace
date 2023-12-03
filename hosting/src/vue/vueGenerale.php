@@ -1,8 +1,8 @@
 <?php
-use \App\Ecommerce\Lib\MessageFlash;
-use \App\Ecommerce\Lib\ConnexionUtilisateur;
-use \App\Ecommerce\Modele\Repository\UtilisateurRepository;
-use \App\Ecommerce\Modele\DataObject\Utilisateur;
+
+use App\Ecommerce\Lib\ConnexionUtilisateur;
+use App\Ecommerce\Lib\MessageFlash;
+use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 
 
 if (ConnexionUtilisateur::estConnecte()) {

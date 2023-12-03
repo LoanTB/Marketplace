@@ -1,5 +1,7 @@
 <?php
+
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
+
 $utilisateur = (new UtilisateurRepository())->recupererParClePrimaire($_REQUEST["login"]);
 ?>
 <form method="<?php if(\App\Ecommerce\Configuration\ConfigurationSite::getDebug()){echo "GET";}else{echo "POST";}?>" action="controleurFrontal.php">

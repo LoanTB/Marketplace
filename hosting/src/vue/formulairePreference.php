@@ -1,4 +1,4 @@
-<?php use \App\Ecommerce\Lib\PreferenceControleur;?>
+<?php use App\Ecommerce\Lib\PreferenceControleur; ?>
 <form method="<?php if(\App\Ecommerce\Configuration\ConfigurationSite::getDebug()){echo "GET";}else{echo "POST";}?>" action="controleurFrontal.php">
     <fieldset>
         <legend>Formulaire préférence :</legend>

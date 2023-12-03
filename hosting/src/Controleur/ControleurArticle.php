@@ -3,9 +3,6 @@ namespace App\Ecommerce\Controleur;
 
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
-use App\Ecommerce\Lib\MotDePasse;
-use App\Ecommerce\Lib\Redirections;
-use App\Ecommerce\Lib\VerificationEmail;
 use App\Ecommerce\Modele\DataObject\Article;
 use App\Ecommerce\Modele\Repository\ArticleRepository;
 
@@ -36,25 +33,6 @@ class ControleurArticle extends ControleurGenerique {
             "cheminVueBody" => "article/erreur.php",
             "messageErreur" => $messageErreur
         ]);
-    }
-
-    public static function afficherDetail() : void {
-        if (!((new ArticleRepository())->requestContainsUnique())){
-            ControleurGenerique::accesNonAutorise("A");
-            return;
-        }
-
-        $article = (new ArticleRepository())->recupererParUniqueDansRequest();
-        if ($article == null){
-            MessageFlash::ajouter("warning", "L'article demandé est introuvable !");
-            self::afficherListe();
-        } else {
-            self::afficherVueAvecPointControle("vueGenerale.php",[
-                "pagetitle" => "Détails de l'article",
-                "cheminVueBody" => "article/detail.php",
-                "article" => $article
-            ]);
-        }
     }
 
     public static function afficherFormulaireCreation() : void {

@@ -1,5 +1,7 @@
 <?php
-use \App\Ecommerce\Lib\ConnexionUtilisateur;
+
+use App\Ecommerce\Lib\ConnexionUtilisateur;
+
 /* @var $utilisateurs */
 foreach ($utilisateurs as $utilisateur) {
     echo '<p> Utilisateur ' . htmlspecialchars($utilisateur->getprenom()) . ' ' . htmlspecialchars($utilisateur->getnom()) . ' de login <a href="controleurFrontal.php?controleur=utilisateur&action=afficherDetail&login=' . rawurlencode($utilisateur->getlogin()) . '">' . htmlspecialchars($utilisateur->getlogin()) . '</a>.';

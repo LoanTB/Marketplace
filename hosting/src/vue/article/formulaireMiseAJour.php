@@ -1,8 +1,10 @@
 <?php
-    use App\Ecommerce\Modele\Repository\ArticleRepository;
-    use App\Ecommerce\Modele\Repository\UtilisateurRepository;
-    use \App\Ecommerce\Lib\ConnexionUtilisateur;
-    $article = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"], 0);
+
+use App\Ecommerce\Lib\ConnexionUtilisateur;
+use App\Ecommerce\Modele\Repository\ArticleRepository;
+use App\Ecommerce\Modele\Repository\UtilisateurRepository;
+
+$article = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"], 0);
     $user = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisateur::getIdUtilisateurConnecte(), 0);
 ?>
 <link rel="stylesheet" href="../ressources/css/ArticleDetail.css">

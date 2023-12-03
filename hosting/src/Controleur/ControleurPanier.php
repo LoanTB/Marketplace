@@ -1,7 +1,6 @@
 <?php
 namespace App\Ecommerce\Controleur;
 
-use App\Ecommerce\Controleur\ControleurUtilisateur;
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Modele\DataObject\relations\dansPanier;

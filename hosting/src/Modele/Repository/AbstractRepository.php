@@ -1,8 +1,8 @@
 <?php
 namespace App\Ecommerce\Modele\Repository;
 
-use App\Ecommerce\Modele\DataObject\AbstractDataObject;
 use App\Ecommerce\Lib\ConnexionBaseDeDonnee as dataBase;
+use App\Ecommerce\Modele\DataObject\AbstractDataObject;
 use PDOException;
 
 abstract class AbstractRepository{

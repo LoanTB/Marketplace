@@ -1,6 +1,8 @@
 <?php
-use App\Ecommerce\Modele\Repository\UtilisateurRepository;
+
 use App\Ecommerce\Lib\ConnexionUtilisateur;
+use App\Ecommerce\Modele\Repository\UtilisateurRepository;
+
 /* @var $article \App\Ecommerce\Modele\DataObject\Article */
 
 $userEntity = (new UtilisateurRepository)->recupererParUnique($article->getIdUtilisateur(), 0);

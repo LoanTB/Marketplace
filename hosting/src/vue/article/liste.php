@@ -1,7 +1,8 @@
 <?php
-use \App\Ecommerce\Lib\ConnexionUtilisateur;
-use \App\Ecommerce\Modele\Repository\UtilisateurRepository;
-use \App\Ecommerce\Modele\DataObject\Utilisateur;
+
+use App\Ecommerce\Lib\ConnexionUtilisateur;
+use App\Ecommerce\Modele\Repository\UtilisateurRepository;
+
 /* @var $articles */
 echo '<link rel="stylesheet" href="../ressources/css/ArticleListe.css">';
 

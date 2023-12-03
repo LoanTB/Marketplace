@@ -1,5 +1,4 @@
 <?php
-use \App\Ecommerce\Lib\ConnexionUtilisateur;
 /* @var $articles */
 
 echo '<link rel="stylesheet" href="../ressources/css/SimpleListe.css">
