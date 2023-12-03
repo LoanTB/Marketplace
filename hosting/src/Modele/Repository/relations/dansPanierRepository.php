@@ -36,6 +36,16 @@ class dansPanierRepository extends AbstractRepository{
         return $AbstractDataObject;
     }
 
+    public function estDansPanier($id_utilisateur,$id_article): bool{
+        $articles = self::recupererPanierUtilisateur($id_utilisateur);
+        foreach ($articles as $article) {
+            if ($article->getIdArticle() == $id_article){
+                return true;
+            }
+        }
+        return false;
+    }
+
     protected function getNomTable(): string {
         return $this->nomTable;
     }
