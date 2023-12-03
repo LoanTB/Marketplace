@@ -47,12 +47,5 @@ class MessageFlash {
         Session::getInstance()->supprimer(MessageFlash::$cleFlash);
         return $values;
     }
-
-    public static function estVide() : bool {
-        $values = self::lireTousMessages();
-        Session::getInstance()->enregistrer(MessageFlash::$cleFlash,$values);
-        return empty($values);
-    }
-
 }
 

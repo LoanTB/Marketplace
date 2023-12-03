@@ -10,13 +10,13 @@ use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 class ControleurPanier extends ControleurGenerique {
     public static function afficherListe(): void {
         if (!ConnexionUtilisateur::estConnecte()) {
-            self::afficherNouvelleVue("vueGenerale.php", [
+            self::afficherVueAvecPointControle("vueGenerale.php", [
                 "pagetitle" => "Panier",
                 "cheminVueBody" => "panier/liste.php",
-                "articles" => PanierTemporaire::lire()
+                "articles" => PanierTemporaire::lireArticles()
             ]);
         } else {
-            self::afficherNouvelleVue("vueGenerale.php", [
+            self::afficherVueAvecPointControle("vueGenerale.php", [
                 "pagetitle" => "Panier",
                 "cheminVueBody" => "panier/liste.php",
                 "articles" => (new dansPanierRepository())->recupererPanierUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte())
@@ -30,8 +30,8 @@ class ControleurPanier extends ControleurGenerique {
             return;
         }
 
+        PanierTemporaire::ajouter($_REQUEST["id_article"]);
         if (!ConnexionUtilisateur::estConnecte()) {
-            PanierTemporaire::supprimer($_REQUEST["id_article"]);
             MessageFlash::ajouter("success", "L'article a bien été ajouté au panier.");
         } else {
             $sqlreturn = (new dansPanierRepository())->ajouter(new dansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $_REQUEST["id_article"], $raw = false));
@@ -51,8 +51,8 @@ class ControleurPanier extends ControleurGenerique {
             return;
         }
 
+        PanierTemporaire::supprimer($_REQUEST["id_article"]);
         if (!ConnexionUtilisateur::estConnecte()) {
-            PanierTemporaire::supprimer($_REQUEST["id_article"]);
             MessageFlash::ajouter("success", "L'article a bien été supprimé du panier.");
         } else {
             if ((new dansPanierRepository())->recupererParDeuxColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0,$_REQUEST["id_article"],1) == null) {
@@ -72,8 +72,8 @@ class ControleurPanier extends ControleurGenerique {
     }
 
     public static function vider(): void {
+        PanierTemporaire::vider();
         if (!ConnexionUtilisateur::estConnecte()) {
-            PanierTemporaire::vider();
             MessageFlash::ajouter("success", "Le panier a bien été vidé.");
         } else {
             $sqlreturn = (new dansPanierRepository())->supprimerParColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0);
@@ -94,13 +94,15 @@ class ControleurPanier extends ControleurGenerique {
             ControleurGenerique::accesNonAutorise("N");
             return;
         }
+        $fail = false;
         foreach (PanierTemporaire::lire() as $id_article) {
-            $sqlreturn = (new dansPanierRepository())->ajouter(new dansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $_REQUEST["id_article"], $raw = false));
+            $sqlreturn = (new dansPanierRepository())->ajouter(new dansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $id_article, $raw = false));
             if ($sqlreturn != "" and $sqlreturn != "23000"){
                 MessageFlash::ajouter("warning", "Des articles n'ont pas pu être enregistrer au panier du compte (".$sqlreturn."), veuillez réessayer plus tard.");
+                $fail = true;
             }
         }
-        if (MessageFlash::estVide()){
+        if (!empty(PanierTemporaire::lire()) and !$fail){
             MessageFlash::ajouter("success", "Le panier a bien été enregistré.");
         }
         PanierTemporaire::vider();

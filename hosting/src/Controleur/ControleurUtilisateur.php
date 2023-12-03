@@ -319,6 +319,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             if (MotDePasse::verifier($_REQUEST["password"],$utilisateur->getPassword())){
                 ConnexionUtilisateur::connecter($utilisateur->getIdUtilisateur());
                 MessageFlash::ajouter("success", "Connexion réussie !");
+                ControleurPanier::convertir();
                 ControleurGenerique::rediriger();
             } else {
                 MessageFlash::ajouter("warning", "Mot de passe incorrect !");

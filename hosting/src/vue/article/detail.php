@@ -38,11 +38,7 @@ echo '
         <div class="CTAbuttons">
             <a id="addToCart" href="';
 
-if (ConnexionUtilisateur::estConnecte()) {
-	echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle()));
-} else {
-	echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur';
-}
+echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle()));
 
 echo '">Ajouter au panier</a>
             <a class="animated-button">
