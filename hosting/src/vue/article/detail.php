@@ -1,6 +1,8 @@
 <?php
 
+use App\Ecommerce\Controleur\ControleurWishlist;
 use App\Ecommerce\Lib\ConnexionUtilisateur;
+use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 
 /* @var $article \App\Ecommerce\Modele\DataObject\Article */
@@ -36,28 +38,36 @@ echo '
             </div>
         </div>
         <div class="CTAbuttons">
-            <a id="addToCart" href="';
+            <a id="addToCart"';
 
-echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle()));
-
-echo '">Ajouter au panier</a>
-            <a class="animated-button">
-                <a id="addToFav" href="';
+echo 'href="';
 
 if (ConnexionUtilisateur::estConnecte()) {
-    echo 'controleurFrontal.php?controleur=wishlist&action=ajouterArticleAuxFavoris&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle()));
+    if (dansPanierRepository::estDansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $article->getIdArticle())) {
+        echo 'controleurFrontal.php?action=afficherListe&controleur=panier">Voir dans le panier</a>';
+    } else {
+        echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Ajouter au panier</a>';
+    }
 } else {
-    echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur';
+	echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur">Ajouter au panier</a>';
 }
 
-echo '">Ajouter aux favoris</a>
-                <span></span>
+echo '<a class="animated-button" href="';
+
+if (ConnexionUtilisateur::estConnecte()) {
+    echo 'controleurFrontal.php?controleur=wishlist&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '&';
+    if (ControleurWishlist::estDansFavoris(ConnexionUtilisateur::getIdUtilisateurConnecte(), $article->getIdArticle())) {
+        echo 'action=supprimerArticleDesFavoris"><span id="addToFav">Supprimer des favoris</span>';
+    } else {
+        echo 'action=ajouterArticleAuxFavoris"><span id="addToFav">Ajouter aux favoris</span>';
+    }
+} else {
+    echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur"><span id="addToFav">Ajouter aux favoris</span>';
+}
+
+echo '<span></span>
             </a>
         </div>
-        <!--<div class="annonceProps">
-            <p><strong>Mise en ligne :</strong> 24 octobre à 12h00</p>
-            <p><strong>Mise à jour :</strong> 17 novembre à 17h24</p>
-        </div>-->
     </div>
 </div>
 ';
