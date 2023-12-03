@@ -58,9 +58,14 @@ class ControleurUtilisateur extends ControleurGenerique {
     }
 
     public static function afficherFormulaireMiseAJour() : void {
+        if (!ConnexionUtilisateur::estConnecte()){
+            ControleurGenerique::accesNonAutorise("BA");
+            return;
+        }
         self::afficherNouvelleVue("vueGenerale.php",[
             "pagetitle" => "Formulaire modification utilisateurs",
-            "cheminVueBody" => "utilisateur/formulaireMiseAJour.php"
+            "cheminVueBody" => "utilisateur/formulaireMiseAJour.php",
+            "utilisateur" => (new UtilisateurRepository())->recupererParUnique(ConnexionUtilisateur::getIdUtilisateurConnecte(),0)
         ]);
     }
 
