@@ -9,16 +9,17 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
 
 ?>
 
-<link href="../ressources/css/UserDetails.css" rel="stylesheet">
+<link href="../ressources/css/UserDetails.css" rel="stylesheet" enctype="multipart/form-data">
+
+<form method="POST" action="controleurFrontal.php">
 <div id="userHead">
     <label class="pfPlaceholder" for="pfp" id="pfpLabel">
         <div class="svg image-add-icon"></div>
-        <input type="file" id="pfp">
+        <input type="file" name="image" id="pfp">
     </label>
     <div id="fullName"><?php echo htmlspecialchars($utilisateur->getNom())?> <?php echo htmlspecialchars($utilisateur->getPrenom())?></div>
     <div><?php echo htmlspecialchars($utilisateur->getLogin())?></div>
 </div>
-<form method="<?php if(\App\Ecommerce\Configuration\ConfigurationSite::getDebug()){echo "GET";}else{echo "POST";}?>" action="controleurFrontal.php">
     <div class="entryFrame">
         <h3>Identification</h3>
         <div class="inline">
