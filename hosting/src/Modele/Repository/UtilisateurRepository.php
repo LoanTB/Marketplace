@@ -18,8 +18,7 @@ class UtilisateurRepository extends AbstractRepository{
         "email",
         "password",
         "nom",
-        "prenom",
-        "dateCreation"
+        "prenom"
     );
 
     private array $nomsColonnes = array(

@@ -148,13 +148,12 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         $infos["id_utilisateur"] = null;
+        $infos["dateCreation"] = (new DateTime())->format('Y-m-d H:i:s');
         foreach ($utilisateurRepository->getNomsColonnes() as $key){
             if (!array_key_exists($key,$infos)){
                 $infos[$key] = $_REQUEST[$key];
             }
         }
-
-        $infos["dateCreation"] = (new DateTime())->format('Y-m-d H:i:s');
 
         $utilisateur = $utilisateurRepository->construireDepuisTableau($infos,false);
 
