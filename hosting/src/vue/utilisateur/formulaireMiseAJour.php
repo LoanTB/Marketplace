@@ -98,7 +98,6 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
             echo '<div id="adminCheckbox">';
             if ($utilisateur->getAdmin()) {
                 echo '    <input type="checkbox" placeholder="" name="estAdmin" id="estAdmin_id" checked>';
-
             } else {
                 echo '    <input type="checkbox" placeholder="" name="estAdmin" id="estAdmin_id">';
             }
@@ -106,8 +105,8 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
         }
         ?>
     </div>
+    <input type='hidden' name='id_utilisateur' value='<?php echo htmlspecialchars($utilisateur->getIdUtilisateur()); ?>'>
     <input type='hidden' name='action' value='mettreAJour'>
-    <input type='hidden' name='dateCreation' value='<?php echo htmlspecialchars($utilisateur->getDateCreation()); ?>'>
     <input type='hidden' name='controleur' value='utilisateur'>
     <div id="submitButtons">
         <a id="deleteAction" href="#">Supprimer le compte</a>

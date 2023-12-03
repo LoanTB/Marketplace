@@ -183,10 +183,12 @@ class ControleurUtilisateur extends ControleurGenerique {
     }
 
     public static function mettreAJour() : void {
-        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["login"]) and !ConnexionUtilisateur::estAdministrateur()){
+        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["id_utilisateur"]) and !ConnexionUtilisateur::estAdministrateur()){
             ControleurGenerique::accesNonAutorise("T");
             return;
         }
+
+        $ancienUtilisateur = (new UtilisateurRepository())->recupererParUniqueDansRequest();
 
         $infos = array();
         $utilisateurRepository = new UtilisateurRepository();
@@ -199,7 +201,11 @@ class ControleurUtilisateur extends ControleurGenerique {
             }
         }
 
-        $infos["nonce_email"] = MotDePasse::genererChaineAleatoire(20);
+        if ($infos["email"] != $ancienUtilisateur->getEmail()){
+            $infos["nonce_email"] = MotDePasse::genererChaineAleatoire(20);
+        } else {
+            $infos["nonce_email"] = $ancienUtilisateur->getNonceEmail();
+        }
 
         if (isset($_REQUEST["admin"]) and $_REQUEST["admin"] == "true"){
             if (ConnexionUtilisateur::estAdministrateur()){
@@ -229,10 +235,11 @@ class ControleurUtilisateur extends ControleurGenerique {
                 self::afficherFormulaireMiseAJour();
                 return;
             }
+            $infos["nonce_telephone"] = MotDePasse::genererChaineAleatoire(20);
         } else {
-            $infos["telephone"] = null;
+            $infos["telephone"] = $ancienUtilisateur->getTelephone();
+            $infos["nonce_telephone"] = $ancienUtilisateur->getNonceTelephone();
         }
-        $infos["nonce_telephone"] = MotDePasse::genererChaineAleatoire(20);
 
         if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)){
             MessageFlash::ajouter("warning", "Email invalide, veuillez entrer une email valide.");
@@ -252,32 +259,26 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        $infos["id_utilisateur"] = null;
-        foreach ($utilisateurRepository->getNomsColonnes() as $key){
-            if (!array_key_exists($key,$infos)){
-                $infos[$key] = $_REQUEST[$key];
-            }
-        }
-        $oldUtilisateur = $utilisateurRepository->recupererParUniqueDansRequest();
-
-        if (!MotDePasse::verifier($infos["password"],$oldUtilisateur->getPassword())){
+        if (!MotDePasse::verifier($infos["password"],$ancienUtilisateur->getPassword())){
             MessageFlash::ajouter("warning", "Mot de passe incorrecte.");
             self::afficherFormulaireMiseAJour();
             return;
         }
 
+        $infos["id_utilisateur"] = $ancienUtilisateur->getIdUtilisateur();
+        $infos["dateCreation"] = $ancienUtilisateur->getDateCreation();
+        foreach ($utilisateurRepository->getNomsColonnes() as $key){
+            if (!array_key_exists($key,$infos)){
+                $infos[$key] = $_REQUEST[$key];
+            }
+        }
+
         $newUtilisateur = $utilisateurRepository->construireDepuisTableau($infos,false);
-        if ($newUtilisateur->getEmail() == $oldUtilisateur->getEmail()){
-            $newUtilisateur->setNonceEmail($oldUtilisateur->getNonceEmail());
-        }
-        if ($newUtilisateur->getTelephone() == $oldUtilisateur->getTelephone()){
-            $newUtilisateur->setNonceTelephone($oldUtilisateur->getNonceTelephone());
-        }
 
         $sqlreturn = $utilisateurRepository->mettreAJour($newUtilisateur);
 
         if ($sqlreturn == "") {
-            if ($newUtilisateur->getEmail() == $oldUtilisateur->getEmail()) {
+            if ($newUtilisateur->getEmail() == $ancienUtilisateur->getEmail()) {
                 MessageFlash::ajouter("success", "L'utilisateur a bien été modifié.");
             }
         } else if ($sqlreturn == "23000") {
@@ -294,11 +295,11 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        if ($newUtilisateur->getEmail() != $oldUtilisateur->getEmail()) {
+        if ($newUtilisateur->getEmail() != $ancienUtilisateur->getEmail()) {
             if (VerificationEmail::envoiEmailValidation($newUtilisateur)) {
                 MessageFlash::ajouter("success","L'utilisateur a bien été modifié. L'email, un nouveau code de verification vous a été envoyé : <a href='https://yopmail.com'>Consultez la boite mail</a>");
             } else {
-                $utilisateurRepository->mettreAJour($oldUtilisateur);
+                $utilisateurRepository->mettreAJour($ancienUtilisateur);
                 MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyée, veuillez réessayer plus tard.");
             }
         }

@@ -15,9 +15,9 @@ class Utilisateur extends AbstractDataObject {
     private string $nonce_telephone;
     private bool $admin;
     private string $url_image;
-    private string $dateCreation;
+    private ?string $dateCreation;
 
-    public function __construct(?int $id_utilisateur, string $login, string $email,?string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, string $url_image,string $dateCreation, bool $raw = true){
+    public function __construct(?int $id_utilisateur, string $login, string $email,?string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, string $url_image,?string $dateCreation, bool $raw = true){
         if ($raw) {
             $this->id_utilisateur = $id_utilisateur;
             $this->login = $login;
@@ -240,12 +240,12 @@ class Utilisateur extends AbstractDataObject {
         $this->url_image = $url_image;
     }
 
-    public function getDateCreation(): string
+    public function getDateCreation(): ?string
     {
         return $this->dateCreation;
     }
 
-    public function setDateCreation(string $dateCreation): void
+    public function setDateCreation(?string $dateCreation): void
     {
         $this->dateCreation = $dateCreation;
     }
