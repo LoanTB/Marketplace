@@ -73,6 +73,11 @@ class ControleurUtilisateur extends ControleurGenerique {
 
 
     public static function creerDepuisFormulaire() : void {
+        if (ConnexionUtilisateur::estConnecte() and !ConnexionUtilisateur::estAdministrateur()){
+            ControleurGenerique::accesNonAutorise("L");
+            return;
+        }
+
         $infos = array();
         $utilisateurRepository = new UtilisateurRepository();
         foreach ($utilisateurRepository->getNotNull() as $key){
@@ -294,7 +299,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
     public static function connecter() : void {
         $utilisateurRepository = new UtilisateurRepository();
-        if (!isset($_REQUEST["unique"]) or !isset($_REQUEST["password"])){
+        if (!isset($_REQUEST["unique"]) or !isset($_REQUEST["password"]) or ConnexionUtilisateur::estConnecte()){
             ControleurGenerique::accesNonAutorise("Q");
             return;
         }
