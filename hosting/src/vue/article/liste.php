@@ -1,6 +1,7 @@
 <?php
 
 use App\Ecommerce\Lib\ConnexionUtilisateur;
+use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 
 /* @var $articles */
@@ -25,8 +26,8 @@ foreach ($articles as $article) {
         </div>
         <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">';
     }
-    /* Remplacer par un appel à l'image illustrative du produit */
-    echo '<div class="thumbnail" style="background-image: url(' . '\'https://picsum.photos/300/200\'' . ')"></div>';
+
+    echo '<div class="thumbnail" style="background-image: url(' . (new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[0] . ')"></div>';
 
     echo '<div class="articleDesc">
     <h2 class="overflowable">' . htmlspecialchars($article->getNom()) . '
