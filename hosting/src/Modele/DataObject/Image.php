@@ -3,7 +3,7 @@
 namespace App\Ecommerce\Modele\DataObject;
 
 class Image extends AbstractDataObject{
-    private int $url_image;
+    private string $url_image;
 
     public function __construct(string $url_image, bool $raw = true){
         if ($raw) {
@@ -19,12 +19,12 @@ class Image extends AbstractDataObject{
         );
     }
 
-    public function getUrlImage(): int
+    public function getUrlImage(): string
     {
         return $this->url_image;
     }
 
-    public function setUrlImage(int $url_image): void
+    public function setUrlImage(string $url_image): void
     {
         $this->url_image = $url_image;
     }
