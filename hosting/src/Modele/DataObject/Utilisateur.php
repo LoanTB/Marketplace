@@ -15,8 +15,9 @@ class Utilisateur extends AbstractDataObject {
     private string $nonce_telephone;
     private bool $admin;
     private string $url_image;
+    private string $dateCreation;
 
-    public function __construct(?int $id_utilisateur, string $login, string $email,?string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, string $url_image, bool $raw = true){
+    public function __construct(?int $id_utilisateur, string $login, string $email,?string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, string $url_image,string $dateCreation, bool $raw = true){
         if ($raw) {
             $this->id_utilisateur = $id_utilisateur;
             $this->login = $login;
@@ -29,6 +30,7 @@ class Utilisateur extends AbstractDataObject {
             $this->nonce_telephone = $nonce_telephone;
             $this->admin = $admin;
             $this->url_image = $url_image;
+            $this->dateCreation = $dateCreation;
         } else {
             $this->setIdUtilisateur($id_utilisateur);
             $this->setLogin($login);
@@ -41,6 +43,7 @@ class Utilisateur extends AbstractDataObject {
             $this->setNonceTelephone($nonce_telephone);
             $this->setAdmin($admin);
             $this->setUrlImage($url_image);
+            $this->setDateCreation($dateCreation);
         }
     }
 
@@ -56,7 +59,8 @@ class Utilisateur extends AbstractDataObject {
             "nonce_email" => $this->getNonceEmail(),
             "nonce_telephone" => $this->getNonceTelephone(),
             "admin" => $this->getAdmin()*1,
-            "url_image" => $this->getUrlImage()
+            "url_image" => $this->getUrlImage(),
+            "dateCreation" => $this->getDateCreation()
         );
     }
 
@@ -234,5 +238,15 @@ class Utilisateur extends AbstractDataObject {
     public function setUrlImage(string $url_image): void
     {
         $this->url_image = $url_image;
+    }
+
+    public function getDateCreation(): string
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(string $dateCreation): void
+    {
+        $this->dateCreation = $dateCreation;
     }
 }

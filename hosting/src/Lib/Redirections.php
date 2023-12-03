@@ -7,7 +7,6 @@ use App\Ecommerce\Modele\HTTP\Session;
 class Redirections {
     private static string $cleConnexion = "_redirections";
 
-    // Sauvegarder l'URL et les données de la vue
     public static function sauvgarder(string $url, array $parametres = []): void {
         self::supprimerPointControle();
         $data = [

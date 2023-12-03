@@ -140,6 +140,21 @@ class ControleurWishlist extends ControleurGenerique {
         return self::recupererFavoris();
     }
 
+    public static function estDansFavoris($id_utilisateur,$id_article): bool{
+        $wishlists = (new enregistrerRepository())->recupererWishlistsUtilisateur($id_utilisateur);
+        foreach ($wishlists as $wishlist){
+            if ($wishlist->getNom() == "favoris"){
+                $articles = (new contenirRepository())->recupererArticlesWishlist($wishlist->getIdWishlist());
+                foreach ($articles as $article) {
+                    if ($article->getIdArticle() == $id_article){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public static function afficherFavoris(): void{
         if (!ConnexionUtilisateur::estConnecte()) {
             ControleurUtilisateur::formulaireConnexion();

@@ -47,6 +47,5 @@ class MessageFlash {
         Session::getInstance()->supprimer(MessageFlash::$cleFlash);
         return $values;
     }
-
 }
 

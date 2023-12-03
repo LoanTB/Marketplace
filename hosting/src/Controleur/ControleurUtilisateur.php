@@ -6,6 +6,7 @@ use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
 use App\Ecommerce\Lib\VerificationEmail;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
+use DateTime;
 
 class ControleurUtilisateur extends ControleurGenerique {
 
@@ -73,6 +74,11 @@ class ControleurUtilisateur extends ControleurGenerique {
 
 
     public static function creerDepuisFormulaire() : void {
+        if (ConnexionUtilisateur::estConnecte() and !ConnexionUtilisateur::estAdministrateur()){
+            ControleurGenerique::accesNonAutorise("L");
+            return;
+        }
+
         $infos = array();
         $utilisateurRepository = new UtilisateurRepository();
         foreach ($utilisateurRepository->getNotNull() as $key){
@@ -142,6 +148,9 @@ class ControleurUtilisateur extends ControleurGenerique {
                 $infos[$key] = $_REQUEST[$key];
             }
         }
+
+        $infos["dateCreation"] = (new DateTime())->format('Y-m-d H:i:s');
+
         $utilisateur = $utilisateurRepository->construireDepuisTableau($infos,false);
 
         $sqlreturn = $utilisateurRepository->ajouter($utilisateur);
@@ -294,7 +303,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
     public static function connecter() : void {
         $utilisateurRepository = new UtilisateurRepository();
-        if (!isset($_REQUEST["unique"]) or !isset($_REQUEST["password"])){
+        if (!isset($_REQUEST["unique"]) or !isset($_REQUEST["password"]) or ConnexionUtilisateur::estConnecte()){
             ControleurGenerique::accesNonAutorise("Q");
             return;
         }
@@ -319,6 +328,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             if (MotDePasse::verifier($_REQUEST["password"],$utilisateur->getPassword())){
                 ConnexionUtilisateur::connecter($utilisateur->getIdUtilisateur());
                 MessageFlash::ajouter("success", "Connexion réussie !");
+                ControleurPanier::convertir();
                 ControleurGenerique::rediriger();
             } else {
                 MessageFlash::ajouter("warning", "Mot de passe incorrect !");

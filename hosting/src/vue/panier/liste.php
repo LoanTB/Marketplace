@@ -5,7 +5,7 @@ echo '<link rel="stylesheet" href="../ressources/css/SimpleListe.css">
     <div id="enteteListe">
         <h1>Votre panier</h1>';
 
-if (count($articles) === 0) {
+if (empty($articles)) {
     echo "<h3>Votre panier est vide !</h3>";
 } else {
     echo '<h3>Articles que vous êtes sur le point d\'acheter</h3>
