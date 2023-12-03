@@ -1,4 +1,5 @@
 <?php
+namespace App\Ecommerce\Lib;
 
 class ImgurUploader {
     private $clientId;
