@@ -11,6 +11,7 @@ class ImgurUploader {
     }
 
     public function uploadImage($file) {
+
         if (isset($file['image']) && $file['image']['error'] === UPLOAD_ERR_OK) {
             $imageData = file_get_contents($file['image']['tmp_name']);
 
