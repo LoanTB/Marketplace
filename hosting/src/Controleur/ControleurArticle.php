@@ -5,6 +5,7 @@ use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Modele\DataObject\Article;
 use App\Ecommerce\Modele\Repository\ArticleRepository;
+use DateTime;
 
 class ControleurArticle extends ControleurGenerique {
     public static function afficherListe() : void {
@@ -91,7 +92,7 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
 
-        $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
+        $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],(new DateTime())->format('Y-m-d H:i:s'),(new DateTime())->format('Y-m-d H:i:s'),ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
 
         $sqlreturn = (new ArticleRepository())->ajouter($article);
 
@@ -134,7 +135,7 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
 
-        $article = new Article($_REQUEST["id_article"],$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
+        $article = new Article($_REQUEST["id_article"],$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],(new DateTime())->format('Y-m-d H:i:s'),(new DateTime())->format('Y-m-d H:i:s'),ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
 
         $sqlreturn = (new ArticleRepository())->mettreAJour($article);
 
