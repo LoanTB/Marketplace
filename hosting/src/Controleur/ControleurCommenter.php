@@ -12,6 +12,27 @@ class ControleurCommenter extends ControleurGenerique {
         return (new CommenterRepository())->recupererParColonne($id_article,1);
     }
 
+    public static function recupererMonCommentaires(string $id_article, string $id_utilisateur): ?Commenter {
+        $commentaires = self::recupererListeCommentaires($id_article);
+        foreach ($commentaires as $commentaire){
+            if ($commentaire->getIdUtilisateur() == $id_utilisateur){
+                return $commentaire;
+            }
+        }
+        return null;
+    }
+
+    public static function recupererTousSaufMonCommentaires(string $id_article, string $id_utilisateur): array {
+        $commentaires = self::recupererListeCommentaires($id_article);
+        $selection = [];
+        foreach ($commentaires as $commentaire){
+            if ($commentaire->getIdUtilisateur() != $id_utilisateur){
+                $selection[] = $commentaire;
+            }
+        }
+        return $selection;
+    }
+
     public static function ajouterCommentaire(): void {
         if (!ConnexionUtilisateur::estConnecte() or !isset($_REQUEST["id_article"]) or !isset($_REQUEST["titre"]) or !isset($_REQUEST["texte"]) or !isset($_REQUEST["note"])) {
             ControleurGenerique::accesNonAutorise("H");
