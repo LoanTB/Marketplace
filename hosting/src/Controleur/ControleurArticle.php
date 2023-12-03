@@ -5,6 +5,7 @@ use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Modele\DataObject\Article;
 use App\Ecommerce\Modele\Repository\ArticleRepository;
+use App\Ecommerce\Lib\ImgurUploader;
 
 class ControleurArticle extends ControleurGenerique {
     public static function afficherListe() : void {
@@ -71,6 +72,34 @@ class ControleurArticle extends ControleurGenerique {
             self::afficherFormulaireCreation();
             return;
         }
+
+
+
+
+        $uploader = new ImgurUploader();
+        $imgurLinks = array();
+
+        for ($i = 1; $i <= 3; $i++) {
+            $inputName = 'image' . $i;
+            if ($_FILES[$inputName] && $_FILES[$inputName]['error'] === UPLOAD_ERR_OK) {
+                $fileToUpload = array('image' => $_FILES[$inputName]);
+                $imgurLink = $uploader->uploadImage($fileToUpload);
+                if ($imgurLink) {
+                    $imgurLinks[] = $imgurLink;
+                } else {
+                    MessageFlash::ajouter("warning", "Impossible d'héberger les images, veuillez réessayer ultérieurement");
+                    self::afficherFormulaireCreation();
+                    return;
+                }
+            }
+        }
+        echo 'Images uploaded successfully. Imgur links:';
+        foreach ($imgurLinks as $link) {
+            echo '<br><a href="' . $link . '" target="_blank">' . $link . '</a>';
+        }
+
+
+
 
         $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
 
