@@ -56,7 +56,7 @@ if (ConnexionUtilisateur::estConnecte()) {
                 <li class="account-menuitem top bottom"><a href="controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur"><div class="svg key-icon"></div><div class="account-buttons">Connexion</div></a></li>';
             }
             ?>
-            <li class="instanceinfo">Version 1.1.0</li>
+<!--            <li class="instanceinfo">Version 1.1.0</li> À garder peut être pour plus tard quand on fera un lien entre les commits pour afficher la version-->
         </ul>
     </div>
 </header>

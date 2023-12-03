@@ -44,5 +44,3 @@ foreach ($articles as $article) {
     }
 }
 echo '</div><script src="../ressources/js/overflowtrigger.js"></script>';
-
-/* Inutilisé : Description du produit -> htmlspecialchars($article->getDescription()) */

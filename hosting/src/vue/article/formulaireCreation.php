@@ -3,7 +3,7 @@
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 
-$user = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisateur::getIdUtilisateurConnecte(), 0);
+$utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisateur::getIdUtilisateurConnecte(), 0);
 ?>
 <link rel="stylesheet" href="../ressources/css/ArticleDetail.css">
 <link href="../ressources/css/Editor.css" rel="stylesheet">
