@@ -49,7 +49,7 @@ if (ConnexionUtilisateur::estConnecte()) {
             <?php
             if (ConnexionUtilisateur::estConnecte()) {
                 echo '<li class="profilepicture"><img alt="Profile picture" src="../ressources/img/unknown.png">'.htmlspecialchars(rawurlencode($utilisateur->getNom())).' '.htmlspecialchars(rawurlencode($utilisateur->getPrenom())).'</li>
-                <li class="account-menuitem top"><a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&id_utilisateur='.ConnexionUtilisateur::getIdUtilisateurConnecte().'"><div class="svg settings-icon"></div><div class="account-buttons">Préférences</div></a></li><li class="separator"></li>
+                <li class="account-menuitem top"><a href="controleurFrontal.php?action=afficherFormulaireMiseAJour&controleur=utilisateur"><div class="svg settings-icon"></div><div class="account-buttons">Modifier profil</div></a></li><li class="separator"></li>
                 <li class="account-menuitem bottom"><a href="controleurFrontal.php?action=deconnecter&controleur=utilisateur"><div class="svg logout-icon"></div><div class="account-buttons">Déconnexion</div></a></li>';
             } else {
                 echo '<li class="profilepicture"><img alt="Profile picture" src="../ressources/img/unknown.png">Non connecté</li>

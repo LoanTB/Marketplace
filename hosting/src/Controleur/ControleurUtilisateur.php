@@ -246,7 +246,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
 
-        if ($_REQUEST["password"] != $_REQUEST["passwordConfirmation"]){
+        if ($_REQUEST["newPassword"] != $_REQUEST["passwordConfirmation"]){
             MessageFlash::ajouter("warning", "Les mots de passes sont différents.");
             self::afficherFormulaireMiseAJour();
             return;

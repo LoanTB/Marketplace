@@ -3,6 +3,9 @@ namespace App\Ecommerce\Modele\Repository;
 
 use App\Ecommerce\Lib\ConnexionBaseDeDonnee as dataBase;
 use App\Ecommerce\Modele\DataObject\Article;
+use App\Ecommerce\Modele\DataObject\relations\illustrer;
+use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
+use PDOException;
 
 class ArticleRepository extends AbstractRepository{
     private string $nomTable = "Article";
@@ -32,6 +35,22 @@ class ArticleRepository extends AbstractRepository{
             $articles[] = $this->construireDepuisTableau($dataFormatTableau,true);
         }
         return $articles;
+    }
+
+    public function ajouterArticleAvecIllustrations(Article $article, array $illustrations): string {
+        try {
+            dataBase::getPdo()->beginTransaction();
+            (new ArticleRepository())->ajouter($article);
+            $articleId = dataBase::getPdo()->lastInsertId();
+            foreach ($illustrations as $illustration){
+                (new illustrerRepository())->ajouter(new illustrer($articleId,$illustration->getUrlImage(),$illustration->getOrdre()));
+            }
+            dataBase::getPdo()->commit();
+        } catch (PDOException $e) {
+            dataBase::getPdo()->rollBack();
+            return $e;
+        }
+        return "";
     }
 
     protected function getNomTable(): string {

@@ -1,0 +1,140 @@
+@import url("./Authentication.css");
+
+:root {
+    --var-fieldset-bg-color: #f0f0f0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --var-fieldset-bg-color: #3a3a3a;
+    }
+  }
+
+main {
+    max-width: calc(var(--var-max-page-width) - 250px);
+    margin: 40px auto;
+    background-image: none;
+}
+
+main > * {
+    margin: 0 10px;
+}
+
+#userHead {
+    display: grid;
+    grid-template-columns: 120px auto;
+    gap: 10px 20px;
+    margin-bottom: 20px;
+}
+
+#fullName {
+    font-weight: bold;
+    font-size: 2.5em;
+    margin-top: auto;
+}
+
+#userHead > div {
+    grid-column: 2;
+}
+
+.entryFrame {
+    background-color: var(--var-fieldset-bg-color);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.pfPlaceholder {
+    grid-column: 1;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+    background-color: transparent;
+    transition: background-color 0.25s;
+    border: gray dashed 2px;
+    display: flex;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .pfPlaceholder:hover {
+    background-color: rgba(128, 128, 128, 0.25);
+  }
+
+  .pfPlaceholder .svg {
+    width: 25%;
+    height: 25%;
+    background-color: grey;
+    z-index: -1;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  #submitButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+  }
+
+  #submitButtons > * {
+    margin: 30px 0 0 0;
+    flex: auto;
+  }
+
+  #deleteAction {
+    border: solid #a01d1d 3px;
+    color: var(--var-text);
+    padding: 10px 15px;
+    border-radius: 8px;
+    width: 50%;
+    display: block;
+    font-family: 'Google Sans Medium';
+    font-size: 15px;
+    transition: background-color 0.25s, box-shadow 0.25s, width 0.25s, color 0.25s;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  #deleteAction:not(:hover) {
+    width: 25%;
+  }
+
+  #deleteAction:hover {
+    background-color: #a01d1d;
+    color: white;
+    box-shadow: 0 2px 16px -3px var(--var-box-shadow-med);
+    width: 60%;
+  }
+
+  .isImageHere {
+    border-color: transparent;
+    animation: enphasis 0.25s ease-in-out;
+  }
+
+  @keyframes enphasis {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+
+}
+
+#estAdmin_id {
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+}
+
+#adminCheckbox {
+    align-items: center;
+    display: flex;
+    gap: 5px;
+}

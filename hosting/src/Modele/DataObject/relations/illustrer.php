@@ -16,7 +16,7 @@ class illustrer extends AbstractDataObject{
             $this->ordre = $ordre;
         } else {
             $this->setIdArticle($id_article);
-            $this->setIdImage($url_image);
+            $this->setUrlImage($url_image);
             $this->setOrdre($ordre);
         }
     }
@@ -24,7 +24,7 @@ class illustrer extends AbstractDataObject{
     public function formatTableau(): array{
         return array(
             "id_article" => $this->getIdArticle(),
-            "url_image" => $this->getIdImage(),
+            "url_image" => $this->getUrlImage(),
             "ordre" => $this->getOrdre()
         );
     }
@@ -37,12 +37,12 @@ class illustrer extends AbstractDataObject{
         $this->id_article = $id_article;
     }
 
-    public function getIdImage(): int
+    public function getUrlImage(): int
     {
         return $this->url_image;
     }
 
-    public function setIdImage(int $url_image): void
+    public function setUrlImage(int $url_image): void
     {
         $this->url_image = $url_image;
     }
