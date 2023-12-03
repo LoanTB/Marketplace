@@ -4,9 +4,15 @@ namespace App\Ecommerce\Controleur;
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Modele\DataObject\Article;
+use App\Ecommerce\Modele\DataObject\Image;
+use App\Ecommerce\Modele\DataObject\relations\illustrer;
 use App\Ecommerce\Modele\Repository\ArticleRepository;
 use App\Ecommerce\Lib\ImgurUploader;
+use App\Ecommerce\Modele\Repository\ImageRepository;
+use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
 use DateTime;
+use mysql_xdevapi\Result;
+use const http\Client\Curl\Versions\ARES;
 
 class ControleurArticle extends ControleurGenerique {
     public static function afficherListe() : void {
@@ -93,8 +99,7 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
 
-
-
+        $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],(new DateTime())->format('Y-m-d H:i:s'),(new DateTime())->format('Y-m-d H:i:s'),ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
 
         $uploader = new ImgurUploader();
         $imgurLinks = array();
@@ -113,24 +118,22 @@ class ControleurArticle extends ControleurGenerique {
                 }
             }
         }
-        echo 'Images uploaded successfully. Imgur links:';
+        $i = 0;
+        $illustrations = [];
         foreach ($imgurLinks as $link) {
-            echo '<br><a href="' . $link . '" target="_blank">' . $link . '</a>';
+            $image = new Image($link);
+            $sqlreturn = (new ImageRepository())->ajouter($image);
+            if ($sqlreturn != "") {
+                MessageFlash::ajouter("warning", "L'image n'a pas pu être sauvegardé dans la table image, veuillez réessayer plus tard.");
+                self::afficherListe();
+                return;
+            }
+            $illustrations[] = new illustrer(null, $link, $i);
+            $i ++;
         }
 
-
-
-
-        $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
-        $article = new Article(null,$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],(new DateTime())->format('Y-m-d H:i:s'),(new DateTime())->format('Y-m-d H:i:s'),ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
-
-        $sqlreturn = (new ArticleRepository())->ajouter($article);
-
-        if ($sqlreturn == "22001"){
-            MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
-            self::afficherFormulaireCreation();
-            return;
-        } else if ($sqlreturn != "") {
+        $sqlreturn = (new ArticleRepository())->ajouterArticleAvecIllustrations($article, $illustrations);
+        if ($sqlreturn != "") {
             MessageFlash::ajouter("warning", "L'article n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
             self::afficherListe();
             return;
