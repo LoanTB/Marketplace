@@ -8,7 +8,7 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
 <link rel="stylesheet" href="../ressources/css/ArticleDetail.css">
 <link href="../ressources/css/Editor.css" rel="stylesheet">
 
-<form method="<?php if(\App\Ecommerce\Configuration\ConfigurationSite::getDebug()){echo "GET";}else{echo "POST";}?>" action="controleurFrontal.php" enctype="multipart/form-data">
+<form method="POST" action="controleurFrontal.php" enctype="multipart/form-data">
         <input type='hidden' name='action' value='creerDepuisFormulaire'>
         <input type='hidden' name='controleur' value='article'>
         <div id="mainClass">
@@ -19,15 +19,15 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
             <div id="picturesZone">
                 <label class="imagePlaceholder" for="img1" id="img1label">
                     <div class="svg image-add-icon"></div>
-                    <input type="file" name="image-1" id="img1" required>
+                    <input type="file" name="image1" id="img1" required>
                 </label>
                 <label class="imagePlaceholder" for="img2" id="img2label">
                     <div class="svg image-add-icon"></div>
-                    <input type="file" name="image-2" id="img2">
+                    <input type="file" name="image2" id="img2">
                 </label>
                 <label class="imagePlaceholder" for="img3" id="img3label">
                     <div class="svg image-add-icon"></div>
-                    <input type="file" name="image-3" id="img3">
+                    <input type="file" name="image3" id="img3">
                 </label>
             </div>
 
