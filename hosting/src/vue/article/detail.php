@@ -4,9 +4,11 @@ use App\Ecommerce\Controleur\ControleurWishlist;
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
+use \App\Ecommerce\Modele\Repository\relations\illustrerRepository;
 
 /* @var $article \App\Ecommerce\Modele\DataObject\Article */
 
+$imagesArticle = (new illustrerRepository())->recupererImagesArticle($article->getIdArticle());
 $userEntity = (new UtilisateurRepository)->recupererParUnique($article->getIdUtilisateur(), 0);
 echo '
 <div id="mainClass">
@@ -14,11 +16,17 @@ echo '
 
     <h1 id="articleTitle">'.htmlspecialchars($article->getNom()).'</h1>
 
-    <div id="picturesZone">
-            <img src="https://picsum.photos/200">
-            <img src="https://picsum.photos/200/300">
-            <img src="https://picsum.photos/300">
-    </div>
+    <div id="picturesZone">';
+
+for ($i=0;$i<3;$i++) {
+    if (isset($imagesArticle[$i])){
+        echo '<img src="'.$imagesArticle[$i].'">';
+    } else {
+        echo '<img src="https://picsum.photos/300">';
+    }
+}
+
+echo '    </div>
 
     <div id="articleDescription">
         <p>'.htmlspecialchars($article->getDescription()).'</p>

@@ -18,23 +18,15 @@ class illustrerRepository extends AbstractRepository{
     );
 
     public function recupererImagesArticle(string|int $id_article): array {
-        $sql = "SELECT *
-                from Image
-                WHERE url_image in (
-                    SELECT url_image
-                    FROM illustrer
-                    WHERE id_article = :id_article
-                )";
-        $pdoStatement = dataBase::getPdo()->prepare($sql);
-        $values = array(
-            "id_article" => $id_article
-        );
-        $pdoStatement->execute($values);
-        $AbstractDataObject = [];
-        foreach ($pdoStatement as $dataFormatTableau) {
-            $AbstractDataObject[] = (new ImageRepository())->construireDepuisTableau($dataFormatTableau,true);
+        $illustrations = (new illustrerRepository())->recupererParColonne($id_article,0);
+        $images = [];
+        foreach ($illustrations as $illustration){
+            $images[] = "";
         }
-        return $AbstractDataObject;
+        foreach ($illustrations as $illustration){
+            $images[$illustration->getOrdre()] = $illustration->getUrlImage();
+        }
+        return $images;
     }
 
     protected function getNomTable(): string {
