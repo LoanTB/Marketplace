@@ -10,7 +10,9 @@ class ImageRepository extends AbstractRepository{
         "url_image"
     );
 
-    private array $nomsColonnes = array();
+    private array $nomsColonnes = array(
+        "url_image"
+    );
 
     protected function getNomTable(): string {
         return $this->nomTable;
