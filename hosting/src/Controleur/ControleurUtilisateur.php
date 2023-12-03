@@ -6,6 +6,7 @@ use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
 use App\Ecommerce\Lib\VerificationEmail;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
+use DateTime;
 
 class ControleurUtilisateur extends ControleurGenerique {
 
@@ -147,6 +148,9 @@ class ControleurUtilisateur extends ControleurGenerique {
                 $infos[$key] = $_REQUEST[$key];
             }
         }
+
+        $infos["dateCreation"] = (new DateTime())->format('Y-m-d H:i:s');
+
         $utilisateur = $utilisateurRepository->construireDepuisTableau($infos,false);
 
         $sqlreturn = $utilisateurRepository->ajouter($utilisateur);
