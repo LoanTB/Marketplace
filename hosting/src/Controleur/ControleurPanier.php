@@ -54,6 +54,7 @@ class ControleurPanier extends ControleurGenerique {
         PanierTemporaire::supprimer($_REQUEST["id_article"]);
         if (!ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter("success", "L'article a bien été supprimé du panier.");
+            ControleurGenerique::rediriger(array("articles" => PanierTemporaire::lireArticles()));
         } else {
             if ((new dansPanierRepository())->recupererParDeuxColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0,$_REQUEST["id_article"],1) == null) {
                 ControleurGenerique::accesNonAutorise("M");
@@ -67,14 +68,16 @@ class ControleurPanier extends ControleurGenerique {
             } else {
                 MessageFlash::ajouter("warning", "L'article n'as pas pu être supprimer du panier (".$sqlreturn."), veuillez réessayer plus tard.");
             }
+            ControleurGenerique::rediriger(array("articles" => (new dansPanierRepository())->recupererPanierUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte())));
         }
-        ControleurGenerique::rediriger();
+
     }
 
     public static function vider(): void {
         PanierTemporaire::vider();
         if (!ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter("success", "Le panier a bien été vidé.");
+            ControleurGenerique::rediriger(array("articles" => PanierTemporaire::lireArticles()));
         } else {
             $sqlreturn = (new dansPanierRepository())->supprimerParColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0);
 
@@ -85,8 +88,8 @@ class ControleurPanier extends ControleurGenerique {
                 MessageFlash::ajouter("warning", "Les articles n'ont pas pu être supprimer du panier (".$sqlreturn."), veuillez réessayer plus tard.");
                 self::afficherListe();
             }
+            ControleurGenerique::rediriger(array("articles" => (new dansPanierRepository())->recupererPanierUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte())));
         }
-        ControleurGenerique::rediriger();
     }
 
     public static function convertir(): void {

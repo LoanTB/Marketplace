@@ -60,9 +60,12 @@ class ControleurGenerique {
         ControleurArticle::afficherListe();
     }
 
-    public static function rediriger() : void {
+    public static function rediriger($parametresMAJ = []) : void {
         if (Redirections::existe()){
             $data = Redirections::obtenirRedirection();
+            foreach ($parametresMAJ as  $cle => $valeur){
+                $data["parametres"][$cle] = $valeur;
+            }
             self::afficherVueAvecConservationPointControle($data["url"],$data["parametres"]);
         } else {
             self::redirigerVersMain();
