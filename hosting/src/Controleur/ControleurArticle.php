@@ -81,7 +81,7 @@ class ControleurArticle extends ControleurGenerique {
             self::afficherFormulaireCreation();
             return;
         } else if ($sqlreturn != "") {
-            MessageFlash::ajouter("warning", "Le compte n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "L'article n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
             self::afficherListe();
             return;
         }
