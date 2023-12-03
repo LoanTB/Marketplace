@@ -11,28 +11,32 @@ class ImgurUploader {
     }
 
     public function uploadImage($file) {
-
         if (isset($file['image']) && $file['image']['error'] === UPLOAD_ERR_OK) {
             $imageData = file_get_contents($file['image']['tmp_name']);
 
             $headers = array(
                 'Authorization: Client-ID ' . $this->clientId,
+                'Content-Type: application/json',
             );
 
-            $postData = array(
+            $postData = json_encode(array(
                 'image' => base64_encode($imageData),
-            );
+            ));
 
             $options = array(
                 'http' => array(
                     'header'  => implode("\r\n", $headers),
                     'method'  => 'POST',
-                    'content' => http_build_query($postData),
+                    'content' => $postData,
                 ),
             );
 
             $context  = stream_context_create($options);
-            $response = file_get_contents($this->apiUrl, false, $context);
+            $response = @file_get_contents($this->apiUrl, false, $context);
+
+            if ($response === FALSE) {
+                return false;
+            }
 
             $jsonResponse = json_decode($response, true);
 
