@@ -38,12 +38,10 @@ echo '
             </div>
         </div>
         <div class="CTAbuttons">
-            <a id="addToCart"';
-
-echo 'href="';
+            <a id="addToCart" href="';
 
 if (ConnexionUtilisateur::estConnecte()) {
-    if (dansPanierRepository::estDansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $article->getIdArticle())) {
+    if ((new dansPanierRepository)->estDansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $article->getIdArticle())) {
         echo 'controleurFrontal.php?action=afficherListe&controleur=panier">Voir dans le panier</a>';
     } else {
         echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Ajouter au panier</a>';
