@@ -5,11 +5,11 @@ use App\Ecommerce\Modele\DataObject\AbstractDataObject;
 
 class illustrer extends AbstractDataObject{
 
-    private int $id_article;
+    private ?int $id_article;
     private int $url_image;
     private int $ordre;
 
-    public function __construct(int $id_article, int $url_image, int $ordre, bool $raw = true){
+    public function __construct(?int $id_article, int $url_image, int $ordre, bool $raw = true){
         if ($raw) {
             $this->id_article = $id_article;
             $this->url_image = $url_image;
@@ -29,11 +29,11 @@ class illustrer extends AbstractDataObject{
         );
     }
 
-    public function getIdArticle(): int {
+    public function getIdArticle(): ?int {
         return $this->id_article;
     }
 
-    public function setIdArticle(int $id_article): void {
+    public function setIdArticle(?int $id_article): void {
         $this->id_article = $id_article;
     }
 
