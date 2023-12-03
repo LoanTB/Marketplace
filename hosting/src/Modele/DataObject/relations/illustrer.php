@@ -6,10 +6,10 @@ use App\Ecommerce\Modele\DataObject\AbstractDataObject;
 class illustrer extends AbstractDataObject{
 
     private ?int $id_article;
-    private int $url_image;
+    private string $url_image;
     private int $ordre;
 
-    public function __construct(?int $id_article, int $url_image, int $ordre, bool $raw = true){
+    public function __construct(?int $id_article, string $url_image, int $ordre, bool $raw = true){
         if ($raw) {
             $this->id_article = $id_article;
             $this->url_image = $url_image;
@@ -37,12 +37,12 @@ class illustrer extends AbstractDataObject{
         $this->id_article = $id_article;
     }
 
-    public function getUrlImage(): int
+    public function getUrlImage(): string
     {
         return $this->url_image;
     }
 
-    public function setUrlImage(int $url_image): void
+    public function setUrlImage(string $url_image): void
     {
         $this->url_image = $url_image;
     }
