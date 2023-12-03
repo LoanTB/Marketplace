@@ -14,16 +14,16 @@ foreach ($articles as $article) {
     if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
         echo '<div class="card animationList">';
     } else {
-        echo '<a class="card animationList" href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '">';
+        echo '<a class="card animationList" href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">';
     }
     echo '<div class="articleView">';
 
     if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
         echo '<div class="editOptions">
-        <a href="controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&id_article=' . rawurlencode($article->getIdArticle()) . '"><div class="svg edit-icon-fill"></div></a>
-        <a href="controleurFrontal.php?controleur=article&action=supprimer&id_article=' . rawurlencode($article->getIdArticle()) . '"><div class="svg delete-icon-fill"></div></a>
+        <a href="controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '"><div class="svg edit-icon-fill"></div></a>
+        <a href="controleurFrontal.php?controleur=article&action=supprimer&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '"><div class="svg delete-icon-fill"></div></a>
         </div>
-        <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '">';
+        <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">';
     }
     /* Remplacer par un appel à l'image illustrative du produit */
     echo '<div class="thumbnail" style="background-image: url(' . '\'https://picsum.photos/300/200\'' . ')"></div>';
@@ -32,7 +32,7 @@ foreach ($articles as $article) {
     <h2 class="overflowable">' . htmlspecialchars($article->getNom()) . '
     </h2><div><h4>';
     $userEntity = (new UtilisateurRepository)->recupererParUnique($article->getIdUtilisateur(), 0);
-    echo $userEntity->getPrenom() . ' ' . $userEntity->getNom();
+    echo htmlspecialchars($userEntity->getPrenom()) . ' ' . htmlspecialchars($userEntity->getNom());
     echo '</h4>
     <p class="price">' . htmlspecialchars($article->getPrix()).' €
     </p></div></div>';

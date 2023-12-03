@@ -1,3 +1,3 @@
 <?php
 /* @var $messageErreur */
-echo "<p>Problème avec les articles : ".$messageErreur."</p>";
+echo "<p>Problème avec les articles : ".htmlspecialchars($messageErreur)."</p>";

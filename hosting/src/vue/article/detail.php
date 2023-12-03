@@ -32,7 +32,7 @@ echo '
             <img src="https://picsum.photos/30">
             <div id="authorDesc">
                 <p>Posté par :</p>
-                <h3>' . $userEntity->getPrenom() . ' ' . $userEntity->getNom() . '</h3>
+                <h3>' . htmlspecialchars($userEntity->getPrenom()) . ' ' . htmlspecialchars($userEntity->getNom()) . '</h3>
             </div>
         </div>
         <div class="CTAbuttons">
@@ -65,7 +65,7 @@ echo '">Ajouter aux favoris</a>
     </div>
 </div>
 ';
-echo "<a href='controleurFrontal.php?controleur=commenter&action=ajouterCommentaire&id_article=".$article->getIdArticle()."&titre=LE DEV A PAS ENCORE FAIT SON BOULOT&note=0.25&texte=Il faut travailler PLUS ENCORE PLUS'> Ajouter le commentaire LE DEV A PAS ENCORE FAIT SON BOULOT 25% content avec comme texte 'Il faut travailler PLUS ENCORE PLUS' !</a>";
+echo "<a href='controleurFrontal.php?controleur=commenter&action=ajouterCommentaire&id_article=".htmlspecialchars(rawurlencode($article->getIdArticle()))."&titre=LE DEV A PAS ENCORE FAIT SON BOULOT&note=0.25&texte=Il faut travailler PLUS ENCORE PLUS'> Ajouter le commentaire LE DEV A PAS ENCORE FAIT SON BOULOT 25% content avec comme texte 'Il faut travailler PLUS ENCORE PLUS' !</a>";
 foreach (\App\Ecommerce\Controleur\ControleurCommenter::recupererListeCommentaires($article->getIdArticle()) as $commentaire){
-    echo "<p>".$commentaire->getTitre()." [".($commentaire->getNote()*5)."/5] : ".$commentaire->getTexte()." </p>";
+    echo "<p>".htmlspecialchars($commentaire->getTitre())." [".htmlspecialchars($commentaire->getNote()*5)."/5] : ".htmlspecialchars($commentaire->getTexte())." </p>";
 }

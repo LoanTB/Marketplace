@@ -55,7 +55,7 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
                         <img src="https://picsum.photos/200">
                         <div id="authorDesc">
                             <p>Poster en tant que</p>
-                            <h3><?php echo $utilisateur->getNom().' '.$utilisateur->getPrenom(); ?></h3>
+                            <h3><?php echo htmlspecialchars($utilisateur->getNom()).' '.htmlspecialchars($utilisateur->getPrenom()); ?></h3>
                         </div>
                     </div>
                     <a href="controleurFrontal.php?action=afficherListe&controleur=article" class="animated-button">

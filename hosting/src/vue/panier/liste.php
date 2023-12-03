@@ -23,8 +23,8 @@ echo '</div><div id="articleList">';
 foreach ($articles as $article) {
     echo '<div class="card animationList" href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=7">
             <div class="listItem articleView">
-                <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '" class="thumbnail" style="background-image: url(\'https://picsum.photos/300/200\')"></a>
-                <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '" class="articleDesc">
+                <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '" class="thumbnail" style="background-image: url(\'https://picsum.photos/300/200\')"></a>
+                <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '" class="articleDesc">
                     <h2>'.htmlspecialchars($article->getNom()).'</h2>
                     <div class="authorRow">
                         <h4>Auteur</h4>
@@ -32,7 +32,7 @@ foreach ($articles as $article) {
                 </a>
                 <div class="rowActions">
                     <p class="price">'.htmlspecialchars($article->getPrix()).' €</p>
-                    <a href="controleurFrontal.php?controleur=panier&action=supprimerDuPanier&id_article=' . rawurlencode($article->getIdArticle()) . '" class="svg close-icon"></a>
+                    <a href="controleurFrontal.php?controleur=panier&action=supprimerDuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '" class="svg close-icon"></a>
                 </div>
             </div>
         </div>';

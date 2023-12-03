@@ -40,7 +40,7 @@ if (ConnexionUtilisateur::estConnecte()) {
             <li class="menubutton"><a href="controleurFrontal.php?action=afficherListe&controleur=panier"><div class="svg cart-icon"></div>Panier</a></li>
             <li class="menubutton"><a href="controleurFrontal.php?action=afficherFavoris&controleur=wishlist"><div class="svg favorite-icon"></div>Favoris</a></li>
             <li class="menubutton" onclick="triggerAccountMenu()"><a href="#"><div class="svg account-icon"></div>
-            <?php if(ConnexionUtilisateur::estConnecte()){echo $utilisateur->getLogin();}else{echo 'Compte';}?>
+            <?php if(ConnexionUtilisateur::estConnecte()){echo htmlspecialchars($utilisateur->getLogin());}else{echo 'Compte';}?>
             </a></li>
         </ul>
     </nav>
@@ -48,7 +48,7 @@ if (ConnexionUtilisateur::estConnecte()) {
         <ul>
             <?php
             if (ConnexionUtilisateur::estConnecte()) {
-                echo '<li class="profilepicture"><img alt="Profile picture" src="../ressources/img/unknown.png">'.$utilisateur->getNom().' '.$utilisateur->getPrenom().'</li>
+                echo '<li class="profilepicture"><img alt="Profile picture" src="../ressources/img/unknown.png">'.htmlspecialchars(rawurlencode($utilisateur->getNom())).' '.htmlspecialchars(rawurlencode($utilisateur->getPrenom())).'</li>
                 <li class="account-menuitem top"><a href="controleurFrontal.php?action=afficherDetail&controleur=utilisateur&id_utilisateur='.ConnexionUtilisateur::getIdUtilisateurConnecte().'"><div class="svg settings-icon"></div><div class="account-buttons">Préférences</div></a></li><li class="separator"></li>
                 <li class="account-menuitem bottom"><a href="controleurFrontal.php?action=deconnecter&controleur=utilisateur"><div class="svg logout-icon"></div><div class="account-buttons">Déconnexion</div></a></li>';
             } else {

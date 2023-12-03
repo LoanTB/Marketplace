@@ -8,14 +8,14 @@
                 <div class="entryFrame">
                     <h3>Identification</h3>
                     <div class="inline">
-                        <input type="text" value="<?php if (isset($_REQUEST["prenom"])){echo $_REQUEST["prenom"];}?>" placeholder="Prénom" name="prenom" id="prenom_utilisateur_id" required/>
-                        <input type="text" value="<?php if (isset($_REQUEST["nom"])){echo $_REQUEST["nom"];}?>" placeholder="Nom" name="nom" id="nom_utilisateur_id" required/>
+                        <input type="text" value="<?php if (isset($_REQUEST["prenom"])){echo htmlspecialchars($_REQUEST["prenom"]);}?>" placeholder="Prénom" name="prenom" id="prenom_utilisateur_id" required/>
+                        <input type="text" value="<?php if (isset($_REQUEST["nom"])){echo htmlspecialchars($_REQUEST["nom"]);}?>" placeholder="Nom" name="nom" id="nom_utilisateur_id" required/>
                     </div>
-                    <input type="text" value="<?php if (isset($_REQUEST["login"])){echo $_REQUEST["login"];}?>" placeholder="Identifiant" name="login" id="login_utilisateur_id" required/>
+                    <input type="text" value="<?php if (isset($_REQUEST["login"])){echo htmlspecialchars($_REQUEST["login"]);}?>" placeholder="Identifiant" name="login" id="login_utilisateur_id" required/>
                 </div>
                 <div class="entryFrame">
                     <h3>Communication</h3>
-                    <input type="email" value="<?php if (isset($_REQUEST["email"])){echo $_REQUEST["email"];}?>" placeholder="Adresse e-mail" name="email" id="email_utilisateur_id" required>
+                    <input type="email" value="<?php if (isset($_REQUEST["email"])){echo htmlspecialchars($_REQUEST["email"]);}?>" placeholder="Adresse e-mail" name="email" id="email_utilisateur_id" required>
                     <div class="inline">
                         <select name="telephone_country" id="telephone_country_utilisateur_id">
                             <option value="1">Canada / États-Unis (+1)</option>
@@ -65,7 +65,7 @@
                             <option value="98">Iran (+98)</option>
                         </select>
                         <input type="text"
-                               value="<?php if (isset($_REQUEST['telephone_number'])) {echo $_REQUEST['telephone_number'];} ?>"
+                               value="<?php if (isset($_REQUEST['telephone_number'])) {echo htmlspecialchars($_REQUEST['telephone_number']);} ?>"
                                placeholder="Téléphone"
                                name="telephone_number"
                                id="telephone_number_utilisateur_id"
