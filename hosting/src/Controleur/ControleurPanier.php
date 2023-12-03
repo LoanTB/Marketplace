@@ -83,10 +83,8 @@ class ControleurPanier extends ControleurGenerique {
 
             if ($sqlreturn == "") {
                 MessageFlash::ajouter("success", "Le panier a bien été vidé.");
-                self::afficherListe();
             } else {
                 MessageFlash::ajouter("warning", "Les articles n'ont pas pu être supprimer du panier (".$sqlreturn."), veuillez réessayer plus tard.");
-                self::afficherListe();
             }
             ControleurGenerique::rediriger(array("articles" => (new dansPanierRepository())->recupererPanierUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte())));
         }
