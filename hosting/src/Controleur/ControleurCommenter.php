@@ -7,6 +7,7 @@ use App\Ecommerce\Modele\DataObject\Commenter;
 use App\Ecommerce\Modele\Repository\CommenterRepository;
 
 class ControleurCommenter extends ControleurGenerique {
+
     public static function recupererListeCommentaires(string $id_article): array {
         return (new CommenterRepository())->recupererParColonne($id_article,1);
     }
@@ -21,9 +22,30 @@ class ControleurCommenter extends ControleurGenerique {
         $sqlreturn = (new CommenterRepository())->ajouter($commenter);
 
         if ($sqlreturn == "") {
-            MessageFlash::ajouter("success", "Le commentaire a bien été posté.");
+            MessageFlash::ajouter("success", "Votre commentaire a bien été publié.");
+        } else if ($sqlreturn == "22001"){
+            MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
         } else {
-            MessageFlash::ajouter("warning", "Le commentaire n'a pas pu être posté (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Votre commentaire n'as pas pu être publié (".$sqlreturn."), veuillez réessayer plus tard.");
+        }
+        ControleurGenerique::rediriger();
+    }
+
+    public static function modifierCommentaire(): void {
+        if (!ConnexionUtilisateur::estConnecte() or !isset($_REQUEST["id_article"]) or !isset($_REQUEST["titre"]) or !isset($_REQUEST["texte"]) or !isset($_REQUEST["note"])) {
+            ControleurGenerique::accesNonAutorise("X");
+            return;
+        }
+
+        $commenter = new Commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],$raw = false);
+        $sqlreturn = (new CommenterRepository())->mettreAJour($commenter);
+
+        if ($sqlreturn == "") {
+            MessageFlash::ajouter("success", "Votre commentaire a bien été modifié.");
+        } else if ($sqlreturn == "22001"){
+            MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
+        } else {
+            MessageFlash::ajouter("warning", "Votre commentaire n'as pas pu être modifié (".$sqlreturn."), veuillez réessayer plus tard.");
         }
         ControleurGenerique::rediriger();
     }
