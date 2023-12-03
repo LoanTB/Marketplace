@@ -142,7 +142,7 @@ class ControleurWishlist extends ControleurGenerique {
 
     public static function afficherFavoris(): void{
         if (!ConnexionUtilisateur::estConnecte()) {
-            ControleurGenerique::accesNonAutorise("X");
+            ControleurUtilisateur::formulaireConnexion();
             return;
         }
 
