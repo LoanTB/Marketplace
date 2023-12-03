@@ -48,14 +48,10 @@ echo '    </div>
         <div class="CTAbuttons">
             <a id="addToCart" href="';
 
-if (ConnexionUtilisateur::estConnecte()) {
-    if ((new dansPanierRepository)->estDansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $article->getIdArticle())) {
-        echo 'controleurFrontal.php?action=afficherListe&controleur=panier">Voir dans le panier</a>';
-    } else {
-        echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Ajouter au panier</a>';
-    }
+if (\App\Ecommerce\Controleur\ControleurPanier::estDansPanier($article->getIdArticle())) {
+    echo 'controleurFrontal.php?action=afficherListe&controleur=panier">Voir dans le panier</a>';
 } else {
-	echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur">Ajouter au panier</a>';
+    echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Ajouter au panier</a>';
 }
 
 echo '<a class="animated-button" href="';

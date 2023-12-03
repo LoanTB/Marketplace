@@ -92,6 +92,14 @@ class ControleurPanier extends ControleurGenerique {
         }
     }
 
+    public static function estDansPanier($id_article): bool {
+        if (ConnexionUtilisateur::estConnecte()) {
+            return (new dansPanierRepository)->estDansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $id_article);
+        } else {
+            return PanierTemporaire::estDansPanier($id_article);
+        }
+    }
+
     public static function convertir(): void {
         if (!ConnexionUtilisateur::estConnecte()) {
             ControleurGenerique::accesNonAutorise("N");

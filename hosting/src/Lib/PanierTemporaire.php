@@ -13,6 +13,16 @@ class PanierTemporaire {
         Session::getInstance()->enregistrer(PanierTemporaire::$cle,$values);
     }
 
+    public static function estDansPanier(string $id_article) : bool {
+        $values = self::lire();
+        foreach ($values as $value) {
+            if ($value == $id_article){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function supprimer(string $id_article): void {
         $values = self::lire();
         $newValues = [];
