@@ -9,19 +9,10 @@ use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 
 class ControleurPanier extends ControleurGenerique {
     public static function afficherListe(): void {
-        if (!ConnexionUtilisateur::estConnecte()) {
-            self::afficherVueAvecPointControle("vueGenerale.php", [
-                "pagetitle" => "Panier",
-                "cheminVueBody" => "panier/liste.php",
-                "articles" => PanierTemporaire::lireArticles()
-            ]);
-        } else {
-            self::afficherVueAvecPointControle("vueGenerale.php", [
-                "pagetitle" => "Panier",
-                "cheminVueBody" => "panier/liste.php",
-                "articles" => (new dansPanierRepository())->recupererPanierUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte())
-            ]);
-        }
+        self::afficherVueAvecPointControle("vueGenerale.php", [
+            "pagetitle" => "Panier",
+            "cheminVueBody" => "panier/liste.php"
+        ]);
     }
 
     public static function ajouterAuPanier(): void {
@@ -54,7 +45,7 @@ class ControleurPanier extends ControleurGenerique {
         PanierTemporaire::supprimer($_REQUEST["id_article"]);
         if (!ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter("success", "L'article a bien été supprimé du panier.");
-            ControleurGenerique::rediriger(array("articles" => PanierTemporaire::lireArticles()));
+            ControleurGenerique::rediriger();
         } else {
             if ((new dansPanierRepository())->recupererParDeuxColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0,$_REQUEST["id_article"],1) == null) {
                 ControleurGenerique::accesNonAutorise("M");
@@ -68,7 +59,7 @@ class ControleurPanier extends ControleurGenerique {
             } else {
                 MessageFlash::ajouter("warning", "L'article n'as pas pu être supprimer du panier (".$sqlreturn."), veuillez réessayer plus tard.");
             }
-            ControleurGenerique::rediriger(array("articles" => (new dansPanierRepository())->recupererPanierUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte())));
+            ControleurGenerique::rediriger();
         }
 
     }
@@ -77,7 +68,7 @@ class ControleurPanier extends ControleurGenerique {
         PanierTemporaire::vider();
         if (!ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter("success", "Le panier a bien été vidé.");
-            ControleurGenerique::rediriger(array("articles" => PanierTemporaire::lireArticles()));
+            ControleurGenerique::rediriger();
         } else {
             $sqlreturn = (new dansPanierRepository())->supprimerParColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0);
 
@@ -86,7 +77,7 @@ class ControleurPanier extends ControleurGenerique {
             } else {
                 MessageFlash::ajouter("warning", "Les articles n'ont pas pu être supprimer du panier (".$sqlreturn."), veuillez réessayer plus tard.");
             }
-            ControleurGenerique::rediriger(array("articles" => (new dansPanierRepository())->recupererPanierUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte())));
+            ControleurGenerique::rediriger();
         }
     }
 

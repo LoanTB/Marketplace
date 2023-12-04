@@ -1,7 +1,14 @@
 <?php
-/* @var $articles */
-
+use App\Ecommerce\Lib\ConnexionUtilisateur;
+use App\Ecommerce\Lib\PanierTemporaire;
+use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
+
+if (!ConnexionUtilisateur::estConnecte()) {
+    $articles = PanierTemporaire::lireArticles();
+} else {
+    $articles = (new dansPanierRepository())->recupererPanierUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte());
+}
 
 echo '<link rel="stylesheet" href="../ressources/css/SimpleListe.css">
     <div id="enteteListe">

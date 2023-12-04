@@ -1,7 +1,10 @@
 <?php
-/* @var $articles */
 
+use App\Ecommerce\Controleur\ControleurWishlist;
+use App\Ecommerce\Modele\Repository\relations\contenirRepository;
 use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
+
+$articles = (new contenirRepository())->recupererArticlesWishlist(ControleurWishlist::recupererFavoris()->getIdWishlist());
 
 echo '<link rel="stylesheet" href="../ressources/css/SimpleListe.css">
     <div id="enteteListe">

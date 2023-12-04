@@ -166,13 +166,9 @@ class ControleurWishlist extends ControleurGenerique {
             return;
         }
 
-        $favoris = self::recupererFavoris();
-
         self::afficherVueAvecPointControle("vueGenerale.php", [
             "pagetitle" => "Favoris",
-            "cheminVueBody" => "wishlist/listeArticles.php",
-            "wishlist" => $favoris,
-            "articles" => (new contenirRepository())->recupererArticlesWishlist($favoris->getIdWishlist())
+            "cheminVueBody" => "wishlist/listeArticles.php"
         ]);
     }
 

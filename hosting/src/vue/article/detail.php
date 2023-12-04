@@ -1,13 +1,20 @@
 <?php
 
+use App\Ecommerce\Controleur\ControleurArticle;
 use App\Ecommerce\Controleur\ControleurCommenter;
 use App\Ecommerce\Controleur\ControleurWishlist;
 use App\Ecommerce\Lib\ConnexionUtilisateur;
+use App\Ecommerce\Lib\MessageFlash;
+use App\Ecommerce\Modele\Repository\ArticleRepository;
 use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
 
-/* @var $article \App\Ecommerce\Modele\DataObject\Article */
+$article = (new ArticleRepository())->recupererParUniqueDansRequest();
+if ($article == null){
+    MessageFlash::ajouter("warning", "L'article demandé est introuvable !");
+    ControleurArticle::afficherListe();
+}
 
 $imagesArticle = (new illustrerRepository())->recupererImagesArticle($article->getIdArticle());
 $userEntity = (new UtilisateurRepository)->recupererParUnique($article->getIdUtilisateur(), 0);
@@ -42,7 +49,7 @@ echo '    </div>
         <img src="';
 
 if ($userEntity->getUrlImage()==null){
-    echo '../../ressources/img/unknown.png';
+    echo '../ressources/img/unknown.png';
 } else {
     echo $userEntity->getUrlImage();
 }
