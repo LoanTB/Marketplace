@@ -49,6 +49,7 @@ main {
     flex-direction: row;
     gap: 20px;
     align-items: center;
+    position: relative;
 }
 
 .listItem {
@@ -67,6 +68,6 @@ main {
     font-weight: bold;
 }
 
-.close-icon {
-    margin-right: 30px;
+.last-icon {
+    margin-right: 30px !important;
 }

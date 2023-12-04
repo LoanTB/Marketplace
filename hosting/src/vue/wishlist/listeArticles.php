@@ -16,7 +16,7 @@ if (count($articles) === 0) {
 echo '</div><div id="articleList">';
 
 foreach ($articles as $article) {
-    echo '<div class="card animationList" href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=7">
+    echo '<div class="card animationList">
             <div class="listItem articleView">
                 <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '" class="thumbnail" style="background-image: url('.(new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[0].')"></a>
                 <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '" class="articleDesc">
@@ -27,7 +27,7 @@ foreach ($articles as $article) {
                 </a>
                 <div class="rowActions">
                     <p class="price">'.htmlspecialchars($article->getPrix()).' €</p>
-                    <a href="controleurFrontal.php?controleur=wishlist&action=supprimerArticleDesFavoris&id_article=' . rawurlencode($article->getIdArticle()) . '" class="svg close-icon"></a>
+                    <a href="controleurFrontal.php?controleur=wishlist&action=supprimerArticleDesFavoris&id_article=' . rawurlencode($article->getIdArticle()) . '" class="svg close-icon last-icon"></a>
                 </div>
             </div>
         </div>';

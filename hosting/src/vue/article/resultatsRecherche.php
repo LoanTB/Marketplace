@@ -1,24 +1,22 @@
 <?php
 /* @var $articles */
+/** @var $requete String */
 
+use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
 
 echo '<link rel="stylesheet" href="../ressources/css/SimpleListe.css">
     <div id="enteteListe">
-        <h1>Votre panier</h1>';
+        <h1>Résultats de la recherche</h1>';
 
 if (empty($articles)) {
-    echo "<h3>Votre panier est vide !</h3>";
+    echo "<h3>Aucun résultat trouvé pour ";
 } else {
-    echo '<h3>Articles que vous êtes sur le point d\'acheter</h3>
-          <div class="CTAbuttons">
-            <a id="addToCart">Finaliser la commande</a>
-            <a href="controleurFrontal.php?controleur=panier&action=vider" class="animated-button critical">
-                <span>Vider le panier</span>
-                <span></span>
-            </a>
-        </div>';
+    echo '<h3>'.count($articles).' résultats trouvés pour ';
 }
+
+echo htmlspecialchars($requete)."</h3>";
+
 
 echo '</div><div id="articleList">';
 
@@ -32,10 +30,16 @@ foreach ($articles as $article) {
                         <h4>Auteur</h4>
                     </div>
                 </a>
-                <div class="rowActions">
-                    <p class="price">'.htmlspecialchars($article->getPrix()).' €</p>
-                    <a href="controleurFrontal.php?controleur=panier&action=supprimerDuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '" class="svg close-icon last-icon"></a>
-                </div>
+                <div class="rowActions editOptions">
+                    <p class="price';
+    if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
+        echo '">'.htmlspecialchars($article->getPrix()).' €</p><a href="controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '"><div class="svg edit-icon-fill"></div></a>
+        <a href="controleurFrontal.php?controleur=article&action=supprimer&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '"><div class="svg delete-icon-fill last-icon"></div></a>';
+    } else {
+        echo ' last-icon">'.htmlspecialchars($article->getPrix()).' €</p>';
+    }
+
+    echo '</div>
             </div>
         </div>';
 }

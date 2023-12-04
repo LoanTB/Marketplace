@@ -30,9 +30,10 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
         self::afficherNouvelleVue("vueGenerale.php",[
-            "pagetitle" => "Boutique",
-            "cheminVueBody" => "article/liste.php",
-            "articles" => (new ArticleRepository())->recupererRecherche($_REQUEST["recherche"])
+            "pagetitle" => "Résultats de la recherche",
+            "cheminVueBody" => "article/resultatsRecherche.php",
+            "articles" => (new ArticleRepository())->recupererRecherche($_REQUEST["recherche"]),
+            "requete" => $_REQUEST["recherche"]
         ]);
     }
 
