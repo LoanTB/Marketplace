@@ -193,13 +193,26 @@ foreach ((!is_null($commentaireUtilisateur) ? ControleurCommenter::recupererList
                 <div class="commentaireEntete">
                     <h3>'.htmlspecialchars($commentaire->getTitre()).'</h3>
                     <div class="note">';
-                        for ($x = 0.2; $x <= ($commentaire->getNote()+0.11); $x+=0.2) {
-                            if ($x > $commentaire->getNote()) {
+                        for ($i=0;$i<=5;$i++){
+                            if (($commentaire->getNote()*5)-$i > 1) {
+                                echo'<span class="fa fa-star starIsChecked"></span>';
+                            } else if (($commentaire->getNote()*5)-$i < 1 and ($commentaire->getNote()*5)-$i > 0) {
                                 echo'<span class="fa fa-star-half starIsChecked"></span>';
-                            } else {
+                            } else if (($commentaire->getNote()*5)-$i < 0 and ($commentaire->getNote()*5)-$i > -1) {
+                                echo'<span class="fa fa-star-half" style="transform: scaleX(-1);"></span>';
+                            } else if (($commentaire->getNote()*5)-$i < -1) {
+                                echo'<span class="fa fa-star"></span>';
+                            } else if (($commentaire->getNote()*5)-$i == 0) {
                                 echo'<span class="fa fa-star starIsChecked"></span>';
                             }
                         }
+//                        for ($x = 0.2; $x <= ($commentaire->getNote()+0.11); $x+=0.2) {
+//                            if ($x > $commentaire->getNote()) {
+//                                echo'<span class="fa fa-star-half starIsChecked"></span>';
+//                            } else {
+//                                echo'<span class="fa fa-star starIsChecked"></span>';
+//                            }
+//                        }
                     echo '</div>
                 </div>
                 <p>'.htmlspecialchars($commentaire->getTexte()).'</p>
