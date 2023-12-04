@@ -5,6 +5,9 @@ use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
 use App\Ecommerce\Lib\VerificationEmail;
+use App\Ecommerce\Lib\ImgurUploader;
+use App\Ecommerce\Modele\DataObject\Image;
+use App\Ecommerce\Modele\Repository\ImageRepository;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 use DateTime;
 
@@ -207,6 +210,27 @@ class ControleurUtilisateur extends ControleurGenerique {
             $infos["nonce_email"] = $ancienUtilisateur->getNonceEmail();
         }
 
+        $uploader = new ImgurUploader();
+        if ($_FILES['image'] && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $fileToUpload = array('image' => $_FILES['image']);
+            $imgurLink = $uploader->uploadImage($fileToUpload);
+            if (!$imgurLink) {
+                MessageFlash::ajouter("warning", "Impossible d'héberger les images, veuillez réessayer ultérieurement");
+                self::afficherFormulaireCreation();
+                return;
+            }
+            $image = new Image($imgurLink);
+            $sqlreturn = (new ImageRepository())->ajouter($image);
+            if ($sqlreturn != "") {
+                MessageFlash::ajouter("warning", "L'image n'a pas pu être sauvegardé dans la table image, veuillez réessayer plus tard.");
+                self::afficherListe();
+                return;
+            }
+            $infos["url_image"] = $imgurLink;
+        } else {
+            $infos["url_image"] = "";
+        }
+
         if (isset($_REQUEST["admin"]) and $_REQUEST["admin"] == "true"){
             if (ConnexionUtilisateur::estAdministrateur()){
                 $infos["admin"] = true;
@@ -216,12 +240,6 @@ class ControleurUtilisateur extends ControleurGenerique {
             }
         } else {
             $infos["admin"] = false;
-        }
-
-        if (isset($_REQUEST["url_image"])){
-            $infos["url_image"] = $_REQUEST["url_image"];
-        } else {
-            $infos["url_image"] = "";
         }
 
         if (isset($_REQUEST["telephone_number"]) and $_REQUEST["telephone_number"] != "" and isset($_REQUEST["telephone_country"]) and $_REQUEST["telephone_country"] != ""){
