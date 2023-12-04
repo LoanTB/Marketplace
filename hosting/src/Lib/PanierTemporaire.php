@@ -52,12 +52,11 @@ class PanierTemporaire {
         }
         $articles = [];
         foreach ($id_articles as $id_article){
-            $articles[] = (new ArticleRepository())->recupererParUnique($id_article,0);
-        }
-        foreach ($id_articles as $id_article){
-            if ($id_article == null){
+            $articleRecup = (new ArticleRepository())->recupererParUnique($id_article,0);
+            if ($articleRecup == null){
                 self::supprimer($id_article);
-                unset($id_article);
+            } else {
+                $articles[] = $articleRecup;
             }
         }
         return $articles;
