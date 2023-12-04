@@ -89,7 +89,7 @@ class ControleurPanier extends ControleurGenerique {
         }
     }
 
-    public static function convertir(): void {
+    public static function convertir($id_utilisateur): void {
         if (!ConnexionUtilisateur::estConnecte()) {
             ControleurGenerique::accesNonAutorise("N");
             return;
@@ -106,5 +106,9 @@ class ControleurPanier extends ControleurGenerique {
             MessageFlash::ajouter("success", "Le panier a bien été enregistré.");
         }
         PanierTemporaire::vider();
+        $dansPaniers = (new dansPanierRepository())->recupererParColonne($id_utilisateur,0);
+        foreach ($dansPaniers as $dansPanier){
+            PanierTemporaire::ajouter($dansPanier->getIdArticle());
+        }
     }
 }

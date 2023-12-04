@@ -4,6 +4,7 @@ namespace App\Ecommerce\Controleur;
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\MotDePasse;
+use App\Ecommerce\Lib\PanierTemporaire;
 use App\Ecommerce\Lib\VerificationEmail;
 use App\Ecommerce\Lib\ImgurUploader;
 use App\Ecommerce\Modele\DataObject\Image;
@@ -384,7 +385,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             if (MotDePasse::verifier($_REQUEST["password"],$utilisateur->getPassword())){
                 ConnexionUtilisateur::connecter($utilisateur->getIdUtilisateur());
                 MessageFlash::ajouter("success", "Connexion réussie !");
-                ControleurPanier::convertir();
+                ControleurPanier::convertir($utilisateur->getIdUtilisateur());
                 ControleurGenerique::rediriger();
             } else {
                 MessageFlash::ajouter("warning", "Mot de passe incorrect !");
@@ -395,6 +396,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
     public static function deconnecter() : void {
         ConnexionUtilisateur::deconnecter();
+        PanierTemporaire::vider();
         MessageFlash::ajouter("success", "Déonnexion effectuée");
         ControleurGenerique::rediriger();
     }
