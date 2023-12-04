@@ -99,7 +99,7 @@ class ControleurArticle extends ControleurGenerique {
         $uploader = new ImgurUploader();
         $imgurLinks = array();
 
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $inputName = 'image' . $i;
             if ($_FILES[$inputName] && $_FILES[$inputName]['error'] === UPLOAD_ERR_OK) {
                 $fileToUpload = array('image' => $_FILES[$inputName]);
@@ -166,63 +166,42 @@ class ControleurArticle extends ControleurGenerique {
         $article = new Article($_REQUEST["id_article"],$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],(new DateTime())->format('Y-m-d H:i:s'),(new DateTime())->format('Y-m-d H:i:s'),ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
 
         $uploader = new ImgurUploader();
-        $imgurLinks = array();
 
-        for ($i = 1; $i <= 3; $i++) {
+        $oldIllustrations = (new illustrerRepository())->recupererParColonne($_REQUEST["id_article"], 0);
+
+        for ($i = 0; $i < 3; $i++) {
             $inputName = 'image' . $i;
             if ($_FILES[$inputName] && $_FILES[$inputName]['error'] === UPLOAD_ERR_OK) {
                 $fileToUpload = array('image' => $_FILES[$inputName]);
                 $imgurLink = $uploader->uploadImage($fileToUpload);
                 if ($imgurLink) {
-                    $imgurLinks[] = $imgurLink;
+                    $image = new Image( $imgurLink);
+                    $sqlreturn = (new ImageRepository())->ajouter($image);
+                    if ($sqlreturn != "") {
+                        MessageFlash::ajouter("warning", "L'image n'a pas pu être sauvegardé dans la table image, veuillez réessayer plus tard.");
+                        self::afficherListe();
+                        return;
+                    }
+                    foreach ($oldIllustrations as $oldIllustration) {
+                        if ($oldIllustration->getOrdre() == $i) {
+                            $sqlreturn = (new illustrerRepository())->supprimer($oldIllustration);
+                            if ($sqlreturn != "") {
+                                MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (s".$sqlreturn."), veuillez réessayer plus tard.");
+                                self::afficherListe();
+                                return;
+                            }
+                            $newIllustration = new illustrer($_REQUEST["id_article"], $imgurLink, $i);
+                            $sqlreturn = (new illustrerRepository())->ajouter($newIllustration);
+                            if ($sqlreturn != "") {
+                                MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (a".$sqlreturn."), veuillez réessayer plus tard.");
+                                self::afficherListe();
+                                return;
+                            }
+                        }
+                    }
                 } else {
                     MessageFlash::ajouter("warning", "Impossible d'héberger les images, veuillez réessayer ultérieurement");
                     self::afficherFormulaireCreation();
-                    return;
-                }
-            }
-        }
-
-        $i = 0;
-        $newIllustrations = [];
-        foreach ($imgurLinks as $link) {
-            $image = new Image($link);
-            $sqlreturn = (new ImageRepository())->ajouter($image);
-            if ($sqlreturn != "") {
-                MessageFlash::ajouter("warning", "L'image n'a pas pu être sauvegardé dans la table image, veuillez réessayer plus tard.");
-                self::afficherListe();
-                return;
-            }
-            $newIllustrations[] = new illustrer($_REQUEST["id_article"], $link, $i);
-            $i ++;
-        }
-
-        $oldIllustrations = (new illustrerRepository())->recupererParColonne($_REQUEST["id_article"], 0);
-
-        foreach ($newIllustrations as $newIllustration) {
-            $remplacer = false;
-            foreach ($oldIllustrations as $oldIllustration) {
-                if ($oldIllustration->getOrdre() == $newIllustration->getOrdre()) {
-                    $sqlreturn = (new illustrerRepository())->supprimer($oldIllustration);
-                    if ($sqlreturn != "") {
-                        MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (s".$sqlreturn."), veuillez réessayer plus tard.");
-                        self::afficherListe();
-                        return;
-                    }
-                    $sqlreturn = (new illustrerRepository())->ajouter($newIllustration);
-                    if ($sqlreturn != "") {
-                        MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (a".$sqlreturn."), veuillez réessayer plus tard.");
-                        self::afficherListe();
-                        return;
-                    }
-                    $remplacer = true;
-                }
-            }
-            if (!$remplacer) {
-                $sqlreturn = (new illustrerRepository())->ajouter($newIllustration);
-                if ($sqlreturn != "") {
-                    MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (a".$sqlreturn."), veuillez réessayer plus tard.");
-                    self::afficherListe();
                     return;
                 }
             }
