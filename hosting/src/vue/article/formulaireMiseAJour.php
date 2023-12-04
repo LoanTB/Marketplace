@@ -23,15 +23,15 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
             <div id="picturesZone">
                 <label class="imagePlaceholder" for="img1" id="img1label" class="thumbnail" style="background-image: url('<?php echo (new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[0] ?>')">
                     <div class="svg image-add-icon"> </div>
-                    <input type="file" name="image1" id="img1">
+                    <input type="file" name="image0" id="img1">
                 </label>
                 <label class="imagePlaceholder" for="img2" id="img2label" class="thumbnail" style="background-image: url('<?php echo (new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[1] ?>')">
                     <div class="svg image-add-icon"></div>
-                    <input type="file" name="image2" id="img2">
+                    <input type="file" name="image1" id="img2">
                 </label>
                 <label class="imagePlaceholder" for="img3" id="img3label" class="thumbnail" style="background-image: url('<?php echo (new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[2] ?>')">
                     <div class="svg image-add-icon"></div>
-                    <input type="file" name="image3" id="img3">
+                    <input type="file" name="image2" id="img3">
                 </label>
             </div>
 
