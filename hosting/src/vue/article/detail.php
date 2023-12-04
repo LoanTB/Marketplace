@@ -99,39 +99,39 @@ if (ConnexionUtilisateur::estConnecte()) {
                         <label aria-label="0 stars" class="rating__label" for="rating2-0">&nbsp;</label>
                         <label aria-label="0.5 stars" class="rating__label rating__label--half" for="rating2-05"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
                         <input class="rating__input" ';
-                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.1) < 0.05) echo "checked";
+                        if (!is_null($commentaireUtilisateur) && $commentaireUtilisateur->getNote() > 0.09) echo "checked";
                         echo ' name="note" id="rating2-05" value="0.1" type="radio">
                         <label aria-label="1 star" class="rating__label" for="rating2-10"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
                         <input class="rating__input" ';
-                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.2) < 0.05) echo "checked";
+                        if (!is_null($commentaireUtilisateur) && $commentaireUtilisateur->getNote() > 0.19) echo "checked";
                         echo ' name="note" id="rating2-10" value="0.2" type="radio">
                         <label aria-label="1.5 stars" class="rating__label rating__label--half" for="rating2-15"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
                         <input class="rating__input" ';
-                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.3) < 0.05) echo "checked";
+                        if (!is_null($commentaireUtilisateur) && $commentaireUtilisateur->getNote() > 0.29) echo "checked";
                         echo ' name="note" id="rating2-15" value="0.3" type="radio">
                         <label aria-label="2 stars" class="rating__label" for="rating2-20"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
                         <input class="rating__input" ';
-                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.4) < 0.05) echo "checked";
+                        if (!is_null($commentaireUtilisateur) && $commentaireUtilisateur->getNote() > 0.39) echo "checked";
                         echo ' name="note" id="rating2-20" value="0.4" type="radio">
                         <label aria-label="2.5 stars" class="rating__label rating__label--half" for="rating2-25"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
                         <input class="rating__input" ';
-                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.5) < 0.05) echo "checked";
+                        if (!is_null($commentaireUtilisateur) && $commentaireUtilisateur->getNote() > 0.49) echo "checked";
                         echo ' name="note" id="rating2-25" value="0.5" type="radio">
                         <label aria-label="3 stars" class="rating__label" for="rating2-30"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
                         <input class="rating__input" ';
-                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.6) < 0.05) echo "checked";
+                        if (!is_null($commentaireUtilisateur) && $commentaireUtilisateur->getNote() > 0.59) echo "checked";
                         echo ' name="note" id="rating2-30" value="0.6" type="radio">
                         <label aria-label="3.5 stars" class="rating__label rating__label--half" for="rating2-35"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
                         <input class="rating__input" ';
-                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.7) < 0.05) echo "checked";
+                        if (!is_null($commentaireUtilisateur) && $commentaireUtilisateur->getNote() > 0.69) echo "checked";
                         echo ' name="note" id="rating2-35" value="0.7" type="radio">
                         <label aria-label="4 stars" class="rating__label" for="rating2-40"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
                         <input class="rating__input" ';
-                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.8) < 0.05) echo "checked";
+                        if (!is_null($commentaireUtilisateur) && $commentaireUtilisateur->getNote() > 0.79) echo "checked";
                         echo ' name="note" id="rating2-40" value="0.8" type="radio">
                         <label aria-label="4.5 stars" class="rating__label rating__label--half" for="rating2-45"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
                         <input class="rating__input" ';
-                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.9) < 0.05) echo "checked";
+                        if (!is_null($commentaireUtilisateur) && $commentaireUtilisateur->getNote() > 0.89) echo "checked";
                         echo ' name="note" id="rating2-45" value="0.9" type="radio">
                         <label aria-label="5 stars" class="rating__label" for="rating2-50"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
                         <input class="rating__input" ';
