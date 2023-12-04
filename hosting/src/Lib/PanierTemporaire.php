@@ -54,6 +54,12 @@ class PanierTemporaire {
         foreach ($id_articles as $id_article){
             $articles[] = (new ArticleRepository())->recupererParUnique($id_article,0);
         }
+        foreach ($id_articles as $id_article){
+            if ($id_article == null){
+                self::supprimer($id_article);
+                unset($id_article);
+            }
+        }
         return $articles;
     }
 
