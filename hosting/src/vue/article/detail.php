@@ -150,11 +150,10 @@ if (ConnexionUtilisateur::estConnecte()) {
                 if (is_null($commentaireUtilisateur)) echo 'Commenter'; else echo 'Modifier';
                 echo '">
             </div>
-        </form>
-
-
-        <div id="commentaireScrollable">';
+        </form>';
 }
+
+echo '<div id="commentaireScrollable">';
 
 foreach ((!is_null($commentaireUtilisateur) ? ControleurCommenter::recupererListeSaufCommentaireUtilisateur($article->getIdArticle(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : ControleurCommenter::recupererListeCommentaires($article->getIdArticle())) as $commentaire){
         $userObj = (new UtilisateurRepository)->recupererParUnique($commentaire->getIdUtilisateur(), 0);
