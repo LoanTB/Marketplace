@@ -23,8 +23,6 @@ echo '
 for ($i=0;$i<3;$i++) {
     if (isset($imagesArticle[$i])){
         echo '<img src="'.$imagesArticle[$i].'">';
-    } else {
-        echo '<img src="https://picsum.photos/300">';
     }
 }
 

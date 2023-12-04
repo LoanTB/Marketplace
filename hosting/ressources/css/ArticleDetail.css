@@ -94,6 +94,8 @@
   background-color: var(--var-sidebar-bg-color);
   padding: 10px;
 }
+
+
 #picturesZone {
   height: 400px;
   display: grid;
@@ -113,6 +115,21 @@
   grid-column: 2;
   grid-row: 2;
 }
+
+/* Une seule image */
+#picturesZone > :first-child:last-child {
+  grid-row-start: 1;
+  grid-row-end: 3;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+/* Deux images uniquement */
+#picturesZone > :nth-child(2):last-child {
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+
 #picturesZone > * {
   border-radius: 8px;
   object-fit: cover;
@@ -121,6 +138,8 @@
   box-sizing: border-box;
   min-height: fit-content;
 }
+
+
 
 #commentaires {
   margin-top: 75px;
