@@ -41,6 +41,8 @@ input[type="file"] {
 
 .imagePlaceholder:hover {
     background-color: rgba(128, 128, 128, 0.25);
+    opacity: 0.75;
+    cursor: pointer;
 }
 
 textarea {
