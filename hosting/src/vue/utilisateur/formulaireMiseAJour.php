@@ -9,9 +9,9 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
 
 ?>
 
-<link href="../ressources/css/UserDetails.css" rel="stylesheet" enctype="multipart/form-data">
+<link href="../ressources/css/UserDetails.css" rel="stylesheet">
 
-<form method="POST" action="controleurFrontal.php">
+<form method="POST" action="controleurFrontal.php" enctype="multipart/form-data">
 <div id="userHead">
     <label class="pfPlaceholder" for="pfp" id="pfpLabel">
         <div class="svg image-add-icon"></div>
