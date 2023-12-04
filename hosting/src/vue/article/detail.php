@@ -77,6 +77,8 @@ if (ConnexionUtilisateur::estConnecte()) {
     echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur"><span id="addToFav">Ajouter aux favoris</span>';
 }
 
+$tousCommentaires = ControleurCommenter::recupererListeCommentaires($article->getIdArticle());
+
 echo '<span></span>
             </a>
         </div>
@@ -84,7 +86,20 @@ echo '<span></span>
 </div>
 
 <div id="commentaires">
-    <h1>'.count(ControleurCommenter::recupererListeCommentaires($article->getIdArticle())).' Commentaires</h1>';
+    <h1>';
+
+if (count($tousCommentaires) > 0){
+    $moyenne = 0;
+    foreach ($tousCommentaires as $commentaire){
+        $moyenne += $commentaire->getNote();
+    }
+    $moyenne /= count($tousCommentaires);
+
+    echo count($tousCommentaires).' Commentaires ('.($moyenne*100).'% de satisfaction)';
+} else {
+    echo 'Aucun commentaire';
+}
+echo '</h1>';
 
 $commentaireUtilisateur = ConnexionUtilisateur::estConnecte() ? ControleurCommenter::recupererCommentaireUtilisateur($article->getIdArticle(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : null;
 
@@ -163,14 +178,14 @@ if (ConnexionUtilisateur::estConnecte()) {
 
 echo '<div id="commentaireScrollable">';
 
-foreach ((!is_null($commentaireUtilisateur) ? ControleurCommenter::recupererListeSaufCommentaireUtilisateur($article->getIdArticle(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : ControleurCommenter::recupererListeCommentaires($article->getIdArticle())) as $commentaire){
+foreach ((!is_null($commentaireUtilisateur) ? ControleurCommenter::recupererListeSaufCommentaireUtilisateur($article->getIdArticle(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : $tousCommentaires) as $commentaire){
         $userObj = (new UtilisateurRepository)->recupererParUnique($commentaire->getIdUtilisateur(), 0);
         echo'<div class="commentaire">
                <img src="';
-        if ($userEntity->getUrlImage()==null){
-            echo '../../ressources/img/unknown.png';
+        if ($userObj->getUrlImage()==null){
+            echo '../ressources/img/unknown.png';
         } else {
-            echo $userEntity->getUrlImage();
+            echo $userObj->getUrlImage();
         }
         echo'">
             <h3>'.htmlspecialchars($userObj->getPrenom()).' '.htmlspecialchars($userObj->getNom()).'</h3>
