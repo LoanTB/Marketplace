@@ -79,7 +79,40 @@ class ControleurUtilisateur extends ControleurGenerique {
         ]);
     }
 
+    public static function supprimer() : void {
+        if (!isset($_REQUEST["id_utilisateur"]) or !isset($_REQUEST["password"])){
+            ControleurGenerique::accesNonAutorise("AH");
+            return;
+        }
 
+        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["id_utilisateur"]) and !ConnexionUtilisateur::estAdministrateur()){
+            ControleurGenerique::accesNonAutorise("AI");
+            return;
+        }
+
+        $ancienUtilisateur = (new UtilisateurRepository())->recupererParUniqueDansRequest();
+
+        if ($ancienUtilisateur == null){
+            MessageFlash::ajouter("warning", "Le compte n'existe pas.");
+            ControleurGenerique::rediriger();
+            return;
+        }
+
+        if (!MotDePasse::verifier($_REQUEST["password"],$ancienUtilisateur->getPassword())){
+            MessageFlash::ajouter("warning", "Mot de passe incorrecte.");
+            ControleurGenerique::rediriger();
+            return;
+        }
+
+        $sqlreturn = (new UtilisateurRepository())->supprimerParUniqueDansRequest();
+
+        if ($sqlreturn == "") {
+            MessageFlash::ajouter("success", "Votre compte à bien été supprimé, ainsi que tout vos articles et commentaires.");
+        } else {
+            MessageFlash::ajouter("warning", "Le compte n'as pas pu être supprimé (".$sqlreturn."), veuillez réessayer plus tard.");
+        }
+        ControleurGenerique::rediriger();
+    }
 
     public static function creerDepuisFormulaire() : void {
         if (ConnexionUtilisateur::estConnecte() and !ConnexionUtilisateur::estAdministrateur()){
