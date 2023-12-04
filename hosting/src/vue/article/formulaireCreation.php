@@ -19,15 +19,15 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
             <div id="picturesZone">
                 <label class="imagePlaceholder" for="img1" id="img1label">
                     <div class="svg image-add-icon"></div>
-                    <input type="file" name="image1" id="img1" required>
+                    <input type="file" name="image0" id="img1" required>
                 </label>
                 <label class="imagePlaceholder" for="img2" id="img2label">
                     <div class="svg image-add-icon"></div>
-                    <input type="file" name="image2" id="img2">
+                    <input type="file" name="image1" id="img2">
                 </label>
                 <label class="imagePlaceholder" for="img3" id="img3label">
                     <div class="svg image-add-icon"></div>
-                    <input type="file" name="image3" id="img3">
+                    <input type="file" name="image2" id="img3">
                 </label>
             </div>
 
