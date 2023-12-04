@@ -105,7 +105,7 @@ if (count($tousCommentaires) > 0){
     }
     $moyenne /= count($tousCommentaires);
 
-    echo count($tousCommentaires).' Commentaires ('.($moyenne*100).'% de satisfaction)';
+    echo count($tousCommentaires).' Commentaires ('.round($moyenne*100).'% de satisfaction)';
 } else {
     echo 'Aucun commentaire';
 }
