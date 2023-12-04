@@ -100,11 +100,11 @@ CREATE TABLE dansPanier(
                            FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE CASCADE
 );
 
-CREATE TABLE achats(
-                       id_utilisateur INT,
-                       id_article INT,
-                       quantite INT,
-                       PRIMARY KEY(id_utilisateur, id_article),
-                       FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE,
-                       FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE CASCADE
+CREATE TABLE achat(
+                      id_utilisateur INT,
+                      id_article INT,
+                      quantite INT,
+                      PRIMARY KEY(id_utilisateur, id_article),
+                      FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE,
+                      FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE CASCADE
 );
