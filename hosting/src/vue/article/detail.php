@@ -41,8 +41,16 @@ echo '    </div>
     </div>
     <div id="sidebarAuthor" class="sidebarItem">
         <div id="authorProps">
-            <img src="https://picsum.photos/30">
-            <div id="authorDesc">
+        <img src="';
+
+if ($userEntity->getUrlImage()==null){
+    echo '../../ressources/img/unknown.png';
+} else {
+    echo $userEntity->getUrlImage();
+}
+
+echo '   ">      
+         <div id="authorDesc">
                 <p>Posté par :</p>
                 <h3>' . htmlspecialchars($userEntity->getPrenom()) . ' ' . htmlspecialchars($userEntity->getNom()) . '</h3>
             </div>
@@ -158,7 +166,13 @@ echo '<div id="commentaireScrollable">';
 foreach ((!is_null($commentaireUtilisateur) ? ControleurCommenter::recupererListeSaufCommentaireUtilisateur($article->getIdArticle(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : ControleurCommenter::recupererListeCommentaires($article->getIdArticle())) as $commentaire){
         $userObj = (new UtilisateurRepository)->recupererParUnique($commentaire->getIdUtilisateur(), 0);
         echo'<div class="commentaire">
-            <img src="https://picsum.photos/200">
+               <img src="';
+        if ($userEntity->getUrlImage()==null){
+            echo '../../ressources/img/unknown.png';
+        } else {
+            echo $userEntity->getUrlImage();
+        }
+        echo'">
             <h3>'.htmlspecialchars($userObj->getPrenom()).' '.htmlspecialchars($userObj->getNom()).'</h3>
             <div>
                 <div class="commentaireEntete">
