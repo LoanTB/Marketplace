@@ -120,7 +120,11 @@ class ControleurWishlist extends ControleurGenerique {
         } else {
             MessageFlash::ajouter("warning", "L'article n'as pas pu être supprimé des favoris (".$sqlreturn."), veuillez réessayer plus tard.");
         }
-        ControleurGenerique::rediriger();
+        $favoris = self::recupererFavoris();
+        ControleurGenerique::rediriger([
+            "wishlist" => $favoris,
+            "articles" => (new contenirRepository())->recupererArticlesWishlist($favoris->getIdWishlist())
+        ]);
     }
 
     public static function recupererFavoris(): ?Wishlist {
@@ -135,6 +139,7 @@ class ControleurWishlist extends ControleurGenerique {
             }
         }
         if ((new WishlistRepository())->ajouterPourUtilisateur(new Wishlist(null, "favoris", $raw = false),ConnexionUtilisateur::getIdUtilisateurConnecte()) != ""){
+            MessageFlash::ajouter("warning", "Recupération des favoris échouée (WFAVERROR), veuillez réessayer plus tard.");
             return null;
         }
         return self::recupererFavoris();
@@ -162,12 +167,8 @@ class ControleurWishlist extends ControleurGenerique {
         }
 
         $favoris = self::recupererFavoris();
-        if ($favoris == null){
-            MessageFlash::ajouter("warning", "Recupération des favoris échouée (WFAVERROR), veuillez réessayer plus tard.");
-            return;
-        }
 
-        self::afficherNouvelleVue("vueGenerale.php", [
+        self::afficherVueAvecPointControle("vueGenerale.php", [
             "pagetitle" => "Favoris",
             "cheminVueBody" => "wishlist/listeArticles.php",
             "wishlist" => $favoris,
@@ -182,11 +183,6 @@ class ControleurWishlist extends ControleurGenerique {
         }
 
         $favoris = self::recupererFavoris()->getIdWishlist();
-
-        if ($favoris == null){
-            MessageFlash::ajouter("warning", "L'article n'as pas pu être ajouter aux favoris (WFAVERROR), veuillez réessayer plus tard.");
-            return;
-        }
 
         $contenir = new contenir($_REQUEST["id_article"],$favoris);
 
