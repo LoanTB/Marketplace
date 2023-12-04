@@ -235,5 +235,21 @@ abstract class AbstractRepository{
         return "";
     }
 
+    public function mettreAJourParDeuxPremieresColonne(AbstractDataObject $object): string {
+        $sql = "UPDATE {$this->getNomTable()} SET";
+        foreach ($this->getNomsColonnes() as $nomColone){
+            $sql = $sql." {$nomColone} = :{$nomColone}, ";
+        }
+        $sql = substr($sql,0,-2)." WHERE {$this->getNomsColonnes()[0]} = :{$this->getNomsColonnes()[0]} and {$this->getNomsColonnes()[1]} = :{$this->getNomsColonnes()[1]}";
+        try {
+            $pdoStatement = dataBase::getPdo()->prepare($sql);
+            $pdoStatement->execute($object->formatTableau());
+            $pdoStatement->fetch();
+        } catch (PDOException $e) {
+            return $e->getCode();
+        }
+        return "";
+    }
+
     protected abstract function construireDepuisTableau(array $objetFormatTableau,bool $raw) : AbstractDataObject;
 }

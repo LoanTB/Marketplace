@@ -59,7 +59,7 @@ class ControleurCommenter extends ControleurGenerique {
         }
 
         $commenter = new Commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],$raw = false);
-        $sqlreturn = (new CommenterRepository())->mettreAJour($commenter);
+        $sqlreturn = (new CommenterRepository())->mettreAJourParDeuxPremieresColonne($commenter);
 
         if ($sqlreturn == "") {
             MessageFlash::ajouter("success", "Votre commentaire a bien été modifié.");
