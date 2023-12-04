@@ -113,7 +113,7 @@ if (ConnexionUtilisateur::estConnecte()) {
             if (!is_null($commentaireUtilisateur)) echo $commentaireUtilisateur->getTexte();
             echo '</textarea>
             <div id="commentActions">';
-            if (!is_null($commentaireUtilisateur)) echo '<a id="deleteBtn" href="suppressCommand">Supprimer</a>';
+            if (!is_null($commentaireUtilisateur)) echo '<a id="deleteBtn" href="controleurFrontal.php?action=supprimerCommentaire&controleur=commenter&id_article='.$article->getIdArticle().'">Supprimer</a>';
             echo '<div id="half-stars-example">
                     <div class="rating-group">
                         <input class="rating__input rating__input--none" ';

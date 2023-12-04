@@ -70,4 +70,22 @@ class ControleurCommenter extends ControleurGenerique {
         }
         ControleurGenerique::rediriger();
     }
+
+    public static function supprimerCommentaire(): void {
+        if (!ConnexionUtilisateur::estConnecte() or !isset($_REQUEST["id_article"])) {
+            ControleurGenerique::accesNonAutorise("J");
+            return;
+        }
+
+        $sqlreturn = (new CommenterRepository())->supprimerParDeuxColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0,$_REQUEST["id_article"],1);
+
+        if ($sqlreturn == "") {
+            MessageFlash::ajouter("success", "Votre commentaire a bien été modifié.");
+        } else if ($sqlreturn == "22001"){
+            MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
+        } else {
+            MessageFlash::ajouter("warning", "Votre commentaire n'as pas pu être modifié (".$sqlreturn."), veuillez réessayer plus tard.");
+        }
+        ControleurGenerique::rediriger();
+    }
 }
