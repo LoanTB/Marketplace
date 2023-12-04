@@ -85,6 +85,14 @@
     opacity: 0;
     transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
   }
+
+.animated-button.critical span:last-child {
+    background-color: #a01d1d;
+}
+
+.animated-button.critical:hover {
+    box-shadow: 0 0 0 5px #a01d1d7a;
+}
   
   .animated-button span:first-child {
     position: relative;
@@ -101,7 +109,7 @@
   }
   
   .animated-button:hover span:last-child {
-    width: 100%;
+    width: 110%;
     height: 250px;
     opacity: 1;
   }

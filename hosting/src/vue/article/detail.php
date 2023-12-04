@@ -58,23 +58,28 @@ echo '   ">
         <div class="CTAbuttons">
             <a id="addToCart" href="';
 
-if (\App\Ecommerce\Controleur\ControleurPanier::estDansPanier($article->getIdArticle())) {
+if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
+    echo 'controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Modifier l\'article</a>';
+}
+else if (\App\Ecommerce\Controleur\ControleurPanier::estDansPanier($article->getIdArticle())) {
     echo 'controleurFrontal.php?action=afficherListe&controleur=panier">Voir dans le panier</a>';
 } else {
     echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Ajouter au panier</a>';
 }
 
-echo '<a class="animated-button" href="';
+echo '<a class="animated-button';
 
-if (ConnexionUtilisateur::estConnecte()) {
-    echo 'controleurFrontal.php?controleur=wishlist&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '&';
+if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
+    echo ' critical" href="controleurFrontal.php?controleur=article&action=supprimer&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '"><span id="addToFav">Supprimer l\'article</span>';
+} else if (ConnexionUtilisateur::estConnecte()) {
+    echo '" href="controleurFrontal.php?controleur=wishlist&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '&';
     if (ControleurWishlist::estDansFavoris(ConnexionUtilisateur::getIdUtilisateurConnecte(), $article->getIdArticle())) {
         echo 'action=supprimerArticleDesFavoris"><span id="addToFav">Supprimer des favoris</span>';
     } else {
         echo 'action=ajouterArticleAuxFavoris"><span id="addToFav">Ajouter aux favoris</span>';
     }
 } else {
-    echo 'controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur"><span id="addToFav">Ajouter aux favoris</span>';
+    echo '" href="controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur"><span id="addToFav">Ajouter aux favoris</span>';
 }
 
 $tousCommentaires = ControleurCommenter::recupererListeCommentaires($article->getIdArticle());

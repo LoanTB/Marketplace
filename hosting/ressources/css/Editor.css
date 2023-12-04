@@ -118,9 +118,3 @@ input:focus {
 #sidebarAuthor {
     justify-content: space-between;
 }
-.animated-button span:last-child {
-    background-color: #a01d1d;
-}
-.animated-button:hover {
-    box-shadow: 0 0 0 5px #a01d1d7a;
-}

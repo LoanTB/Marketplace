@@ -13,7 +13,7 @@ if (empty($articles)) {
     echo '<h3>Articles que vous êtes sur le point d\'acheter</h3>
           <div class="CTAbuttons">
             <a id="addToCart">Finaliser la commande</a>
-            <a href="controleurFrontal.php?controleur=panier&action=vider" class="animated-button">
+            <a href="controleurFrontal.php?controleur=panier&action=vider" class="animated-button critical">
                 <span>Vider le panier</span>
                 <span></span>
             </a>
