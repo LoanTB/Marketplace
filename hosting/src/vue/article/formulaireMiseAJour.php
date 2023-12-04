@@ -3,6 +3,7 @@
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Modele\Repository\ArticleRepository;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
+use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
 
 $article = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"], 0);
 $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisateur::getIdUtilisateurConnecte(), 0);
@@ -20,15 +21,15 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
             </label>
 
             <div id="picturesZone">
-                <label class="imagePlaceholder" for="img1" id="img1label">
-                    <div class="svg image-add-icon"></div>
+                <label class="imagePlaceholder" for="img1" id="img1label" class="thumbnail" style="background-image: url('<?php echo (new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[0] ?>')">
+                    <div class="svg image-add-icon"> </div>
                     <input type="file" name="image1" id="img1">
                 </label>
-                <label class="imagePlaceholder" for="img2" id="img2label">
+                <label class="imagePlaceholder" for="img2" id="img2label" class="thumbnail" style="background-image: url('<?php echo (new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[1] ?>')">
                     <div class="svg image-add-icon"></div>
                     <input type="file" name="image2" id="img2">
                 </label>
-                <label class="imagePlaceholder" for="img3" id="img3label">
+                <label class="imagePlaceholder" for="img3" id="img3label" class="thumbnail" style="background-image: url('<?php echo (new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[2] ?>')">
                     <div class="svg image-add-icon"></div>
                     <input type="file" name="image3" id="img3">
                 </label>
