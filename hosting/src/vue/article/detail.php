@@ -1,10 +1,11 @@
 <?php
 
+use App\Ecommerce\Controleur\ControleurCommenter;
 use App\Ecommerce\Controleur\ControleurWishlist;
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
-use \App\Ecommerce\Modele\Repository\relations\illustrerRepository;
+use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
 
 /* @var $article \App\Ecommerce\Modele\DataObject\Article */
 
@@ -13,6 +14,7 @@ $userEntity = (new UtilisateurRepository)->recupererParUnique($article->getIdUti
 echo '
 <div id="mainClass">
     <link rel="stylesheet" href="../ressources/css/ArticleDetail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <h1 id="articleTitle">'.htmlspecialchars($article->getNom()).'</h1>
 
@@ -72,8 +74,110 @@ echo '<span></span>
         </div>
     </div>
 </div>
-';
-echo "<a href='controleurFrontal.php?controleur=commenter&action=ajouterCommentaire&id_article=".htmlspecialchars(rawurlencode($article->getIdArticle()))."&titre=LE DEV A PAS ENCORE FAIT SON BOULOT&note=0.25&texte=Il faut travailler PLUS ENCORE PLUS'> Ajouter le commentaire LE DEV A PAS ENCORE FAIT SON BOULOT 25% content avec comme texte 'Il faut travailler PLUS ENCORE PLUS' !</a>";
-foreach (\App\Ecommerce\Controleur\ControleurCommenter::recupererListeCommentaires($article->getIdArticle()) as $commentaire){
-    echo "<p>".htmlspecialchars($commentaire->getTitre())." [".htmlspecialchars($commentaire->getNote()*5)."/5] : ".htmlspecialchars($commentaire->getTexte())." </p>";
+
+<div id="commentaires">
+    <h1>'.count(ControleurCommenter::recupererListeCommentaires($article->getIdArticle())).' Commentaires</h1>';
+
+$commentaireUtilisateur = ConnexionUtilisateur::estConnecte() ? ControleurCommenter::recupererCommentaireUtilisateur($article->getIdArticle(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : null;
+
+if (ConnexionUtilisateur::estConnecte()) {
+
+        echo '<form id="commenter" method="GET" action=\'controleurFrontal.php\'>
+            <input type="text" class="commentInput" name="titre" placeholder="Titre" value="';
+            if (!is_null($commentaireUtilisateur)) echo $commentaireUtilisateur->getTitre();
+            echo '" required>
+            <textarea name="texte" placeholder="Description" class="commentInput" required>';
+            if (!is_null($commentaireUtilisateur)) echo $commentaireUtilisateur->getTexte();
+            echo '</textarea>
+            <div id="commentActions">';
+            if (!is_null($commentaireUtilisateur)) echo '<a id="deleteBtn" href="suppressCommand">Supprimer</a>';
+            echo '<div id="half-stars-example">
+                    <div class="rating-group">
+                        <input class="rating__input rating__input--none" ';
+                        if (is_null($commentaireUtilisateur) || $commentaireUtilisateur->getNote() == 0) echo "checked";
+                        echo ' name="note" id="rating2-0" value="0" type="radio">
+                        <label aria-label="0 stars" class="rating__label" for="rating2-0">&nbsp;</label>
+                        <label aria-label="0.5 stars" class="rating__label rating__label--half" for="rating2-05"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                        <input class="rating__input" ';
+                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.1) < 0.05) echo "checked";
+                        echo ' name="note" id="rating2-05" value="0.1" type="radio">
+                        <label aria-label="1 star" class="rating__label" for="rating2-10"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                        <input class="rating__input" ';
+                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.2) < 0.05) echo "checked";
+                        echo ' name="note" id="rating2-10" value="0.2" type="radio">
+                        <label aria-label="1.5 stars" class="rating__label rating__label--half" for="rating2-15"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                        <input class="rating__input" ';
+                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.3) < 0.05) echo "checked";
+                        echo ' name="note" id="rating2-15" value="0.3" type="radio">
+                        <label aria-label="2 stars" class="rating__label" for="rating2-20"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                        <input class="rating__input" ';
+                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.4) < 0.05) echo "checked";
+                        echo ' name="note" id="rating2-20" value="0.4" type="radio">
+                        <label aria-label="2.5 stars" class="rating__label rating__label--half" for="rating2-25"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                        <input class="rating__input" ';
+                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.5) < 0.05) echo "checked";
+                        echo ' name="note" id="rating2-25" value="0.5" type="radio">
+                        <label aria-label="3 stars" class="rating__label" for="rating2-30"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                        <input class="rating__input" ';
+                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.6) < 0.05) echo "checked";
+                        echo ' name="note" id="rating2-30" value="0.6" type="radio">
+                        <label aria-label="3.5 stars" class="rating__label rating__label--half" for="rating2-35"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                        <input class="rating__input" ';
+                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.7) < 0.05) echo "checked";
+                        echo ' name="note" id="rating2-35" value="0.7" type="radio">
+                        <label aria-label="4 stars" class="rating__label" for="rating2-40"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                        <input class="rating__input" ';
+                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.8) < 0.05) echo "checked";
+                        echo ' name="note" id="rating2-40" value="0.8" type="radio">
+                        <label aria-label="4.5 stars" class="rating__label rating__label--half" for="rating2-45"><i class="rating__icon rating__icon--star fa fa-star-half"></i></label>
+                        <input class="rating__input" ';
+                        if (!is_null($commentaireUtilisateur) && ($commentaireUtilisateur->getNote() - 0.9) < 0.05) echo "checked";
+                        echo ' name="note" id="rating2-45" value="0.9" type="radio">
+                        <label aria-label="5 stars" class="rating__label" for="rating2-50"><i class="rating__icon rating__icon--star fa fa-star"></i></label>
+                        <input class="rating__input" ';
+                        if (!is_null($commentaireUtilisateur) && $commentaireUtilisateur->getNote() == 1) echo "checked";
+                        echo ' name="note" id="rating2-50" value="1" type="radio">
+                    </div>
+                </div>
+
+                <input type="hidden" name="controleur" value="commenter">
+                <input type="hidden" name="action" value="';
+                if (is_null($commentaireUtilisateur)) echo 'ajouterCommentaire'; else echo 'modifierCommentaire';
+                echo '">
+                <input type="hidden" name="id_article" value="'.htmlspecialchars(rawurlencode($article->getIdArticle())).'">
+
+                <input type="submit" value="';
+                if (is_null($commentaireUtilisateur)) echo 'Commenter'; else echo 'Modifier';
+                echo '">
+            </div>
+        </form>
+
+
+        <div id="commentaireScrollable">';
 }
+
+foreach ((!is_null($commentaireUtilisateur) ? ControleurCommenter::recupererListeSaufCommentaireUtilisateur($article->getIdArticle(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : ControleurCommenter::recupererListeCommentaires($article->getIdArticle())) as $commentaire){
+        $userObj = (new UtilisateurRepository)->recupererParUnique($commentaire->getIdUtilisateur(), 0);
+        echo'<div class="commentaire">
+            <img src="https://picsum.photos/200">
+            <h3>'.htmlspecialchars($userObj->getPrenom()).' '.htmlspecialchars($userObj->getNom()).'</h3>
+            <div>
+                <div class="commentaireEntete">
+                    <h3>'.htmlspecialchars($commentaire->getTitre()).'</h3>
+                    <div class="note">';
+                        for ($x = 0.2; $x <= ($commentaire->getNote()+0.11); $x+=0.2) {
+                            if ($x > $commentaire->getNote()) {
+                                echo'<span class="fa fa-star-half starIsChecked"></span>';
+                            } else {
+                                echo'<span class="fa fa-star starIsChecked"></span>';
+                            }
+                        }
+                    echo '</div>
+                </div>
+                <p>'.htmlspecialchars($commentaire->getTexte()).'</p>
+            </div>
+        </div>';
+}
+
+echo'</div>
+</div>';
