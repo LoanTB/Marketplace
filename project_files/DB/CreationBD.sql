@@ -31,7 +31,7 @@ CREATE TABLE Utilisateur(
                             UNIQUE(login),
                             UNIQUE(email),
                             UNIQUE(telephone),
-                            FOREIGN KEY(url_image) REFERENCES Image(url_image)
+                            FOREIGN KEY(url_image) REFERENCES Image(url_image) ON DELETE CASCADE
 );
 
 CREATE TABLE Article(
@@ -44,7 +44,7 @@ CREATE TABLE Article(
                         jour DATE NOT NULL,
                         id_utilisateur INT NOT NULL,
                         PRIMARY KEY(id_article),
-                        FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur)
+                        FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE
 );
 
 CREATE TABLE Commenter(
@@ -56,8 +56,8 @@ CREATE TABLE Commenter(
                           jourModification DATE NOT NULL,
                           jour DATE NOT NULL,
                           PRIMARY KEY(id_utilisateur, id_article),
-                          FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
-                          FOREIGN KEY(id_article) REFERENCES Article(id_article)
+                          FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE,
+                          FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE CASCADE
 );
 
 CREATE TABLE illustrer(
@@ -65,16 +65,16 @@ CREATE TABLE illustrer(
                           url_image VARCHAR(500) ,
                           ordre TINYINT,
                           PRIMARY KEY(id_article, url_image),
-                          FOREIGN KEY(id_article) REFERENCES Article(id_article),
-                          FOREIGN KEY(url_image) REFERENCES Image(url_image)
+                          FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE CASCADE,
+                          FOREIGN KEY(url_image) REFERENCES Image(url_image) ON DELETE CASCADE
 );
 
 CREATE TABLE enregistrer(
                             id_utilisateur INT,
                             id_wishlist INT,
                             PRIMARY KEY(id_utilisateur, id_wishlist),
-                            FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
-                            FOREIGN KEY(id_wishlist) REFERENCES Wishlist(id_wishlist)
+                            FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE,
+                            FOREIGN KEY(id_wishlist) REFERENCES Wishlist(id_wishlist) ON DELETE CASCADE
 );
 
 CREATE TABLE contenir(
@@ -82,16 +82,16 @@ CREATE TABLE contenir(
                          id_wishlist INT,
                          jour DATE NOT NULL,
                          PRIMARY KEY(id_article, id_wishlist),
-                         FOREIGN KEY(id_article) REFERENCES Article(id_article),
-                         FOREIGN KEY(id_wishlist) REFERENCES Wishlist(id_wishlist)
+                         FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE CASCADE,
+                         FOREIGN KEY(id_wishlist) REFERENCES Wishlist(id_wishlist) ON DELETE CASCADE
 );
 
 CREATE TABLE deType(
                        id_article INT,
                        nom_type VARCHAR(100) ,
                        PRIMARY KEY(id_article, nom_type),
-                       FOREIGN KEY(id_article) REFERENCES Article(id_article),
-                       FOREIGN KEY(nom_type) REFERENCES Type(nom_type)
+                       FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE CASCADE,
+                       FOREIGN KEY(nom_type) REFERENCES Type(nom_type) ON DELETE CASCADE
 );
 
 CREATE TABLE dansPanier(
@@ -100,8 +100,8 @@ CREATE TABLE dansPanier(
                            quantite INT,
                            jour DATE NOT NULL,
                            PRIMARY KEY(id_utilisateur, id_article),
-                           FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
-                           FOREIGN KEY(id_article) REFERENCES Article(id_article)
+                           FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE,
+                           FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE CASCADE
 );
 
 CREATE TABLE Acheter(
@@ -111,6 +111,6 @@ CREATE TABLE Acheter(
                         prix DECIMAL(15,2)  ,
                         jour DATE NOT NULL,
                         PRIMARY KEY(id_utilisateur, id_article),
-                        FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur),
-                        FOREIGN KEY(id_article) REFERENCES Article(id_article)
+                        FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE,
+                        FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE SET NULL
 );
