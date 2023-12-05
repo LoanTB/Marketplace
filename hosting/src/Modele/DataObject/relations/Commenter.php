@@ -8,20 +8,26 @@ class Commenter extends AbstractDataObject{
     private string $titre;
     private string $texte;
     private float $note;
+    private string $jourModification;
+    private ?string $jour;
 
-    public function __construct(int $id_utilisateur, int $id_article, string $titre, string $texte, float $note, bool $raw = true){
+    public function __construct(int $id_utilisateur, int $id_article, string $titre, string $texte, float $note, string $jourModification, ?string $jour, bool $raw = true){
         if ($raw) {
             $this->id_utilisateur = $id_utilisateur;
             $this->id_article = $id_article;
             $this->titre = $titre;
             $this->texte = $texte;
             $this->note = $note;
+            $this->jourModification = $jourModification;
+            $this->jour = $jour;
         } else {
             $this->setIdUtilisateur($id_utilisateur);
             $this->setIdArticle($id_article);
             $this->setTitre($titre);
             $this->setTexte($texte);
             $this->setNote($note);
+            $this->setJourModification($jourModification);
+            $this->setJour($jour);
         }
     }
 
@@ -31,7 +37,9 @@ class Commenter extends AbstractDataObject{
             "id_article" => $this->getIdArticle(),
             "titre" => $this->getTitre(),
             "texte" => $this->getTexte(),
-            "note" => $this->getNote()
+            "note" => $this->getNote(),
+            "jourModification" => $this->getJourModification(),
+            "jour" => $this->getJour()
         );
     }
 
@@ -113,5 +121,37 @@ class Commenter extends AbstractDataObject{
     public function setNote(float $note): void
     {
         $this->note = $note;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJourModification(): string
+    {
+        return $this->jourModification;
+    }
+
+    /**
+     * @param string $jourModification
+     */
+    public function setJourModification(string $jourModification): void
+    {
+        $this->jourModification = $jourModification;
+    }
+
+    /**
+     * @return ?string
+     */
+    public function getJour(): ?string
+    {
+        return $this->jour;
+    }
+
+    /**
+     * @param ?string $jour
+     */
+    public function setJour(?string $jour): void
+    {
+        $this->jour = $jour;
     }
 }

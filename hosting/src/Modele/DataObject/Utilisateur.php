@@ -14,10 +14,10 @@ class Utilisateur extends AbstractDataObject {
     private string $nonce_email;
     private string $nonce_telephone;
     private bool $admin;
+    private ?string $jour;
     private string $url_image;
-    private ?string $dateCreation;
 
-    public function __construct(?int $id_utilisateur, string $login, string $email,?string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, string $url_image,?string $dateCreation, bool $raw = true){
+    public function __construct(?int $id_utilisateur, string $login, string $email,?string $telephone,string $password, string $nom, string $prenom, string $nonce_email, string $nonce_telephone, bool $admin, ?string $jour, string $url_image, bool $raw = true){
         if ($raw) {
             $this->id_utilisateur = $id_utilisateur;
             $this->login = $login;
@@ -29,8 +29,8 @@ class Utilisateur extends AbstractDataObject {
             $this->nonce_email = $nonce_email;
             $this->nonce_telephone = $nonce_telephone;
             $this->admin = $admin;
+            $this->jour = $jour;
             $this->url_image = $url_image;
-            $this->dateCreation = $dateCreation;
         } else {
             $this->setIdUtilisateur($id_utilisateur);
             $this->setLogin($login);
@@ -42,8 +42,8 @@ class Utilisateur extends AbstractDataObject {
             $this->setNonceEmail($nonce_email);
             $this->setNonceTelephone($nonce_telephone);
             $this->setAdmin($admin);
+            $this->setJour($jour);
             $this->setUrlImage($url_image);
-            $this->setDateCreation($dateCreation);
         }
     }
 
@@ -59,8 +59,8 @@ class Utilisateur extends AbstractDataObject {
             "nonce_email" => $this->getNonceEmail(),
             "nonce_telephone" => $this->getNonceTelephone(),
             "admin" => $this->getAdmin()*1,
-            "url_image" => $this->getUrlImage(),
-            "dateCreation" => $this->getDateCreation()
+            "jour" => $this->getJour(),
+            "url_image" => $this->getUrlImage()
         );
     }
 
@@ -240,13 +240,13 @@ class Utilisateur extends AbstractDataObject {
         $this->url_image = $url_image;
     }
 
-    public function getDateCreation(): ?string
+    public function getJour(): ?string
     {
-        return $this->dateCreation;
+        return $this->jour;
     }
 
-    public function setDateCreation(?string $dateCreation): void
+    public function setJour(?string $jour): void
     {
-        $this->dateCreation = $dateCreation;
+        $this->jour = $jour;
     }
 }

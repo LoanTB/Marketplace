@@ -2,6 +2,7 @@
 namespace App\Ecommerce\Modele\Repository\relations;
 
 use App\Ecommerce\Lib\ConnexionBaseDeDonnee as dataBase;
+use App\Ecommerce\Modele\DataObject\relations\contenir;
 use App\Ecommerce\Modele\DataObject\relations\dansPanier;
 use App\Ecommerce\Modele\Repository\AbstractRepository;
 use App\Ecommerce\Modele\Repository\ArticleRepository;
@@ -12,8 +13,9 @@ class contenirRepository extends AbstractRepository{
     private array $uniques = array();
 
     private array $nomsColonnes = array(
+        "id_article",
         "id_wishlist",
-        "id_article"
+        "jour"
     );
 
     public function recupererArticlesWishlist(string|int $id_wishlist): array {
@@ -46,7 +48,7 @@ class contenirRepository extends AbstractRepository{
         return $this->nomsColonnes;
     }
 
-    protected function construireDepuisTableau(array $objetFormatTableau,bool $raw) : dansPanier {
-        return new dansPanier($objetFormatTableau["id_article"],$objetFormatTableau["id_wishlist"],$raw);
+    protected function construireDepuisTableau(array $objetFormatTableau,bool $raw) : contenir {
+        return new contenir($objetFormatTableau["id_article"],$objetFormatTableau["id_wishlist"],$objetFormatTableau["jour"],$raw);
     }
 }

@@ -4,12 +4,13 @@ namespace App\Ecommerce\Controleur;
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Modele\DataObject\Commenter;
-use App\Ecommerce\Modele\Repository\CommenterRepository;
+use App\Ecommerce\Modele\Repository\commenterRepository;
+use DateTime;
 
 class ControleurCommenter extends ControleurGenerique {
 
     public static function recupererListeCommentaires(string $id_article): array {
-        return (new CommenterRepository())->recupererParColonne($id_article,1);
+        return (new commenterRepository())->recupererParColonne($id_article,1);
     }
 
     public static function recupererCommentaireUtilisateur(string $id_article, string $id_utilisateur): ?Commenter {
@@ -39,8 +40,8 @@ class ControleurCommenter extends ControleurGenerique {
             return;
         }
 
-        $commenter = new Commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],$raw = false);
-        $sqlreturn = (new CommenterRepository())->ajouter($commenter);
+        $commenter = new Commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],(new DateTime())->format('Y-m-d H:i:s'),(new DateTime())->format('Y-m-d H:i:s'),$raw = false);
+        $sqlreturn = (new commenterRepository())->ajouter($commenter);
 
         if ($sqlreturn == "") {
             MessageFlash::ajouter("success", "Votre commentaire a bien été publié.");
@@ -58,8 +59,8 @@ class ControleurCommenter extends ControleurGenerique {
             return;
         }
 
-        $commenter = new Commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],$raw = false);
-        $sqlreturn = (new CommenterRepository())->mettreAJourParDeuxPremieresColonne($commenter);
+        $commenter = new Commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],(new DateTime())->format('Y-m-d H:i:s'),null,$raw = false);
+        $sqlreturn = (new commenterRepository())->mettreAJourParDeuxPremieresColonne($commenter);
 
         if ($sqlreturn == "") {
             MessageFlash::ajouter("success", "Votre commentaire a bien été modifié.");
@@ -77,7 +78,7 @@ class ControleurCommenter extends ControleurGenerique {
             return;
         }
 
-        $sqlreturn = (new CommenterRepository())->supprimerParDeuxColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0,$_REQUEST["id_article"],1);
+        $sqlreturn = (new commenterRepository())->supprimerParDeuxColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0,$_REQUEST["id_article"],1);
 
         if ($sqlreturn == "") {
             MessageFlash::ajouter("success", "Votre commentaire a bien été modifié.");

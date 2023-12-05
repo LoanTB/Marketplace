@@ -6,6 +6,7 @@ use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\PanierTemporaire;
 use App\Ecommerce\Modele\DataObject\relations\dansPanier;
 use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
+use DateTime;
 
 class ControleurPanier extends ControleurGenerique {
     public static function afficherListe(): void {
@@ -25,7 +26,7 @@ class ControleurPanier extends ControleurGenerique {
         if (!ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter("success", "L'article a bien été ajouté au panier.");
         } else {
-            $sqlreturn = (new dansPanierRepository())->ajouter(new dansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $_REQUEST["id_article"], $raw = false));
+            $sqlreturn = (new dansPanierRepository())->ajouter(new dansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $_REQUEST["id_article"], 1, (new DateTime())->format('Y-m-d H:i:s'), $raw = false));
 
             if ($sqlreturn == "") {
                 MessageFlash::ajouter("success", "L'article a bien été ajouté au panier.");

@@ -163,7 +163,7 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
 
-        $article = new Article($_REQUEST["id_article"],$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],(new DateTime())->format('Y-m-d H:i:s'),(new DateTime())->format('Y-m-d H:i:s'),ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
+        $article = new Article($_REQUEST["id_article"],$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],(new DateTime())->format('Y-m-d H:i:s'),null,ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
 
         $uploader = new ImgurUploader();
 

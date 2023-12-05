@@ -20,8 +20,8 @@ class ArticleRepository extends AbstractRepository{
         "description",
         "prix",
         "quantite",
-        "dateCreation",
-        "dateModification",
+        "jourModification",
+        "jour",
         "id_utilisateur"
     );
 
@@ -64,6 +64,6 @@ class ArticleRepository extends AbstractRepository{
     }
 
     public function construireDepuisTableau(array $objetFormatTableau,bool $raw) : Article {
-        return new Article($objetFormatTableau["id_article"],$objetFormatTableau["nom"],$objetFormatTableau["description"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["dateCreation"],$objetFormatTableau["dateModification"],$objetFormatTableau["id_utilisateur"],$raw);
+        return new Article($objetFormatTableau["id_article"],$objetFormatTableau["nom"],$objetFormatTableau["description"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["jourModification"],$objetFormatTableau["jour"],$objetFormatTableau["id_utilisateur"],$raw);
     }
 }

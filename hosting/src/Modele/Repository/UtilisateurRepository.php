@@ -32,8 +32,8 @@ class UtilisateurRepository extends AbstractRepository{
         "nonce_email",
         "nonce_telephone",
         "admin",
-        "url_image",
-        "dateCreation"
+        "jour",
+        "url_image"
     );
 
     protected function getNomTable(): string {
@@ -50,6 +50,6 @@ class UtilisateurRepository extends AbstractRepository{
     }
 
     public function construireDepuisTableau(array $objetFormatTableau,bool $raw) : Utilisateur {
-        return new Utilisateur($objetFormatTableau["id_utilisateur"], $objetFormatTableau["login"], $objetFormatTableau["email"], $objetFormatTableau["telephone"], $objetFormatTableau["password"], $objetFormatTableau["nom"], $objetFormatTableau["prenom"], $objetFormatTableau["nonce_email"], $objetFormatTableau["nonce_telephone"], $objetFormatTableau["admin"], $objetFormatTableau["url_image"], $objetFormatTableau["dateCreation"], $raw);
+        return new Utilisateur($objetFormatTableau["id_utilisateur"], $objetFormatTableau["login"], $objetFormatTableau["email"], $objetFormatTableau["telephone"], $objetFormatTableau["password"], $objetFormatTableau["nom"], $objetFormatTableau["prenom"], $objetFormatTableau["nonce_email"], $objetFormatTableau["nonce_telephone"], $objetFormatTableau["admin"], $objetFormatTableau["jour"], $objetFormatTableau["url_image"], $raw);
     }
 }

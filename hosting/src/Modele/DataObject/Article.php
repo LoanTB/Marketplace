@@ -6,19 +6,19 @@ class Article extends AbstractDataObject {
     private string $description;
     private float $prix;
     private int $quantite;
-    private string $dateCreation;
-    private string $dateModification;
+    private string $jourModification;
+    private ?string $jour;
     private int $id_utilisateur;
 
-    public function __construct(?int $id_article, string $nom, string $description, float $prix, int $quantite, string $dateCreation, string $dateModification, int $id_utilisateur, bool $raw = true){
+    public function __construct(?int $id_article, string $nom, string $description, float $prix, int $quantite, string $jourModification, ?string $jour, int $id_utilisateur, bool $raw = true){
         if ($raw) {
             $this->id_article = $id_article;
             $this->nom = $nom;
             $this->description = $description;
             $this->prix = $prix;
             $this->quantite = $quantite;
-            $this->dateCreation = $dateCreation;
-            $this->dateModification = $dateModification;
+            $this->jourModification = $jourModification;
+            $this->jour = $jour;
             $this->id_utilisateur = $id_utilisateur;
         } else {
             $this->setIdArticle($id_article);
@@ -26,8 +26,8 @@ class Article extends AbstractDataObject {
             $this->setDescription($description);
             $this->setPrix($prix);
             $this->setQuantite($quantite);
-            $this->setDateCreation($dateCreation);
-            $this->setDateModification($dateModification);
+            $this->setJourModification($jourModification);
+            $this->setJour($jour);
             $this->setIdUtilisateur($id_utilisateur);
         }
     }
@@ -39,8 +39,8 @@ class Article extends AbstractDataObject {
             "description" => $this->getDescription(),
             "prix" => $this->getPrix(),
             "quantite" => $this->getQuantite(),
-            "dateCreation" => $this->getDateCreation(),
-            "dateModification" => $this->getDateModification(),
+            "jourModification" => $this->getJourModification(),
+            "jour" => $this->getJour(),
             "id_utilisateur" => $this->getIdUtilisateur(),
         );
     }
@@ -95,24 +95,24 @@ class Article extends AbstractDataObject {
         $this->quantite = $quantite;
     }
 
-    public function getDateCreation(): string
+    public function getJourModification(): string
     {
-        return $this->dateCreation;
+        return $this->jourModification;
     }
 
-    public function setDateCreation(string $dateCreation): void
+    public function setJourModification(string $jourModification): void
     {
-        $this->dateCreation = $dateCreation;
+        $this->jourModification = $jourModification;
     }
 
-    public function getDateModification(): string
+    public function getJour(): ?string
     {
-        return $this->dateModification;
+        return $this->jour;
     }
 
-    public function setDateModification(string $dateModification): void
+    public function setJour(?string $jour): void
     {
-        $this->dateModification = $dateModification;
+        $this->jour = $jour;
     }
 
     public function getIdUtilisateur(): int

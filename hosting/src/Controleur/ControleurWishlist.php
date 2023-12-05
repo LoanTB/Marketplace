@@ -8,6 +8,7 @@ use App\Ecommerce\Modele\DataObject\Wishlist;
 use App\Ecommerce\Modele\Repository\relations\contenirRepository;
 use App\Ecommerce\Modele\Repository\relations\enregistrerRepository;
 use App\Ecommerce\Modele\Repository\WishlistRepository;
+use DateTime;
 
 class ControleurWishlist extends ControleurGenerique {
     public static function afficherListe(): void {
@@ -63,7 +64,7 @@ class ControleurWishlist extends ControleurGenerique {
             return;
         }
 
-        $contenir = new contenir($_REQUEST["id_article"],$_REQUEST["id_wishlist"]);
+        $contenir = new contenir($_REQUEST["id_article"],$_REQUEST["id_wishlist"],(new DateTime())->format('Y-m-d H:i:s'));
 
         $sqlreturn = (new contenirRepository())->ajouter($contenir);
 
@@ -87,9 +88,7 @@ class ControleurWishlist extends ControleurGenerique {
             return;
         }
 
-        $contenir = new contenir($_REQUEST["id_article"],$_REQUEST["id_wishlist"]);
-
-        $sqlreturn = (new contenirRepository())->supprimer($contenir);
+        $sqlreturn = (new contenirRepository())->supprimerParDeuxColonne($_REQUEST["id_article"],0,$_REQUEST["id_wishlist"],1);
 
         if ($sqlreturn == "") {
             MessageFlash::ajouter("success", "L'article à bien été ajouter à la liste des souhaits");
@@ -111,9 +110,7 @@ class ControleurWishlist extends ControleurGenerique {
             return;
         }
 
-        $contenir = new contenir($_REQUEST["id_article"],$favoris->getIdWishlist());
-
-        $sqlreturn = (new contenirRepository())->supprimer($contenir);
+        $sqlreturn = (new contenirRepository())->supprimerParDeuxColonne($_REQUEST["id_article"],0,$favoris->getIdWishlist(),1);
 
         if ($sqlreturn == "") {
             MessageFlash::ajouter("success", "L'article à bien été supprimé des favoris");
@@ -180,7 +177,7 @@ class ControleurWishlist extends ControleurGenerique {
 
         $favoris = self::recupererFavoris()->getIdWishlist();
 
-        $contenir = new contenir($_REQUEST["id_article"],$favoris);
+        $contenir = new contenir($_REQUEST["id_article"],$favoris,(new DateTime())->format('Y-m-d H:i:s'));
 
         $sqlreturn = (new contenirRepository())->ajouter($contenir);
 

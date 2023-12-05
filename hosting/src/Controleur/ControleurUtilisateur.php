@@ -185,7 +185,7 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         $infos["id_utilisateur"] = null;
-        $infos["dateCreation"] = (new DateTime())->format('Y-m-d H:i:s');
+        $infos["jour"] = (new DateTime())->format('Y-m-d H:i:s');
         foreach ($utilisateurRepository->getNomsColonnes() as $key){
             if (!array_key_exists($key,$infos)){
                 $infos[$key] = $_REQUEST[$key];
@@ -318,7 +318,7 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         $infos["id_utilisateur"] = $ancienUtilisateur->getIdUtilisateur();
-        $infos["dateCreation"] = $ancienUtilisateur->getDateCreation();
+        $infos["dateCreation"] = $ancienUtilisateur->getJour();
         foreach ($utilisateurRepository->getNomsColonnes() as $key){
             if (!array_key_exists($key,$infos)){
                 $infos[$key] = $_REQUEST[$key];

@@ -13,7 +13,9 @@ class dansPanierRepository extends AbstractRepository{
 
     private array $nomsColonnes = array(
         "id_utilisateur",
-        "id_article"
+        "id_article",
+        "quantite",
+        "jour"
     );
 
     public function recupererPanierUtilisateur(string|int $id_utilisateur): array {
@@ -57,6 +59,6 @@ class dansPanierRepository extends AbstractRepository{
     }
 
     protected function construireDepuisTableau(array $objetFormatTableau,bool $raw) : dansPanier {
-        return new dansPanier($objetFormatTableau["id_utilisateur"],$objetFormatTableau["id_article"],$raw);
+        return new dansPanier($objetFormatTableau["id_utilisateur"],$objetFormatTableau["id_article"],$objetFormatTableau["quantite"],$objetFormatTableau["jour"],$raw);
     }
 }
