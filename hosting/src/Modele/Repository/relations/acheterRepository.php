@@ -2,11 +2,14 @@
 namespace App\Ecommerce\Modele\Repository\relations;
 
 use App\Ecommerce\Lib\ConnexionBaseDeDonnee as dataBase;
+use App\Ecommerce\Modele\DataObject\Article;
 use App\Ecommerce\Modele\DataObject\relations\acheter;
 use App\Ecommerce\Modele\DataObject\relations\illustrer;
 use App\Ecommerce\Modele\Repository\AbstractRepository;
 use App\Ecommerce\Modele\Repository\ArticleRepository;
 use App\Ecommerce\Modele\Repository\ImageRepository;
+use DateTime;
+use PDOException;
 
 class acheterRepository extends AbstractRepository{
     private string $nomTable = "acheter";
@@ -48,6 +51,20 @@ class acheterRepository extends AbstractRepository{
             $historique[] = [$achat,(new ArticleRepository())->recupererParUnique($achat->getIdArticle(),0)];
         }
         return $historique;
+    }
+
+    public function acheterArticle(string|int $id_utilisateur,Article $article, int $quantite): string {
+        try {
+            dataBase::getPdo()->beginTransaction();
+            $article->setQuantite($article->getQuantite()-1);
+            (new ArticleRepository())->mettreAJour($article);
+            (new acheterRepository())->ajouter(new acheter($id_utilisateur,$article->getIdArticle(),$quantite,$article->getPrix(),(new DateTime())->format('Y-m-d H:i:s')));
+            dataBase::getPdo()->commit();
+        } catch (PDOException $e) {
+            dataBase::getPdo()->rollBack();
+            return $e;
+        }
+        return "";
     }
 
     protected function getNomTable(): string {

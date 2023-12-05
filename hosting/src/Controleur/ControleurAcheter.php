@@ -42,9 +42,9 @@ class ControleurAcheter extends ControleurGenerique{
         }
 
         foreach ($articles as $article){
-            $sqlreturn = (new acheterRepository())->ajouter(new acheter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$article->getIdArticle(),1,1*$article->getPrix(),(new DateTime())->format('Y-m-d H:i:s')));
+            $sqlreturn = (new acheterRepository())->acheterArticle(ConnexionUtilisateur::getIdUtilisateurConnecte(),$article,1);
             if ($sqlreturn != "") {
-                MessageFlash::ajouter("warning", "Le panier n'as pas pu être enregistré comme acheté (".$sqlreturn."), veuillez réessayer plus tard.");
+                MessageFlash::ajouter("warning", "Le panier n'as pas pu être totalement enregistré comme acheté (".$sqlreturn."), consultez votre historique d'achats pour voir quels achats ont bien été confirmés, veuillez réessayer plus tard.");
                 ControleurGenerique::rediriger();
                 return;
             }
