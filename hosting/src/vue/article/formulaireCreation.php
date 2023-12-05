@@ -55,7 +55,7 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
                             <h3><?php echo htmlspecialchars($utilisateur->getPrenom()).' '.htmlspecialchars($utilisateur->getNom()); ?></h3>
                         </div>
                     </div>
-                    <a href="controleurFrontal.php?action=afficherListe&controleur=article" class="animated-button">
+                    <a href="controleurFrontal.php?action=afficherListe&controleur=article" class="animated-button critical">
                         <span>Annuler</span>
                         <span></span>
                     </a>

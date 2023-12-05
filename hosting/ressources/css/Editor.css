@@ -25,10 +25,6 @@
     animation: enphasis 0.25s ease-in-out;
 }
 
-.isImageHere .svg {
-    display: none;
-}
-
 .imagePlaceholder .svg {
     width: 25%;
     height: 25%;
