@@ -302,7 +302,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             }
             $infos["url_image"] = $imgurLink;
         } else {
-            $infos["url_image"] = "";
+            $infos["url_image"] = $ancienUtilisateur->getUrlImage();
         }
 
         if (isset($_REQUEST["admin"]) and $_REQUEST["admin"] == "true"){
