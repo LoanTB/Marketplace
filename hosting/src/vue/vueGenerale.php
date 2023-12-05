@@ -26,7 +26,7 @@ if (ConnexionUtilisateur::estConnecte()) {
     <nav>
         <ul>
             <li class="icon"><a href="controleurFrontal.php?action=afficherListe&controleur=article"><img src="../ressources/img/logo.png" title="Occasion/20" alt="Logo"></a></li>
-            <li class="new"><a href="<?php if(ConnexionUtilisateur::estConnecte()){echo 'controleurFrontal.php?controleur=article&action=afficherFormulaireCreation';}else{echo 'controleurFrontal.php?controleur=utilisateur&action=afficherFormulaireCreation';}?>"><div id="navbutton">Nouvelle annonce<div class="svg add-icon"></div></div></a></li>
+            <li class="new"><a href="<?php if(ConnexionUtilisateur::estConnecte()){echo 'controleurFrontal.php?controleur=article&action=afficherFormulaireCreation';}else{echo 'controleurFrontal.php?controleur=utilisateur&action=formulaireConnexion';}?>"><div id="navbutton">Nouvelle annonce<div class="svg add-icon"></div></div></a></li>
             <li class="searchbar">
                 <form method="POST" action="controleurFrontal.php">
                     <input type='hidden' name='action' value='afficherListeRecherche'>

@@ -288,6 +288,16 @@ textarea.commentInput {
   margin-top: 5px;
 }
 
+#addToCart.outOfStock {
+  background-color: #ac2e2eb0;
+}
+
+#addToCart.outOfStock:active, #addToCart.outOfStock:hover {
+  letter-spacing: 1.25px;
+  transform: none;
+  box-shadow: none;
+}
+
 
 /* === NOTATION ÉTOILÉE === */
 #half-stars-example {
