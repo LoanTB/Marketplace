@@ -97,7 +97,7 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
     </div>
     <div class="entryFrame">
         <h3>Sécurité</h3>
-        <input type="password" placeholder="Ancien mot de passe" value="" name="password" id="oldPassword_id" required>
+        <input type="password" placeholder="Ancien mot de passe (obligatoire)" value="" name="password" id="oldPassword_id" required>
         <input type="password" placeholder="Nouveau mot de passe" value="" name="newPassword" id="password_id">
         <input type="password" value="" placeholder="Confirmer le nouveau mot de passe" name="passwordConfirmation" id="passwordConfirmation_id">
         <?php
@@ -116,7 +116,7 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
     <input type='hidden' name='action' value='mettreAJour'>
     <input type='hidden' name='controleur' value='utilisateur'>
     <div id="submitButtons">
-        <a id="deleteAction" href="controleurFrontal.php?action=suppressionConfirmation&controleur=utilisateur">Supprimer le compte</a>
+        <a class="leftAction warning" href="controleurFrontal.php?action=suppressionConfirmation&controleur=utilisateur">Supprimer le compte</a>
         <input type="submit" value="Enregistrer">
     </div>
 </form>
