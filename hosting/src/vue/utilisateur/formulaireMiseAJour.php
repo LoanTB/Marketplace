@@ -97,7 +97,7 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
     </div>
     <div class="entryFrame">
         <h3>Sécurité</h3>
-        <input type="password" placeholder="Ancien mot de passe" value="" name="password" id="oldPassword_id" required>
+        <input type="password" placeholder="Ancien mot de passe (obligatoire)" value="" name="password" id="oldPassword_id" required>
         <input type="password" placeholder="Nouveau mot de passe" value="" name="newPassword" id="password_id">
         <input type="password" value="" placeholder="Confirmer le nouveau mot de passe" name="passwordConfirmation" id="passwordConfirmation_id">
         <?php
