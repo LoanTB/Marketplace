@@ -18,7 +18,7 @@ if ($article == null){
     ControleurArticle::afficherListe();
 }
 
-$imagesArticle = (new illustrerRepository())->recupererImagesArticle($article->getIdCommande());
+$imagesArticle = (new illustrerRepository())->recupererImagesArticle($article->getIdArticle());
 $userEntity = (new UtilisateurRepository)->recupererParUnique($article->getIdUtilisateur(), 0);
 echo '
 <div id="mainClass">
@@ -66,22 +66,22 @@ echo '   ">
             <a id="addToCart" href="';
 
     if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
-        echo 'controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&id_article=' . htmlspecialchars(rawurlencode($article->getIdCommande())) . '">Modifier l\'article</a>';
+        echo 'controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Modifier l\'article</a>';
     } else if ($article->getQuantite() == 0) {
         echo '" class="outOfStock">Rupture de stock</a>';
-    } else if (\App\Ecommerce\Controleur\ControleurPanier::estDansPanier($article->getIdCommande())) {
+    } else if (\App\Ecommerce\Controleur\ControleurPanier::estDansPanier($article->getIdArticle())) {
         echo 'controleurFrontal.php?action=afficherListe&controleur=panier">Voir dans le panier</a>';
     } else {
-        echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdCommande())) . '">Ajouter au panier</a>';
+        echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Ajouter au panier</a>';
     }
 
 echo '<a class="animated-button';
 
 if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
-    echo ' critical" href="controleurFrontal.php?controleur=article&action=supprimer&id_article=' . htmlspecialchars(rawurlencode($article->getIdCommande())) . '"><span id="addToFav">Supprimer l\'article</span>';
+    echo ' critical" href="controleurFrontal.php?controleur=article&action=supprimer&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '"><span id="addToFav">Supprimer l\'article</span>';
 } else if (ConnexionUtilisateur::estConnecte()) {
-    echo '" href="controleurFrontal.php?controleur=wishlist&id_article=' . htmlspecialchars(rawurlencode($article->getIdCommande())) . '&';
-    if (ControleurWishlist::estDansFavoris(ConnexionUtilisateur::getIdUtilisateurConnecte(), $article->getIdCommande())) {
+    echo '" href="controleurFrontal.php?controleur=wishlist&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '&';
+    if (ControleurWishlist::estDansFavoris(ConnexionUtilisateur::getIdUtilisateurConnecte(), $article->getIdArticle())) {
         echo 'action=supprimerArticleDesFavoris"><span id="addToFav">Supprimer des favoris</span>';
     } else {
         echo 'action=ajouterArticleAuxFavoris"><span id="addToFav">Ajouter aux favoris</span>';
@@ -90,7 +90,7 @@ if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilis
     echo '" href="controleurFrontal.php?action=formulaireConnexion&controleur=utilisateur"><span id="addToFav">Ajouter aux favoris</span>';
 }
 
-$tousCommentaires = ControleurCommenter::recupererListeCommentaires($article->getIdCommande());
+$tousCommentaires = ControleurCommenter::recupererListeCommentaires($article->getIdArticle());
 
 echo '<span></span>
             </a>
@@ -128,7 +128,7 @@ if (count($tousCommentaires) > 0){
 }
 echo '</h1></div>';
 
-$commentaireUtilisateur = ConnexionUtilisateur::estConnecte() ? ControleurCommenter::recupererCommentaireUtilisateur($article->getIdCommande(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : null;
+$commentaireUtilisateur = ConnexionUtilisateur::estConnecte() ? ControleurCommenter::recupererCommentaireUtilisateur($article->getIdArticle(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : null;
 
 if (ConnexionUtilisateur::estConnecte() && $article->getIdUtilisateur() != ConnexionUtilisateur::getIdUtilisateurConnecte()) {
 
@@ -140,7 +140,7 @@ if (ConnexionUtilisateur::estConnecte() && $article->getIdUtilisateur() != Conne
             if (!is_null($commentaireUtilisateur)) echo $commentaireUtilisateur->getTexte();
             echo '</textarea>
             <div id="commentActions">';
-            if (!is_null($commentaireUtilisateur)) echo '<a id="deleteBtn" href="controleurFrontal.php?action=supprimerCommentaire&controleur=commenter&id_article='.$article->getIdCommande().'">Supprimer</a>';
+            if (!is_null($commentaireUtilisateur)) echo '<a id="deleteBtn" href="controleurFrontal.php?action=supprimerCommentaire&controleur=commenter&id_article='.$article->getIdArticle().'">Supprimer</a>';
             echo '<div id="half-stars-example">
                     <div class="rating-group">
                         <input class="rating__input rating__input--none" ';
@@ -194,7 +194,7 @@ if (ConnexionUtilisateur::estConnecte() && $article->getIdUtilisateur() != Conne
                 <input type="hidden" name="action" value="';
                 if (is_null($commentaireUtilisateur)) echo 'ajouterCommentaire'; else echo 'modifierCommentaire';
                 echo '">
-                <input type="hidden" name="id_article" value="'.htmlspecialchars(rawurlencode($article->getIdCommande())).'">
+                <input type="hidden" name="id_article" value="'.htmlspecialchars(rawurlencode($article->getIdArticle())).'">
 
                 <input type="submit" value="';
                 if (is_null($commentaireUtilisateur)) echo 'Commenter'; else echo 'Modifier';
@@ -205,7 +205,7 @@ if (ConnexionUtilisateur::estConnecte() && $article->getIdUtilisateur() != Conne
 
 echo '<div id="commentaireScrollable">';
 
-foreach ((!is_null($commentaireUtilisateur) ? ControleurCommenter::recupererListeSaufCommentaireUtilisateur($article->getIdCommande(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : $tousCommentaires) as $commentaire){
+foreach ((!is_null($commentaireUtilisateur) ? ControleurCommenter::recupererListeSaufCommentaireUtilisateur($article->getIdArticle(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : $tousCommentaires) as $commentaire){
         $userObj = (new UtilisateurRepository)->recupererParUnique($commentaire->getIdUtilisateur(), 0);
         echo'<div class="commentaire">
                <img src="';
