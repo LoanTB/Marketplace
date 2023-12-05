@@ -47,14 +47,14 @@ foreach ($historique as $article) {
             if (is_null($articleItem)) {
                 echo '<a class="thumbnail svg no-image-icon notFoundIllustration"></a>
                 <a class="articleDesc">
-                <h2>Article n°' . htmlspecialchars($article[0]->getIdArticle()) . '</h2>';
+                <h2>' . htmlspecialchars($article[0]->getNom()) . '</h2>';
             } else {
                 echo '<a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . htmlspecialchars(rawurlencode($article[0]->getIdArticle())) . '" class="thumbnail" style="background-image: url(' . (new illustrerRepository())->recupererImagesArticle($article[0]->getIdArticle())[0] . ')"></a>
                 <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . htmlspecialchars(rawurlencode($article[0]->getIdArticle())) . '" class="articleDesc">
                 <h2>'.htmlspecialchars($article[1]->getNom()).'</h2>';
             }
                     echo '<div class="authorRow">
-                        <h4>Acheté ';
+                        <h4>'.$article[0]->getQuantite().' Acheté ';
     if (ConnexionUtilisateur::estAdministrateur()) {
         echo 'par '.$userEntity->getPrenom().' '.$userEntity->getNom().' ';
     }
