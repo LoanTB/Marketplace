@@ -49,10 +49,10 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
                 </div>
                 <div class="CTAbuttons">
                     <div id="authorProps">
-                        <img src="https://picsum.photos/200">
+                        <img src="<?php if ($utilisateur->getUrlImage()==null) echo '../ressources/img/unknown.png'; else echo $utilisateur->getUrlImage(); ?>">
                         <div id="authorDesc">
                             <p>Poster en tant que</p>
-                            <h3><?php echo htmlspecialchars($utilisateur->getNom()).' '.htmlspecialchars($utilisateur->getPrenom()); ?></h3>
+                            <h3><?php echo htmlspecialchars($utilisateur->getPrenom()).' '.htmlspecialchars($utilisateur->getNom()); ?></h3>
                         </div>
                     </div>
                     <a href="controleurFrontal.php?action=afficherListe&controleur=article" class="animated-button">

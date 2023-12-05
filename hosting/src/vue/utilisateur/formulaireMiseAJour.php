@@ -12,8 +12,13 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
 <link href="../ressources/css/UserDetails.css" rel="stylesheet">
 
 <form method="POST" action="controleurFrontal.php" enctype="multipart/form-data">
-<div id="userHead">
-    <label class="pfPlaceholder" for="pfp" id="pfpLabel" class="thumbnail" style="background-image: url('<?php echo htmlspecialchars($utilisateur->getUrlImage())?>')">
+<div id="userHead"><label class="pfPlaceholder<?php
+    if ($utilisateur->getUrlImage() != "") {
+        echo ' isImageHere" style="background-image: url('.htmlspecialchars($utilisateur->getUrlImage()).')" ';
+    } else {
+        echo '" ';
+    }
+    ?>for="pfp" id="pfpLabel">
         <div class="svg image-add-icon"></div>
         <input type="file" name="image" id="pfp">
     </label>
@@ -26,7 +31,7 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
             <input type="text" value="<?php echo htmlspecialchars($utilisateur->getPrenom())?>" placeholder="Prénom" name="prenom" id="prenom_id" required/>
             <input type="text" value="<?php echo htmlspecialchars($utilisateur->getNom())?>" placeholder="Nom" name="nom" id="nom_id" required/>
         </div>
-        <input type="hidden" value="<?php echo htmlspecialchars($utilisateur->getLogin())?>" placeholder="Identifiant" name="login" id="login_id" required/>
+        <input type="text" value="<?php echo htmlspecialchars($utilisateur->getLogin())?>" placeholder="Identifiant" name="login" id="login_id" required/>
     </div>
     <div class="entryFrame">
         <h3>Communication</h3>
