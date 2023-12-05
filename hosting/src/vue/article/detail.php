@@ -63,16 +63,16 @@ echo '   ">
             </div>
         </div>
         <div class="CTAbuttons">
-            <a id="addToCart" href="';
+            <a id="addToCart" ';
 
     if (ConnexionUtilisateur::estAdministrateur() || ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())) {
-        echo 'controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Modifier l\'article</a>';
+        echo 'href="controleurFrontal.php?controleur=article&action=afficherFormulaireMiseAJour&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Modifier l\'article</a>';
     } else if ($article->getQuantite() == 0) {
-        echo '" class="outOfStock">Rupture de stock</a>';
+        echo 'class="outOfStock">Rupture de stock</a>';
     } else if (\App\Ecommerce\Controleur\ControleurPanier::estDansPanier($article->getIdArticle())) {
-        echo 'controleurFrontal.php?action=afficherListe&controleur=panier">Voir dans le panier</a>';
+        echo 'href="controleurFrontal.php?action=afficherListe&controleur=panier">Voir dans le panier</a>';
     } else {
-        echo 'controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Ajouter au panier</a>';
+        echo 'href="controleurFrontal.php?controleur=panier&action=ajouterAuPanier&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '">Ajouter au panier</a>';
     }
 
 echo '<a class="animated-button';
