@@ -41,6 +41,19 @@ class acheterRepository extends AbstractRepository{
         return $AbstractDataObject;
     }
 
+    public function recupererHistoriqueAchats(string|int $id_utilisateur): array {
+        $achats = (new acheterRepository())->recupererParColonne($id_utilisateur,0);
+        $historique = [];
+        foreach ($achats as $achat){
+            if ($achat->getIdArticle() != null){
+                $historique[] = [$achat,(new ArticleRepository())->recupererParUnique($achat->getIdArticle(),0)];
+            } else {
+                $historique[] = [$achat,null];
+            }
+        }
+        return $historique;
+    }
+
     protected function getNomTable(): string {
         return $this->nomTable;
     }

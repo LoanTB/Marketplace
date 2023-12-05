@@ -11,9 +11,14 @@ use DateTime;
 
 class ControleurAcheter extends ControleurGenerique{
     public static function afficherListe(): void {
+        if (!ConnexionUtilisateur::estConnecte()) {
+            ControleurArticle::afficherListe();
+            return;
+        }
+
         self::afficherNouvelleVue("vueGenerale.php", [
             "pagetitle" => "Achats",
-            "cheminVueBody" => "panier/liste.php"
+            "cheminVueBody" => "acheter/liste.php"
         ]);
     }
 
