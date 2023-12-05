@@ -359,6 +359,8 @@ class ControleurUtilisateur extends ControleurGenerique {
 
         $infos["id_utilisateur"] = $ancienUtilisateur->getIdUtilisateur();
         $infos["jour"] = $ancienUtilisateur->getJour();
+        $infos["password"] = $_REQUEST["newPassword"];
+
         foreach ($utilisateurRepository->getNomsColonnes() as $key){
             if (!array_key_exists($key,$infos)){
                 $infos[$key] = $_REQUEST[$key];
