@@ -147,7 +147,7 @@ class ControleurArticle extends ControleurGenerique {
 
         $ancienArticle = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"],0);
 
-        if (!ConnexionUtilisateur::estUtilisateur($ancienArticle->getIdUtilisateur())){
+        if (!ConnexionUtilisateur::estUtilisateur($ancienArticle->getIdUtilisateur()) and !ConnexionUtilisateur::estAdministrateur()){
             ControleurGenerique::accesNonAutorise("E");
             return;
         }
@@ -164,7 +164,7 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
 
-        $article = new Article($_REQUEST["id_article"],$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],(new DateTime())->format('Y-m-d H:i:s'),$ancienArticle->getJour(),ConnexionUtilisateur::getIdUtilisateurConnecte(),$raw = false);
+        $article = new Article($ancienArticle->getIdArticle(),$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],(new DateTime())->format('Y-m-d H:i:s'),$ancienArticle->getJour(),$ancienArticle->getIdUtilisateur(),$raw = false);
 
         $uploader = new ImgurUploader();
 
@@ -242,12 +242,12 @@ class ControleurArticle extends ControleurGenerique {
             self::afficherListe();
         }
 
-        if (!ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())){
+        if (!ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur()) and !ConnexionUtilisateur::estAdministrateur()){
             ControleurGenerique::accesNonAutorise("G");
             return;
         }
 
-        $sqlreturn = (new ArticleRepository())->supprimerParUnique($_REQUEST["id_article"],0);
+        $sqlreturn = (new ArticleRepository())->supprimerParUnique($article->getIdArticle(),0);
 
         if ($sqlreturn == "") {
             MessageFlash::ajouter("success","L'article a bien été supprimé.");
