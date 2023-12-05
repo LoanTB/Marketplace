@@ -14,14 +14,14 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
 <form method="POST" action="controleurFrontal.php" enctype="multipart/form-data">
         <input type='hidden' name='action' value='mettreAJour'>
         <input type='hidden' name='controleur' value='article'>
-        <input type='hidden' name='id_article' value='<?php echo htmlspecialchars($article->getIdCommande())?>'>
+        <input type='hidden' name='id_article' value='<?php echo htmlspecialchars($article->getIdArticle())?>'>
         <div id="mainClass">
             <label id="articleTitle">
                 <input type="text" name="nom" value="<?php echo htmlspecialchars($article->getNom())?>" placeholder="Titre de l'annonce" required>
             </label>
 
             <div id="picturesZone"><?php
-                $imagesArray = (new illustrerRepository())->recupererImagesArticle($article->getIdCommande());
+                $imagesArray = (new illustrerRepository())->recupererImagesArticle($article->getIdArticle());
                 for ($i=0; $i < 3; $i++) {
                     echo '<label class="imagePlaceholder';
                     if (count($imagesArray) > $i) {
