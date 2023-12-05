@@ -116,7 +116,7 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
     <input type='hidden' name='action' value='mettreAJour'>
     <input type='hidden' name='controleur' value='utilisateur'>
     <div id="submitButtons">
-        <a id="deleteAction" href="controleurFrontal.php?action=suppressionConfirmation&controleur=utilisateur">Supprimer le compte</a>
+        <a class="leftAction warning" href="controleurFrontal.php?action=suppressionConfirmation&controleur=utilisateur">Supprimer le compte</a>
         <input type="submit" value="Enregistrer">
     </div>
 </form>
