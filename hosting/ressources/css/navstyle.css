@@ -364,6 +364,7 @@ footer h6 {
     border-radius: 25px;
     margin: auto;
     margin-bottom: 10px;
+    object-fit: cover;
 }
 
 .separator {
