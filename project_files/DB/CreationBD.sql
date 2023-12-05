@@ -47,7 +47,7 @@ CREATE TABLE Article(
                         FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE
 );
 
-CREATE TABLE Commenter(
+CREATE TABLE commenter(
                           id_utilisateur INT,
                           id_article INT,
                           titre VARCHAR(200)  NOT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE dansPanier(
                            FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE CASCADE
 );
 
-CREATE TABLE Acheter(
+CREATE TABLE acheter(
                         id_utilisateur INT,
                         id_article INT,
                         quantite INT,

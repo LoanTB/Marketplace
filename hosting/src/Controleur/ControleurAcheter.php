@@ -28,7 +28,7 @@ class ControleurAcheter extends ControleurGenerique{
             return;
         }
 
-        if (ConnexionUtilisateur::estUtilisateur($_REQUEST["id_utilisateur"])) {
+        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["id_utilisateur"])) {
             ControleurGenerique::accesNonAutorise("AK");
             return;
         }

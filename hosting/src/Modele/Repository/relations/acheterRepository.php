@@ -61,6 +61,6 @@ class acheterRepository extends AbstractRepository{
     }
 
     protected function construireDepuisTableau(array $objetFormatTableau,bool $raw) : acheter {
-        return new acheter($objetFormatTableau["id_utilisateur"],$objetFormatTableau["id_article"],$objetFormatTableau["quantite"],$objetFormatTableau["jour"],$raw);
+        return new acheter($objetFormatTableau["id_utilisateur"],$objetFormatTableau["id_article"],$objetFormatTableau["quantite"],$objetFormatTableau["prix"],$objetFormatTableau["jour"],$raw);
     }
 }

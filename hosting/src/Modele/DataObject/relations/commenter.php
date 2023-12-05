@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Ecommerce\Modele\DataObject;
+namespace App\Ecommerce\Modele\DataObject\relations;
 
-class Commenter extends AbstractDataObject{
+use App\Ecommerce\Modele\DataObject\AbstractDataObject;
+
+class commenter extends AbstractDataObject{
     private int $id_utilisateur;
     private int $id_article;
     private string $titre;

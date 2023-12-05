@@ -3,8 +3,8 @@ namespace App\Ecommerce\Controleur;
 
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
-use App\Ecommerce\Modele\DataObject\Commenter;
-use App\Ecommerce\Modele\Repository\commenterRepository;
+use App\Ecommerce\Modele\DataObject\relations\commenter;
+use App\Ecommerce\Modele\Repository\relations\commenterRepository;
 use DateTime;
 
 class ControleurCommenter extends ControleurGenerique {
@@ -13,7 +13,7 @@ class ControleurCommenter extends ControleurGenerique {
         return (new commenterRepository())->recupererParColonne($id_article,1);
     }
 
-    public static function recupererCommentaireUtilisateur(string $id_article, string $id_utilisateur): ?Commenter {
+    public static function recupererCommentaireUtilisateur(string $id_article, string $id_utilisateur): ?commenter {
         $commentaires = self::recupererListeCommentaires($id_article);
         foreach ($commentaires as $commentaire){
             if ($commentaire->getIdUtilisateur() == $id_utilisateur){
@@ -40,7 +40,7 @@ class ControleurCommenter extends ControleurGenerique {
             return;
         }
 
-        $commenter = new Commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],(new DateTime())->format('Y-m-d H:i:s'),(new DateTime())->format('Y-m-d H:i:s'),$raw = false);
+        $commenter = new commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],(new DateTime())->format('Y-m-d H:i:s'),(new DateTime())->format('Y-m-d H:i:s'),$raw = false);
         $sqlreturn = (new commenterRepository())->ajouter($commenter);
 
         if ($sqlreturn == "") {
@@ -59,7 +59,7 @@ class ControleurCommenter extends ControleurGenerique {
             return;
         }
 
-        $commenter = new Commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],(new DateTime())->format('Y-m-d H:i:s'),null,$raw = false);
+        $commenter = new commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],(new DateTime())->format('Y-m-d H:i:s'),null,$raw = false);
         $sqlreturn = (new commenterRepository())->mettreAJourParDeuxPremieresColonne($commenter);
 
         if ($sqlreturn == "") {

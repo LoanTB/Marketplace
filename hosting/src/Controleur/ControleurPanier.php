@@ -109,7 +109,7 @@ class ControleurPanier extends ControleurGenerique {
         }
         $fail = false;
         foreach (PanierTemporaire::lire() as $id_article) {
-            $sqlreturn = (new dansPanierRepository())->ajouter(new dansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $id_article, $raw = false));
+            $sqlreturn = (new dansPanierRepository())->ajouter(new dansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $id_article,1, (new DateTime())->format('Y-m-d H:i:s'), $raw = false));
             if ($sqlreturn != "" and $sqlreturn != "23000"){
                 MessageFlash::ajouter("warning", "Des articles n'ont pas pu être enregistrer au panier du compte (".$sqlreturn."), veuillez réessayer plus tard.");
                 $fail = true;

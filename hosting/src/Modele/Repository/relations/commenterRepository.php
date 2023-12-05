@@ -1,10 +1,11 @@
 <?php
-namespace App\Ecommerce\Modele\Repository;
+namespace App\Ecommerce\Modele\Repository\relations;
 
-use App\Ecommerce\Modele\DataObject\Commenter;
+use App\Ecommerce\Modele\DataObject\relations\commenter;
+use App\Ecommerce\Modele\Repository\AbstractRepository;
 
 class commenterRepository extends AbstractRepository{
-    private string $nomTable = "Commenter";
+    private string $nomTable = "commenter";
 
     private array $uniques = array();
 
@@ -28,7 +29,7 @@ class commenterRepository extends AbstractRepository{
         return $this->nomsColonnes;
     }
 
-    protected function construireDepuisTableau(array $objetFormatTableau,bool $raw) : Commenter {
-        return new Commenter($objetFormatTableau["id_utilisateur"],$objetFormatTableau["id_article"],$objetFormatTableau["titre"],$objetFormatTableau["texte"],$objetFormatTableau["note"],$objetFormatTableau["jourModification"],$objetFormatTableau["jour"],$raw);
+    protected function construireDepuisTableau(array $objetFormatTableau,bool $raw) : commenter {
+        return new commenter($objetFormatTableau["id_utilisateur"],$objetFormatTableau["id_article"],$objetFormatTableau["titre"],$objetFormatTableau["texte"],$objetFormatTableau["note"],$objetFormatTableau["jourModification"],$objetFormatTableau["jour"],$raw);
     }
 }
