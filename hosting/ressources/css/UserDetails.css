@@ -60,6 +60,8 @@ main > * {
 
   .pfPlaceholder:hover {
     background-color: rgba(128, 128, 128, 0.25);
+    opacity: 0.75;
+    cursor: pointer;
   }
 
   .pfPlaceholder .svg {

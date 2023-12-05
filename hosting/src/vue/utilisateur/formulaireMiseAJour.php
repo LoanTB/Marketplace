@@ -13,7 +13,7 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
 
 <form method="POST" action="controleurFrontal.php" enctype="multipart/form-data">
 <div id="userHead">
-    <label class="pfPlaceholder" for="pfp" id="pfpLabel">
+    <label class="pfPlaceholder" for="pfp" id="pfpLabel" class="thumbnail" style="background-image: url('<?php echo htmlspecialchars($utilisateur->getUrlImage())?>')">
         <div class="svg image-add-icon"></div>
         <input type="file" name="image" id="pfp">
     </label>
