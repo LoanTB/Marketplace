@@ -11,10 +11,10 @@ use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 
 <form method="POST" action="controleurFrontal.php" enctype="multipart/form-data">
 <div id="userHead"><label class="pfPlaceholder<?php
-    if ($utilisateur->getUrlImage() != "") {
-        echo ' isImageHere" style="background-image: url('.htmlspecialchars($utilisateur->getUrlImage()).')" ';
+    if ($utilisateur->getUrlImage() == "") {
+        echo ' isImageHere" style="background-image: url(../ressources/img/unknown.png)" ';
     } else {
-        echo '" ';
+        echo ' isImageHere" style="background-image: url('.htmlspecialchars($utilisateur->getUrlImage()).')" ';
     }
     ?>>
     </label>
