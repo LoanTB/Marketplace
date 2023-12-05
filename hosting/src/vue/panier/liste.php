@@ -17,9 +17,9 @@ echo '<link rel="stylesheet" href="../ressources/css/SimpleListe.css">
 if (empty($articles)) {
     echo "<h3>Votre panier est vide !</h3>";
 } else {
-    echo '<h3>Articles que vous êtes sur le point d\'acheter</h3>
+    echo '<h3>Articles que vous êtes sur le point d\'commande</h3>
           <div class="CTAbuttons">';
-    if (ConnexionUtilisateur::estConnecte()){echo '<a href="controleurFrontal.php?controleur=acheter&action=ajouterPanierAuxAchats&id_utilisateur='.ConnexionUtilisateur::getIdUtilisateurConnecte().'" id="addToCart">Finaliser la commande</a>';}
+    if (ConnexionUtilisateur::estConnecte()){echo '<a href="controleurFrontal.php?controleur=commande&action=ajouterPanierAuxAchats&id_utilisateur='.ConnexionUtilisateur::getIdUtilisateurConnecte().'" id="addToCart">Finaliser la commande</a>';}
     echo '        <a href="controleurFrontal.php?controleur=panier&action=vider" class="animated-button critical">
                 <span>Vider le panier</span>
                 <span></span>

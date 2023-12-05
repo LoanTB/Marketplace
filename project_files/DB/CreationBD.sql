@@ -47,6 +47,18 @@ CREATE TABLE Article(
                         FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE
 );
 
+CREATE TABLE Commande(
+                         id_commande INT AUTO_INCREMENT,
+                         nom VARCHAR(200)  NOT NULL,
+                         prix DECIMAL(15,2)   NOT NULL,
+                         quantite INT NOT NULL,
+                         jour DATE NOT NULL,
+                         id_article INT NOT NULL,
+                         id_utilisateur INT NOT NULL,
+                         PRIMARY KEY(id_commande),
+                         FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE
+);
+
 CREATE TABLE commenter(
                           id_utilisateur INT,
                           id_article INT,
@@ -104,14 +116,5 @@ CREATE TABLE dansPanier(
                            FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE CASCADE
 );
 
-CREATE TABLE acheter(
-                        id_utilisateur INT,
-                        id_article INT,
-                        quantite INT,
-                        prix DECIMAL(15,2)  ,
-                        jour DATE NOT NULL,
-                        PRIMARY KEY(id_utilisateur, id_article),
-                        FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE
-);
 
 INSERT INTO Image(url_image) VALUES ('');

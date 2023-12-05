@@ -54,7 +54,7 @@ if (ConnexionUtilisateur::estConnecte()) {
                     echo '<li class="profilepicture"><img alt="Profile picture" src="'.$utilisateur->getUrlImage().'">'.htmlspecialchars($utilisateur->getNom()).' '.htmlspecialchars($utilisateur->getPrenom()).'</li>';
                 }
                 echo '<li class="account-menuitem top"><a href="controleurFrontal.php?action=afficherFormulaireMiseAJour&controleur=utilisateur"><div class="svg settings-icon"></div><div class="account-buttons">Paramètres</div></a></li><li class="separator"></li>
-                <li class="account-menuitem"><a href="controleurFrontal.php?action=afficherListe&controleur=acheter"><div class="svg history-icon"></div><div class="account-buttons">Commandes</div></a></li><li class="separator"></li>
+                <li class="account-menuitem"><a href="controleurFrontal.php?action=afficherListe&controleur=commande"><div class="svg history-icon"></div><div class="account-buttons">Commandes</div></a></li><li class="separator"></li>
                 <li class="account-menuitem bottom"><a href="controleurFrontal.php?action=deconnecter&controleur=utilisateur"><div class="svg logout-icon"></div><div class="account-buttons">Déconnexion</div></a></li>';
             } else {
                 echo '<li class="profilepicture"><img alt="Profile picture" src="../ressources/img/unknown.png">Non connecté</li>

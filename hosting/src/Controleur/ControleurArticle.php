@@ -164,7 +164,7 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
 
-        $article = new Article($ancienArticle->getIdArticle(),$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],(new DateTime())->format('Y-m-d H:i:s'),$ancienArticle->getJour(),$ancienArticle->getIdUtilisateur(),$raw = false);
+        $article = new Article($ancienArticle->getIdCommande(),$_REQUEST["nom"],$_REQUEST["description"],$_REQUEST["prix"],$_REQUEST["quantite"],(new DateTime())->format('Y-m-d H:i:s'),$ancienArticle->getJour(),$ancienArticle->getIdUtilisateur(),$raw = false);
 
         $uploader = new ImgurUploader();
 
@@ -247,7 +247,7 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
 
-        $sqlreturn = (new ArticleRepository())->supprimerParUnique($article->getIdArticle(),0);
+        $sqlreturn = (new ArticleRepository())->supprimerParUnique($article->getIdCommande(),0);
 
         if ($sqlreturn == "") {
             MessageFlash::ajouter("success","L'article a bien été supprimé.");

@@ -4,12 +4,11 @@ namespace App\Ecommerce\Controleur;
 
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
-use App\Ecommerce\Modele\DataObject\relations\acheter;
-use App\Ecommerce\Modele\Repository\relations\acheterRepository;
+use App\Ecommerce\Modele\Repository\CommandeRepository;
 use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 use DateTime;
 
-class ControleurAcheter extends ControleurGenerique{
+class ControleurCommande extends ControleurGenerique{
     public static function afficherListe(): void {
         if (!ConnexionUtilisateur::estConnecte()) {
             ControleurArticle::afficherListe();
@@ -17,8 +16,8 @@ class ControleurAcheter extends ControleurGenerique{
         }
 
         self::afficherNouvelleVue("vueGenerale.php", [
-            "pagetitle" => "Achats",
-            "cheminVueBody" => "acheter/liste.php"
+            "pagetitle" => "Commandes",
+            "cheminVueBody" => "commande/liste.php"
         ]);
     }
 
@@ -42,7 +41,7 @@ class ControleurAcheter extends ControleurGenerique{
         }
 
         foreach ($articles as $article){
-            $sqlreturn = (new acheterRepository())->acheterArticle(ConnexionUtilisateur::getIdUtilisateurConnecte(),$article,1);
+            $sqlreturn = (new CommandeRepository())->acheterArticle(ConnexionUtilisateur::getIdUtilisateurConnecte(),$article,1);
             if ($sqlreturn != "") {
                 MessageFlash::ajouter("warning", "Le panier n'as pas pu être totalement enregistré comme acheté (".$sqlreturn."), consultez votre historique d'achats pour voir quels achats ont bien été confirmés, veuillez réessayer plus tard.");
                 ControleurGenerique::rediriger();
