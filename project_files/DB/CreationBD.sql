@@ -111,6 +111,5 @@ CREATE TABLE Acheter(
                         prix DECIMAL(15,2)  ,
                         jour DATE NOT NULL,
                         PRIMARY KEY(id_utilisateur, id_article),
-                        FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE,
-                        FOREIGN KEY(id_article) REFERENCES Article(id_article) ON DELETE SET NULL
+                        FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE
 );
