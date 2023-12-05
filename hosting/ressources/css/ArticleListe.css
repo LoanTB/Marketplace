@@ -137,5 +137,5 @@ main, #articleList, #enteteListe {
     background-color: rgba(32, 178, 171, 0.25);
 }
 .price {
-    min-width: fit-content;
+    min-width: max-content;
 }

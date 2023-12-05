@@ -56,7 +56,7 @@ foreach ($historique as $article) {
                     echo '<div class="authorRow">
                         <h4>'.$article[0]->getQuantite().' Acheté ';
     if (ConnexionUtilisateur::estAdministrateur()) {
-        echo 'par '.$userEntity->getPrenom().' '.$userEntity->getNom().' ';
+        echo 'par '.htmlspecialchars($userEntity->getPrenom()).' '.htmlspecialchars($userEntity->getNom()).' ';
     }
     echo 'le '.$userEntity->getJour();
 
