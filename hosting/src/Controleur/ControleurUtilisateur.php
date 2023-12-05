@@ -136,15 +136,18 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         if (!MotDePasse::verifier($_REQUEST["password"],$ancienUtilisateur->getPassword())){
-            MessageFlash::ajouter("warning", "Mot de passe incorrecte.");
-            ControleurGenerique::rediriger();
+            MessageFlash::ajouter("warning", "Mot de passe incorrect.");
+            ControleurUtilisateur::afficherDetail();
             return;
         }
 
         $sqlreturn = (new UtilisateurRepository())->supprimerParUniqueDansRequest();
 
+        ConnexionUtilisateur::deconnecter();
+        PanierTemporaire::vider();
+
         if ($sqlreturn == "") {
-            MessageFlash::ajouter("success", "Votre compte à bien été supprimé, ainsi que tout vos articles et commentaires.");
+            MessageFlash::ajouter("success", "Votre compte à bien été supprimé. Merci de votre confiance et à bientôt !");
         } else {
             MessageFlash::ajouter("warning", "Le compte n'as pas pu être supprimé (".$sqlreturn."), veuillez réessayer plus tard.");
         }
