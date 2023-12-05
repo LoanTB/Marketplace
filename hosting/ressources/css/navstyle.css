@@ -368,8 +368,8 @@ footer h6 {
 }
 
 .separator {
-    border-top: #000000 1px dashed;
-    height: 0px;
+    border-top: transparent 1px solid;
+    height: 0;
     background-color: #3b3b42;
 }
 
