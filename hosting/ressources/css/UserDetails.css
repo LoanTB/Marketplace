@@ -88,8 +88,15 @@ main > * {
     flex: auto;
   }
 
-  #deleteAction {
-    border: solid #a01d1d 3px;
+  .recommended {
+      border: solid #1da02e 3px;
+  }
+
+  .warning {
+      border: solid #a01d1d 3px;
+  }
+
+  .leftAction {
     color: var(--var-text);
     padding: 10px 15px;
     border-radius: 8px;
@@ -102,12 +109,19 @@ main > * {
     text-align: center;
   }
 
-  #deleteAction {
+  .leftAction {
     width: 25%;
   }
 
-  #deleteAction:hover {
-    background-color: #a01d1d;
+  .warning:hover {
+      background-color: #a01d1d;
+  }
+
+  .recommended:hover {
+      background-color: #1da02e;
+  }
+
+  .leftAction:hover {
     color: white;
     box-shadow: 0 2px 16px -3px var(--var-box-shadow-med);
   }
@@ -174,4 +188,8 @@ main > * {
 .warnTitle {
     text-align: center;
     color: var(--var-warntext-color);
+}
+
+#dangerButton, #dangerButton:hover {
+    background-color: #8c0101;
 }

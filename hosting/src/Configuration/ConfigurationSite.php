@@ -4,7 +4,7 @@ namespace App\Ecommerce\Configuration;
 
 class ConfigurationSite {
 
-    static private bool $debug = true;
+    static private bool $debug = false;
     static private array $siteConfiguration = array(
         'expirationSession' => 60*60*24, // Session expire obligatoirement après 24h
         'expirationCookieDefault' => 60*60*24, // Un cookie expire par défault 24h après sa création si non précisée

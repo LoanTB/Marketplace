@@ -11,14 +11,12 @@ use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 
 <form method="POST" action="controleurFrontal.php" enctype="multipart/form-data">
 <div id="userHead"><label class="pfPlaceholder<?php
-    if ($utilisateur->getUrlImage() != "") {
-        echo ' isImageHere" style="background-image: url('.htmlspecialchars($utilisateur->getUrlImage()).')" ';
+    if ($utilisateur->getUrlImage() == "") {
+        echo ' isImageHere" style="background-image: url(../ressources/img/unknown.png)" ';
     } else {
-        echo '" ';
+        echo ' isImageHere" style="background-image: url('.htmlspecialchars($utilisateur->getUrlImage()).')" ';
     }
-    ?>for="pfp" id="pfpLabel">
-        <div class="svg image-add-icon"></div>
-        <input type="file" name="image" id="pfp">
+    ?>>
     </label>
     <div id="fullName"><?php echo htmlspecialchars($utilisateur->getNom())?> <?php echo htmlspecialchars($utilisateur->getPrenom())?></div>
     <div><?php echo htmlspecialchars($utilisateur->getLogin())?></div>
@@ -39,8 +37,7 @@ use App\Ecommerce\Modele\Repository\UtilisateurRepository;
     <input type='hidden' name='action' value='supprimer'>
     <input type='hidden' name='controleur' value='utilisateur'>
     <div id="submitButtons">
-        <a id="deleteAction" href="controleurFrontal.php?action=afficherFormulaireMiseAJour&controleur=utilisateur">Retour en arrière</a>
-        <input type="submit" value="Supprimer le compte">
+        <a class="leftAction recommended" href="controleurFrontal.php?action=afficherFormulaireMiseAJour&controleur=utilisateur">Retour en arrière</a>
+        <input type="submit" id="dangerButton" value="Supprimer le compte">
     </div>
 </form>
-<script src="../ressources/js/pfPreview.js"></script>
