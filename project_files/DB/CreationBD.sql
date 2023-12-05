@@ -113,3 +113,5 @@ CREATE TABLE acheter(
                         PRIMARY KEY(id_utilisateur, id_article),
                         FOREIGN KEY(id_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE
 );
+
+INSERT INTO Image(url_image) VALUES ('');
