@@ -8,6 +8,7 @@ use App\Ecommerce\Lib\PanierTemporaire;
 use App\Ecommerce\Lib\VerificationEmail;
 use App\Ecommerce\Lib\ImgurUploader;
 use App\Ecommerce\Modele\DataObject\Image;
+use App\Ecommerce\Modele\DataObject\Utilisateur;
 use App\Ecommerce\Modele\Repository\ImageRepository;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 use DateTime;
@@ -78,6 +79,30 @@ class ControleurUtilisateur extends ControleurGenerique {
             "pagetitle" => "Formulaire connexion utilisateurs",
             "cheminVueBody" => "utilisateur/formulaireConnexion.php"
         ]);
+    }
+
+
+
+    public static function supprimerPfp() : void {
+        if (!isset($_REQUEST["id_utilisateur"])){
+            ControleurGenerique::accesNonAutorise("AH");
+            return;
+        }
+
+        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["id_utilisateur"]) and !ConnexionUtilisateur::estAdministrateur()){
+            ControleurGenerique::accesNonAutorise("AI");
+            return;
+        }
+
+        $utilisateur = (new UtilisateurRepository)->recupererParUniqueDansRequest();
+        $utilisateur->setUrlImage("");
+        $sqlreturn = (new UtilisateurRepository())->mettreAJour($utilisateur);
+        if ($sqlreturn != "") {
+            MessageFlash::ajouter("warning", "L'image n'a pas pu être supprimé, veuillez réessayer plus tard.");
+            self::afficherFormulaireMiseAJour();
+            return;
+        }
+        self::afficherFormulaireMiseAJour();
     }
 
     public static function supprimer() : void {
