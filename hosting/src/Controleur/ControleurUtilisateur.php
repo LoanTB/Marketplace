@@ -349,6 +349,8 @@ class ControleurUtilisateur extends ControleurGenerique {
             MessageFlash::ajouter("warning", "Les mots de passes sont différents");
             self::afficherFormulaireMiseAJour();
             return;
+        } else if ($_REQUEST["newPassword"] != "") {
+            $infos["password"] = $_REQUEST["newPassword"];
         }
 
         if (!MotDePasse::verifier($infos["password"],$ancienUtilisateur->getPassword())){
@@ -359,7 +361,6 @@ class ControleurUtilisateur extends ControleurGenerique {
 
         $infos["id_utilisateur"] = $ancienUtilisateur->getIdUtilisateur();
         $infos["jour"] = $ancienUtilisateur->getJour();
-        $infos["password"] = $_REQUEST["newPassword"];
 
         foreach ($utilisateurRepository->getNomsColonnes() as $key){
             if (!array_key_exists($key,$infos)){
