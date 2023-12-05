@@ -8,7 +8,7 @@ $historique = (new acheterRepository())->recupererHistoriqueAchats(ConnexionUtil
 foreach ($historique as $achat){
     echo "<p>Vous avez acheté le ".$achat[0]->getJour()." ".$achat[0]->getQuantite()." articles pour un total de ".$achat[0]->getPrix()."€ (";
     if ($achat[1] == null){
-        echo "L'article n'es plus disponible";
+        echo "L'article n'est plus disponible";
     } else {
         echo "Article : ".$achat[1]->getNom();
     }
