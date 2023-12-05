@@ -289,7 +289,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             $imgurLink = $uploader->uploadImage($fileToUpload);
             if (!$imgurLink) {
                 MessageFlash::ajouter("warning", "Impossible d'héberger les images, veuillez réessayer ultérieurement");
-                self::afficherFormulaireCreation();
+                self::afficherFormulaireMiseAJour();
                 return;
             }
             $image = new Image($imgurLink);
