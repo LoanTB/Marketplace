@@ -1,31 +1,41 @@
 <?php
 
-use \App\Ecommerce\Modele\Repository\relations\acheterRepository;
+use App\Ecommerce\Controleur\ControleurGenerique;
+use \App\Ecommerce\Modele\Repository\CommandeRepository;
 use \App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
+use \App\Ecommerce\Modele\Repository\ArticleRepository;
 
-$historique = (new acheterRepository())->recupererHistoriqueAchats(ConnexionUtilisateur::getIdUtilisateurConnecte());
+if (!ConnexionUtilisateur::estConnecte()){
+    ControleurGenerique::rediriger();
+}
 
-if (ConnexionUtilisateur::estAdministrateur()) {
-    foreach ((new UtilisateurRepository())->recuperer() as $user) {
-        $historique = $historique + (new acheterRepository())->recupererHistoriqueAchats($user->getIdUtilisateur());
-    }
+if (ConnexionUtilisateur::estAdministrateur()){
+    $commandes = (new CommandeRepository())->recuperer();
+} else {
+    $commandes = (new CommandeRepository())->recupererParColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),6);
+}
+
+$historique = [];
+foreach ($commandes as $commande) {
+    $historique[] = [$commande,(new ArticleRepository())->recupererParUnique($commande->getIdArticle(),0)];
 }
 
 echo '<link rel="stylesheet" href="../ressources/css/SimpleListe.css">
     <div id="enteteListe">
         <h1>Historique d';
-if (ConnexionUtilisateur::estAdministrateur()) echo 'e tous les achats effectués';
-else echo 'es achats</h1>';
+if (ConnexionUtilisateur::estAdministrateur()){
+    echo 'e tous les achats effectués';
+} else {
+    echo 'es achats</h1>';
+}
 
 if (empty($historique)) {
     echo "<h3>Aucune commande passée";
 } else {
     echo '<h3>'.count($historique).' articles ont été achetés';
 }
-
-
 
 echo '</div><div id="articleList">';
 

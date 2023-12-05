@@ -50,7 +50,7 @@ class CommandeRepository extends AbstractRepository{
         return $this->nomsColonnes;
     }
 
-    public function construireDepuisTableau(array $objetFormatTableau,bool $raw) : Article {
-        return new Article($objetFormatTableau["id_article"],$objetFormatTableau["nom"],$objetFormatTableau["description"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["jourModification"],$objetFormatTableau["jour"],$objetFormatTableau["id_utilisateur"],$raw);
+    public function construireDepuisTableau(array $objetFormatTableau,bool $raw) : Commande {
+        return new Commande($objetFormatTableau["id_commande"],$objetFormatTableau["nom"],$objetFormatTableau["prix"],$objetFormatTableau["quantite"],$objetFormatTableau["jour"],$objetFormatTableau["id_article"],$objetFormatTableau["id_utilisateur"],$raw);
     }
 }
