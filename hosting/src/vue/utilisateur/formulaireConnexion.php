@@ -4,7 +4,7 @@
         <form method="<?php if(\App\Ecommerce\Configuration\ConfigurationSite::getDebug()){echo "GET";}else{echo "POST";}?>" action="controleurFrontal.php">
             <h1>Connexion à votre compte</h1>
             <fieldset>
-                <legend>Tirez le meilleur parti de FutureMarket en vous connectant à votre compte</legend>
+                <legend>Tirez le meilleur parti de FutureMarket en vous connectant</legend>
                 <div class="entries">
                     <input type="text" placeholder="Identifiant/Email/Telephone" name="unique" id="unique_id" required>
                     <input type="password" value="" placeholder="Mot de passe" name="password" id="password_id" required>
