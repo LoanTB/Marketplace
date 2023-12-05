@@ -41,7 +41,7 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
             </label>
 
             <div id="sidebarPrice" class="sidebarItem">
-                <input type="number" value="<?php echo htmlspecialchars($article->getPrix())?>" placeholder="Prix" id="price" name="prix" id="prix_article_id" required>
+                <input type="number" step="0.01" value="<?php echo htmlspecialchars($article->getPrix())?>" placeholder="Prix" id="price" name="prix" id="prix_article_id" required>
                 <div id="devise">€</div>
             </div>
             <div id="sidebarAuthor" class="sidebarItem">
