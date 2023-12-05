@@ -136,7 +136,7 @@ if (ConnexionUtilisateur::estConnecte() && $article->getIdUtilisateur() != Conne
 
         echo '<form id="commenter" method="GET" action=\'controleurFrontal.php\'>
             <input type="text" class="commentInput" name="titre" placeholder="Titre" value="';
-            if (!is_null($commentaireUtilisateur)) echo $commentaireUtilisateur->getTitre();
+            if (!is_null($commentaireUtilisateur)) echo htmlspecialchars($commentaireUtilisateur->getTitre());
             echo '" required>
             <textarea name="texte" placeholder="Description" class="commentInput" required>';
             if (!is_null($commentaireUtilisateur)) echo $commentaireUtilisateur->getTexte();

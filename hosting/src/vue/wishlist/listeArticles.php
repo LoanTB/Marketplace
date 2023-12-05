@@ -27,7 +27,7 @@ foreach ($articles as $article) {
                 <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . rawurlencode($article->getIdArticle()) . '" class="articleDesc">
                     <h2>'.htmlspecialchars($article->getNom()).'</h2>
                     <div class="authorRow">
-                        <h4>'.$userEntity->getPrenom().' '.$userEntity->getNom().'</h4>
+                        <h4>'.htmlspecialchars($userEntity->getPrenom()).' '.htmlspecialchars($userEntity->getNom()).'</h4>
                     </div>
                 </a>
                 <div class="rowActions">
