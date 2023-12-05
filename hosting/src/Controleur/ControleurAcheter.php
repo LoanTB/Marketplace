@@ -50,6 +50,8 @@ class ControleurAcheter extends ControleurGenerique{
             }
         }
 
+        ControleurPanier::vider();
+
         MessageFlash::ajouter("success", "Votre panier a bien été enregistré comme acheté");
 
         ControleurGenerique::rediriger();
