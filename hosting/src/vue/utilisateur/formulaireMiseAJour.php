@@ -16,7 +16,7 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
     if ($utilisateur->getUrlImage() != "") {
         echo ' isImageHere" style="background-image: url('.htmlspecialchars($utilisateur->getUrlImage()).')" for="pfp" id="pfpLabel">
         <div class="svg image-add-icon"></div>
-        <a href="deletePfp" class="deleteButton"><div class="svg delete-icon locked-on-img"></div></a>';
+        <a href="controleurFrontal.php?action=supprimerPfp&controleur=utilisateur&id_utilisateur='.htmlspecialchars(rawurlencode($utilisateur->getIdUtilisateur())).'" class="deleteButton" class="deleteButton"><div class="svg delete-icon locked-on-img"></div></a>';
     } else {
         echo '" for="pfp" id="pfpLabel">
         <div class="svg image-add-icon"></div>';
