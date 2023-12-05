@@ -30,8 +30,11 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
                         echo '"';
                     }
                     echo ' for="img'.($i+1).'" id="img'.($i+1).'label">
-                    <div class="svg image-add-icon"> </div>
-                    <input type="file" name="image'.$i.'" id="img'.($i+1).'">
+                    <div class="svg image-add-icon"> </div>';
+                    if (count($imagesArray) > $i) {
+                        echo '<a href="deleteImage'.$i.'" class="deleteButton"><div class="svg delete-icon locked-on-img"></div></a>';
+                    }
+                    echo '<input type="file" name="image'.$i.'" id="img'.($i+1).'">
                     </label>';
                 } ?>
             </div>

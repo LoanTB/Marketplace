@@ -140,3 +140,28 @@ main > * {
     display: flex;
     gap: 5px;
 }
+
+.deleteButton {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    z-index: 1;
+    background-color: var(--var-fieldset-bg-color);
+    border-radius: 50%;
+    display: flex;
+    transition: transform 0.15s;
+}
+
+.deleteButton:hover {
+    transform: scale(1.1);
+}
+
+.deleteButton:focus {
+    transform: scale(0.9);
+}
+
+.delete-icon.locked-on-img {
+    width: 60%;
+    height: 60%;
+    background-color: var(--var-text);
+}

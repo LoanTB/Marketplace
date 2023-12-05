@@ -14,13 +14,14 @@ $indicateurCode = substr($utilisateur->getTelephone(), 0, 3);
 <form method="POST" action="controleurFrontal.php" enctype="multipart/form-data">
 <div id="userHead"><label class="pfPlaceholder<?php
     if ($utilisateur->getUrlImage() != "") {
-        echo ' isImageHere" style="background-image: url('.htmlspecialchars($utilisateur->getUrlImage()).')" ';
-    } else {
-        echo '" ';
-    }
-    ?>for="pfp" id="pfpLabel">
+        echo ' isImageHere" style="background-image: url('.htmlspecialchars($utilisateur->getUrlImage()).')" for="pfp" id="pfpLabel">
         <div class="svg image-add-icon"></div>
-        <input type="file" name="image" id="pfp">
+        <a href="deletePfp" class="deleteButton"><div class="svg delete-icon locked-on-img"></div></a>';
+    } else {
+        echo '" for="pfp" id="pfpLabel">
+        <div class="svg image-add-icon"></div>';
+    }
+    ?><input type="file" name="image" id="pfp">
     </label>
     <div id="fullName"><?php echo htmlspecialchars($utilisateur->getNom())?> <?php echo htmlspecialchars($utilisateur->getPrenom())?></div>
     <div><?php echo htmlspecialchars($utilisateur->getLogin())?></div>
