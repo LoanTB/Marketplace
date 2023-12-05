@@ -409,7 +409,7 @@ class ControleurUtilisateur extends ControleurGenerique {
         if (VerificationEmail::traiterEmailValidation($_REQUEST["nonce"])){
             ConnexionUtilisateur::deconnecter();
             MessageFlash::ajouter("success", "Email confirmée, vérification de compte validée.");
-            ControleurGenerique::rediriger();
+            ControleurUtilisateur::formulaireConnexion();
         } else {
             MessageFlash::ajouter("warning", "Email non confirmée, lien de confirmation invalide !");
             ControleurGenerique::rediriger();
