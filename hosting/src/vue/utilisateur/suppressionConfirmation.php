@@ -36,7 +36,7 @@ use App\Ecommerce\Modele\Repository\UtilisateurRepository;
         <input type="password" placeholder="Mot de passe" value="" name="password" id="oldPassword_id" required>
     </div>
     <input type='hidden' name='id_utilisateur' value='<?php echo htmlspecialchars($utilisateur->getIdUtilisateur()); ?>'>
-    <input type='hidden' name='action' value='mettreAJour'>
+    <input type='hidden' name='action' value='supprimer'>
     <input type='hidden' name='controleur' value='utilisateur'>
     <div id="submitButtons">
         <a id="deleteAction" href="controleurFrontal.php?action=afficherFormulaireMiseAJour&controleur=utilisateur">Retour en arrière</a>
