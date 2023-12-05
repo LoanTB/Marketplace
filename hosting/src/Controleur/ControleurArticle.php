@@ -77,6 +77,52 @@ class ControleurArticle extends ControleurGenerique {
         ]);
     }
 
+
+    public static function supprimerImage() : void {
+        if (!isset($_REQUEST["id_article"]) or !isset($_REQUEST["image"])){
+            ControleurGenerique::accesNonAutorise("AH");
+            return;
+        }
+
+        if ($_REQUEST["image"] === "0") {
+            MessageFlash::ajouter("warning", "Vous ne pouvez pas supprimer la première image");
+            self::afficherFormulaireMiseAJour();
+            return;
+        }
+
+        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["id_utilisateur"]) and !ConnexionUtilisateur::estAdministrateur()){
+            ControleurGenerique::accesNonAutorise("AI");
+            return;
+        }
+
+        $article = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"],0);
+        if (is_null($article)) {
+            MessageFlash::ajouter("warning", "L'article demandé est introuvable !");
+            self::afficherListe();
+        }
+
+        if (!ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())){
+            ControleurGenerique::accesNonAutorise("G");
+            return;
+        }
+
+        $oldImages = (new illustrerRepository())->recupererParColonne($_REQUEST["id_article"], 0);
+        foreach ($oldImages as $oldImage) {
+            if ($oldImage->getOrdre() == $_REQUEST["image"]) {
+                $sqlreturn = (new illustrerRepository())->supprimer($oldImage);
+                if ($sqlreturn != "") {
+                    MessageFlash::ajouter("warning", "Impossible de supprimer l'image (AI".$sqlreturn."), veuillez réessayer plus tard.");
+                }
+            }
+        }
+        self::afficherFormulaireMiseAJour();
+    }
+
+
+
+
+
+
     public static function creerDepuisFormulaire() : void {
         if (!isset($_REQUEST["nom"]) or !isset($_REQUEST["description"]) or !isset($_REQUEST["prix"]) or !isset($_REQUEST["quantite"]) or !ConnexionUtilisateur::estConnecte()){
             ControleurGenerique::accesNonAutorise("C");
