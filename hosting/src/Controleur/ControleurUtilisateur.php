@@ -437,12 +437,8 @@ class ControleurUtilisateur extends ControleurGenerique {
     public static function deconnecter() : void {
         ConnexionUtilisateur::deconnecter();
         PanierTemporaire::vider();
-<<<<<<< HEAD
         Redirections::supprimerPointControle();
-        MessageFlash::ajouter("success", "Déonnexion effectuée");
-=======
         MessageFlash::ajouter("success", "Vous avez été déconnecté");
->>>>>>> edc0d00 (strings: Correction des fautes d'ortograf)
         ControleurGenerique::rediriger();
     }
 
