@@ -3,6 +3,7 @@ use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\PanierTemporaire;
 use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
+use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 
 if (!ConnexionUtilisateur::estConnecte()) {
     $articles = PanierTemporaire::lireArticles();
@@ -30,13 +31,14 @@ if (empty($articles)) {
 echo '</div><div id="articleList">';
 
 foreach ($articles as $article) {
+    $userEntity = (new UtilisateurRepository)->recupererParUnique($article->getIdUtilisateur(), 0);
     echo '<div class="card animationList">
             <div class="listItem articleView">
                 <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '" class="thumbnail" style="background-image: url('.(new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[0].')"></a>
                 <a href="controleurFrontal.php?controleur=article&action=afficherDetail&id_article=' . htmlspecialchars(rawurlencode($article->getIdArticle())) . '" class="articleDesc">
                     <h2>'.htmlspecialchars($article->getNom()).'</h2>
                     <div class="authorRow">
-                        <h4>Auteur</h4>
+                        <h4>'.$userEntity->getPrenom().' '.$userEntity->getNom().'</h4>
                     </div>
                 </a>
                 <div class="rowActions">

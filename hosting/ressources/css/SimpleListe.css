@@ -71,3 +71,9 @@ main {
 .last-icon {
     margin-right: 30px !important;
 }
+
+.notFoundIllustration {
+    margin: 0;
+    background-color: var(--var-searchbar-color);
+    mask-size: 50px;
+}
