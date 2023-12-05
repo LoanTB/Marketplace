@@ -35,10 +35,10 @@ class ControleurWishlist extends ControleurGenerique {
         $sqlreturn = (new WishlistRepository())->ajouterPourUtilisateur($wishlist,ConnexionUtilisateur::getIdUtilisateurConnecte());
 
         if ($sqlreturn == "") {
-            MessageFlash::ajouter("success", "La liste de souhait a bien été ajouté créer.");
+            MessageFlash::ajouter("success", "La liste de souhaits a bien été créée.");
             self::afficherListe();
         } else {
-            MessageFlash::ajouter("warning", "La liste de souhait n'as pas pu être créer (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Échec lors de la création de la liste de souhaits (".$sqlreturn."), veuillez réessayer plus tard.");
             self::afficherListe();
         }
     }
@@ -91,9 +91,9 @@ class ControleurWishlist extends ControleurGenerique {
         $sqlreturn = (new contenirRepository())->supprimerParDeuxColonne($_REQUEST["id_article"],0,$_REQUEST["id_wishlist"],1);
 
         if ($sqlreturn == "") {
-            MessageFlash::ajouter("success", "L'article à bien été ajouter à la liste des souhaits");
+            MessageFlash::ajouter("success", "Article ajouté à la liste des souhaits");
         } else {
-            MessageFlash::ajouter("warning", "L'article n'as pas pu être ajouter à la lite des souhaits (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Impossible d'ajouter l'article à la liste de souhaits (".$sqlreturn."), veuillez réessayer plus tard.");
         }
         ControleurGenerique::rediriger();
     }
@@ -106,16 +106,16 @@ class ControleurWishlist extends ControleurGenerique {
 
         $favoris = self::recupererFavoris();
         if ($favoris == null){
-            MessageFlash::ajouter("warning", "Suppression du favoris échoué (WFAVERROR), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Échec lors de la suppression du favori (WFAVERROR), veuillez réessayer plus tard.");
             return;
         }
 
         $sqlreturn = (new contenirRepository())->supprimerParDeuxColonne($_REQUEST["id_article"],0,$favoris->getIdWishlist(),1);
 
         if ($sqlreturn == "") {
-            MessageFlash::ajouter("success", "L'article à bien été supprimé des favoris");
+            MessageFlash::ajouter("success", "Article supprimé des favoris");
         } else {
-            MessageFlash::ajouter("warning", "L'article n'as pas pu être supprimé des favoris (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Échec lors de la suppression du favori (".$sqlreturn."), veuillez réessayer plus tard.");
         }
         $favoris = self::recupererFavoris();
         ControleurGenerique::rediriger([
@@ -136,7 +136,7 @@ class ControleurWishlist extends ControleurGenerique {
             }
         }
         if ((new WishlistRepository())->ajouterPourUtilisateur(new Wishlist(null, "favoris", $raw = false),ConnexionUtilisateur::getIdUtilisateurConnecte()) != ""){
-            MessageFlash::ajouter("warning", "Recupération des favoris échouée (WFAVERROR), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Échec lors de la récupération de vos favoris (WFAVERROR), veuillez réessayer plus tard.");
             return null;
         }
         return self::recupererFavoris();
@@ -182,9 +182,9 @@ class ControleurWishlist extends ControleurGenerique {
         $sqlreturn = (new contenirRepository())->ajouter($contenir);
 
         if ($sqlreturn == "") {
-            MessageFlash::ajouter("success", "L'article à bien été ajouter aux favoris");
+            MessageFlash::ajouter("success", "Article ajouté aux favoris");
         } else {
-            MessageFlash::ajouter("warning", "L'article n'as pas pu être ajouter aux favoris (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Échec lors de l'ajout de l'article aux favoris (".$sqlreturn."), veuillez réessayer plus tard.");
         }
         ControleurGenerique::rediriger();
     }

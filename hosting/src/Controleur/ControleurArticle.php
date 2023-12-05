@@ -18,7 +18,7 @@ use const http\Client\Curl\Versions\ARES;
 class ControleurArticle extends ControleurGenerique {
     public static function afficherListe() : void {
         self::afficherNouvelleVue("vueGenerale.php",[
-            "pagetitle" => "Boutique",
+            "pagetitle" => "Liste des articles",
             "cheminVueBody" => "article/liste.php",
             "articles" => (new ArticleRepository())->recuperer()
         ]);
@@ -65,14 +65,14 @@ class ControleurArticle extends ControleurGenerique {
         }
 
         self::afficherNouvelleVue("vueGenerale.php",[
-            "pagetitle" => "Formulaire création articles",
+            "pagetitle" => "Publier un article",
             "cheminVueBody" => "article/formulaireCreation.php"
         ]);
     }
 
     public static function afficherFormulaireMiseAJour() : void {
         self::afficherNouvelleVue("vueGenerale.php",[
-            "pagetitle" => "Formulaire modification articles",
+            "pagetitle" => "Modifier un article",
             "cheminVueBody" => "article/formulaireMiseAJour.php"
         ]);
     }
@@ -90,7 +90,7 @@ class ControleurArticle extends ControleurGenerique {
         }
 
         if ($_REQUEST["image"] === "0") {
-            MessageFlash::ajouter("warning", "Vous ne pouvez pas supprimer la première image");
+            MessageFlash::ajouter("warning", "Impossible de supprimer la première image. Merci de plutôt la modifier");
             self::afficherFormulaireMiseAJour();
             return;
         }
@@ -110,7 +110,7 @@ class ControleurArticle extends ControleurGenerique {
         if (count($oldImage) == 1) {
             $sqlreturn = (new illustrerRepository())->supprimer($oldImage[0]);
             if ($sqlreturn != "") {
-                MessageFlash::ajouter("warning", "Impossible de supprimer l'image (" . $sqlreturn . "), veuillez réessayer plus tard.");
+                MessageFlash::ajouter("warning", "Suppression de l'image impossible (" . $sqlreturn . "), veuillez réessayer plus tard.");
             }
         } else {
             MessageFlash::ajouter("warning", "Impossible de récupérer l'image, veuillez réessayer plus tard.");
@@ -130,13 +130,13 @@ class ControleurArticle extends ControleurGenerique {
         }
 
         if ($_REQUEST["prix"] <= 0){
-            MessageFlash::ajouter("warning", "Le prix ne peut pas être plus petit ou égale à 0.");
+            MessageFlash::ajouter("warning", "Le prix doit être supérieur à 0€");
             self::afficherFormulaireCreation();
             return;
         }
 
         if ($_REQUEST["quantite"] <= 0){
-            MessageFlash::ajouter("warning", "La quantité ne peut pas être plus petite ou égale à 0.");
+            MessageFlash::ajouter("warning", "Veuillez entrer une quantité supérieure à 0");
             self::afficherFormulaireCreation();
             return;
         }
@@ -154,7 +154,7 @@ class ControleurArticle extends ControleurGenerique {
                 if ($imgurLink) {
                     $imgurLinks[] = $imgurLink;
                 } else {
-                    MessageFlash::ajouter("warning", "Impossible d'héberger les images, veuillez réessayer ultérieurement");
+                    MessageFlash::ajouter("warning", "Erreur lors de l'importation des images, veuillez réessayer ultérieurement");
                     self::afficherFormulaireCreation();
                     return;
                 }
@@ -166,7 +166,7 @@ class ControleurArticle extends ControleurGenerique {
             $image = new Image($link);
             $sqlreturn = (new ImageRepository())->ajouter($image);
             if ($sqlreturn != "") {
-                MessageFlash::ajouter("warning", "L'image n'a pas pu être sauvegardé dans la table image, veuillez réessayer plus tard.");
+                MessageFlash::ajouter("warning", "Une erreur est survenue lors de l'enregistrement des images, veuillez réessayer plus tard.");
                 self::afficherListe();
                 return;
             }
@@ -176,12 +176,12 @@ class ControleurArticle extends ControleurGenerique {
 
         $sqlreturn = (new ArticleRepository())->ajouterArticleAvecIllustrations($article, $illustrations);
         if ($sqlreturn != "") {
-            MessageFlash::ajouter("warning", "L'article n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Erreur lors de la création de l'article (".$sqlreturn."), veuillez réessayer plus tard.");
             self::afficherListe();
             return;
         }
 
-        MessageFlash::ajouter("success","L'article a bien été mis en ligne.");
+        MessageFlash::ajouter("success","Article mis en ligne");
         self::afficherListe();
     }
 
@@ -199,13 +199,13 @@ class ControleurArticle extends ControleurGenerique {
         }
 
         if ($_REQUEST["prix"] <= 0){
-            MessageFlash::ajouter("warning", "Le prix ne peut pas être plus petit ou égale à 0.");
+            MessageFlash::ajouter("warning", "Le prix doit être supérieur à 0€");
             self::afficherFormulaireMiseAJour();
             return;
         }
 
         if ($_REQUEST["quantite"] <= 0){
-            MessageFlash::ajouter("warning", "La quantité ne peut pas être plus petite ou égale à 0.");
+            MessageFlash::ajouter("warning", "Veuillez entrer une quantité supérieure à 0");
             self::afficherFormulaireMiseAJour();
             return;
         }
@@ -227,13 +227,13 @@ class ControleurArticle extends ControleurGenerique {
                     $image = new Image($imgurLink);
                     $sqlreturn = (new ImageRepository())->ajouter($image);
                     if ($sqlreturn != "") {
-                        MessageFlash::ajouter("warning", "L'image n'a pas pu être sauvegardé dans la table image, veuillez réessayer plus tard.");
+                        MessageFlash::ajouter("warning", "Une erreur est survenue lors de l'enregistrement des images, veuillez réessayer plus tard.");
                         self::afficherListe();
                         return;
                     }
                     $urlsTemp[$i] = $imgurLink;
                 } else {
-                    MessageFlash::ajouter("warning", "Impossible d'héberger les images, veuillez réessayer ultérieurement");
+                    MessageFlash::ajouter("warning", "Erreur lors de l'importation des images, veuillez réessayer ultérieurement");
                     self::afficherFormulaireCreation();
                     return;
                 }
@@ -245,7 +245,7 @@ class ControleurArticle extends ControleurGenerique {
                 if ($oldIllustrations[$x] && $oldIllustrations[$x]->getOrdre() === $cle) {
                     $sqlreturn = (new illustrerRepository())->supprimer($oldIllustrations[$x]);
                     if ($sqlreturn != "") {
-                        MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (s".$sqlreturn."), veuillez réessayer plus tard.");
+                        MessageFlash::ajouter("warning", "Mise à jour de l'article impossible (s".$sqlreturn."), veuillez réessayer plus tard.");
                         self::afficherListe();
                         return;
                     }
@@ -258,7 +258,7 @@ class ControleurArticle extends ControleurGenerique {
             $newIllustration = new illustrer($_REQUEST["id_article"], $valeur, $cleTemp);
             $sqlreturn = (new illustrerRepository())->ajouter($newIllustration);
             if ($sqlreturn != "") {
-                MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (a".$sqlreturn."), veuillez réessayer plus tard.");
+                MessageFlash::ajouter("warning", "Mise à jour de l'article impossible (a".$sqlreturn."), veuillez réessayer plus tard.");
                 self::afficherListe();
                 return;
             }
@@ -267,12 +267,12 @@ class ControleurArticle extends ControleurGenerique {
         $sqlreturn = (new ArticleRepository())->mettreAJour($article);
 
         if ($sqlreturn != "") {
-            MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (m".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Mise à jour de l'article impossible (m".$sqlreturn."), veuillez réessayer plus tard.");
             self::afficherListe();
             return;
         }
 
-        MessageFlash::ajouter("success","L'article a bien été mis à jour.");
+        MessageFlash::ajouter("success","Article mis à jour avec succès");
         self::afficherListe();
     }
 
@@ -296,9 +296,9 @@ class ControleurArticle extends ControleurGenerique {
         $sqlreturn = (new ArticleRepository())->supprimerParUnique($article->getIdArticle(),0);
 
         if ($sqlreturn == "") {
-            MessageFlash::ajouter("success","L'article a bien été supprimé.");
+            MessageFlash::ajouter("success","L'article a bien été supprimé");
         } else {
-            MessageFlash::ajouter("warning", "L'article n'as pas pu être supprimé (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Suppression de l'article impossible (".$sqlreturn."), veuillez réessayer plus tard.");
         }
         ControleurGenerique::redirigerVersMain();
     }

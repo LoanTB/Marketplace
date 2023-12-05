@@ -49,7 +49,7 @@ class ControleurGenerique {
 
     public static function accesNonAutorise(string $zone) : void {
         if (ConfigurationSite::getDebug()){
-            MessageFlash::ajouter("danger", "Tentative d'accès illégitime zone $zone détectée. Cette action sera signalée.");
+            MessageFlash::ajouter("danger", "Tentative d'accès illégitime en zone $zone détectée. Cette action sera signalée.");
         } else {
             MessageFlash::ajouter("danger", "Tentative d'accès illégitime détectée. Cette action sera signalée.");
         }

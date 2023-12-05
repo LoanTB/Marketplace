@@ -16,7 +16,7 @@ class ControleurCommande extends ControleurGenerique{
         }
 
         self::afficherNouvelleVue("vueGenerale.php", [
-            "pagetitle" => "Commandes",
+            "pagetitle" => "Historique des commandes",
             "cheminVueBody" => "commande/liste.php"
         ]);
     }
@@ -35,7 +35,7 @@ class ControleurCommande extends ControleurGenerique{
         $articles = (new dansPanierRepository())->recupererPanierUtilisateur(ConnexionUtilisateur::getIdUtilisateurConnecte());
 
         if ($articles == null) {
-            MessageFlash::ajouter("warning", "Le panier n'as pas pu être chargé ou est vide, veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Le panier n'a pas pu être chargé ou est vide, veuillez réessayer plus tard.");
             ControleurGenerique::rediriger();
             return;
         }
@@ -43,13 +43,13 @@ class ControleurCommande extends ControleurGenerique{
         foreach ($articles as $article){
             $sqlreturn = (new CommandeRepository())->acheterArticle(ConnexionUtilisateur::getIdUtilisateurConnecte(),$article,1);
             if ($sqlreturn != "") {
-                MessageFlash::ajouter("warning", "Le panier n'as pas pu être totalement enregistré comme acheté (".$sqlreturn."), consultez votre historique d'achats pour voir quels achats ont bien été confirmés, veuillez réessayer plus tard.");
+                MessageFlash::ajouter("warning", "Le panier n'a pas pu être totalement enregistré comme acheté (".$sqlreturn."), consultez votre historique d'achats pour voir quels achats ont bien été confirmés, veuillez réessayer plus tard.");
                 ControleurGenerique::rediriger();
                 return;
             }
         }
 
-        MessageFlash::ajouter("success", "Votre panier a bien été enregistré comme acheté");
+        MessageFlash::ajouter("success", "La commande a bien été enregistrée ! Merci de votre achat !");
 
         ControleurPanier::vider();
     }

@@ -45,7 +45,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
         $utilisateur = (new UtilisateurRepository())->recupererParUniqueDansRequest();
         if ($utilisateur == null){
-            MessageFlash::ajouter("warning", "Utilisateur innexistant");
+            MessageFlash::ajouter("warning", "Utilisateur introuvable");
             self::afficherListe();
         } else {
             self::afficherNouvelleVue("vueGenerale.php",[
@@ -58,7 +58,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
     public static function afficherFormulaireCreation() : void {
         self::afficherNouvelleVue("vueGenerale.php",[
-            "pagetitle" => "Formulaire création utilisateurs",
+            "pagetitle" => "S'inscrire sur FutureMarket",
             "cheminVueBody" => "utilisateur/formulaireCreation.php"
         ]);
     }
@@ -69,7 +69,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             return;
         }
         self::afficherNouvelleVue("vueGenerale.php",[
-            "pagetitle" => "Formulaire modification utilisateurs",
+            "pagetitle" => "Modifier votre profil",
             "cheminVueBody" => "utilisateur/formulaireMiseAJour.php",
             "utilisateur" => (new UtilisateurRepository())->recupererParUnique(ConnexionUtilisateur::getIdUtilisateurConnecte(),0)
         ]);
@@ -88,7 +88,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
     public static function formulaireConnexion() : void {
         self::afficherVueAvecConservationPointControle("vueGenerale.php",[
-            "pagetitle" => "Formulaire connexion utilisateurs",
+            "pagetitle" => "Connexion à votre compte",
             "cheminVueBody" => "utilisateur/formulaireConnexion.php"
         ]);
     }
@@ -110,7 +110,7 @@ class ControleurUtilisateur extends ControleurGenerique {
         $utilisateur->setUrlImage("");
         $sqlreturn = (new UtilisateurRepository())->mettreAJour($utilisateur);
         if ($sqlreturn != "") {
-            MessageFlash::ajouter("warning", "L'image n'a pas pu être supprimé, veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Impossible de supprimer l'image, veuillez réessayer plus tard.");
             self::afficherFormulaireMiseAJour();
             return;
         }
@@ -131,14 +131,14 @@ class ControleurUtilisateur extends ControleurGenerique {
         $ancienUtilisateur = (new UtilisateurRepository())->recupererParUniqueDansRequest();
 
         if ($ancienUtilisateur == null){
-            MessageFlash::ajouter("warning", "Le compte n'existe pas.");
+            MessageFlash::ajouter("warning", "Le compte n'existe pas");
             ControleurGenerique::rediriger();
             return;
         }
 
         if (!MotDePasse::verifier($_REQUEST["password"],$ancienUtilisateur->getPassword())){
-            MessageFlash::ajouter("warning", "Mot de passe incorrect.");
-            ControleurUtilisateur::suppressionConfirmation();
+            MessageFlash::ajouter("warning", "Mot de passe incorrect");
+            ControleurUtilisateur::afficherDetail();
             return;
         }
 
@@ -197,7 +197,7 @@ class ControleurUtilisateur extends ControleurGenerique {
             if (preg_match("/^[0-9]{9}$/", $_REQUEST["telephone_number"]) && preg_match("/^[0-9]{2}$/", $_REQUEST["telephone_country"])) {
                 $infos["telephone"] = "+" . $_REQUEST["telephone_country"] . $_REQUEST["telephone_number"];
             } else {
-                MessageFlash::ajouter("warning", "Téléphone invalide, veuillez entrer un numéro de téléphone valide.");
+                MessageFlash::ajouter("warning", "Téléphone invalide, veuillez entrer un numéro de téléphone valide");
                 self::afficherFormulaireCreation();
                 return;
             }
@@ -207,13 +207,13 @@ class ControleurUtilisateur extends ControleurGenerique {
         $infos["nonce_telephone"] = MotDePasse::genererChaineAleatoire(20);
 
         if (!filter_var($_REQUEST["email"], FILTER_VALIDATE_EMAIL)){
-            MessageFlash::ajouter("warning", "Email invalide, veuillez entrer une email valide.");
+            MessageFlash::ajouter("warning", "Email invalide, veuillez entrer une adresse email valide");
             self::afficherFormulaireCreation();
             return;
         }
 
         if (preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $_REQUEST["email"]) and explode('@', $_REQUEST["email"])[1] != "yopmail.com"){
-            MessageFlash::ajouter("warning", "Seuls les emails 'yopmail.com' sont autorisées pour le moment.");
+            MessageFlash::ajouter("warning", "Seuls les emails '@yopmail.com' sont autorisées pour le moment");
             self::afficherFormulaireCreation();
             return;
         }
@@ -237,11 +237,11 @@ class ControleurUtilisateur extends ControleurGenerique {
         $sqlreturn = $utilisateurRepository->ajouter($utilisateur);
 
         if ($sqlreturn == "23000") {
-            MessageFlash::ajouter("warning", "Le login ou l'email ou le numéro de téléphone est déjà utilisé.");
+            MessageFlash::ajouter("warning", "L'identifiant, l'email ou le numéro de téléphone est déjà utilisé par un autre compte");
             self::afficherFormulaireCreation();
             return;
         } else if ($sqlreturn == "22001"){ // TODO (Pour tout le monde) : Ajouter d'autres explications exceptions pour que l'utilisateur comprenne ce qu'il a mal fait
-            MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
+            MessageFlash::ajouter("warning", "Une information de mauvaise taille a été entrée, veuillez la raccourcir.");
             self::afficherFormulaireCreation();
             return;
         } else if ($sqlreturn != "") {
@@ -251,10 +251,10 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         if (VerificationEmail::envoiEmailValidation($utilisateur)){
-            MessageFlash::ajouter("success", "L'utilisateur a bien été créé. Un mail de validation a été envoyé :", "<a href='https://yopmail.com' target='_blank'>Consultez la boite mail</a>");
+            MessageFlash::ajouter("success", "Veuillez confirmer votre email pour finaliser l'inscription", "<a href='https://yopmail.com' target='_blank'>Consulter la boîte mail</a>");
         } else {
             $utilisateurRepository->supprimerParUniqueDansRequest();
-            MessageFlash::ajouter("warning", "L'email de confirmation n'a pas pu être envoyé, la création du compte à été annulé, veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Échec de l'envoi du mail de confirmation. La création du compte a été annulée, veuillez réessayer plus tard.");
         }
         ControleurGenerique::rediriger();
     }
@@ -289,14 +289,14 @@ class ControleurUtilisateur extends ControleurGenerique {
             $fileToUpload = array('image' => $_FILES['image']);
             $imgurLink = $uploader->uploadImage($fileToUpload);
             if (!$imgurLink) {
-                MessageFlash::ajouter("warning", "Impossible d'héberger les images, veuillez réessayer ultérieurement");
+                MessageFlash::ajouter("warning", "Erreur lors de l'importation des images, veuillez réessayer ultérieurement");
                 self::afficherFormulaireMiseAJour();
                 return;
             }
             $image = new Image($imgurLink);
             $sqlreturn = (new ImageRepository())->ajouter($image);
             if ($sqlreturn != "") {
-                MessageFlash::ajouter("warning", "L'image n'a pas pu être sauvegardé dans la table image, veuillez réessayer plus tard.");
+                MessageFlash::ajouter("warning", "Une erreur est survenue lors de l'enregistrement des images, veuillez réessayer plus tard.");
                 self::afficherListe();
                 return;
             }
@@ -340,19 +340,19 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         if (preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $_REQUEST["email"]) and explode('@', $_REQUEST["email"])[1] != "yopmail.com"){
-            MessageFlash::ajouter("warning", "Seuls les emails 'yopmail.com' sont autorisées pour le moment.");
+            MessageFlash::ajouter("warning", "Seuls les emails '@yopmail.com' sont autorisées pour le moment.");
             self::afficherFormulaireMiseAJour();
             return;
         }
 
         if ($_REQUEST["newPassword"] != $_REQUEST["passwordConfirmation"]){
-            MessageFlash::ajouter("warning", "Les mots de passes sont différents.");
+            MessageFlash::ajouter("warning", "Les mots de passes sont différents");
             self::afficherFormulaireMiseAJour();
             return;
         }
 
         if (!MotDePasse::verifier($infos["password"],$ancienUtilisateur->getPassword())){
-            MessageFlash::ajouter("warning", "Mot de passe incorrecte.");
+            MessageFlash::ajouter("warning", "Mot de passe incorrect");
             self::afficherFormulaireMiseAJour();
             return;
         }
@@ -371,28 +371,28 @@ class ControleurUtilisateur extends ControleurGenerique {
 
         if ($sqlreturn == "") {
             if ($newUtilisateur->getEmail() == $ancienUtilisateur->getEmail()) {
-                MessageFlash::ajouter("success", "L'utilisateur a bien été modifié.");
+                MessageFlash::ajouter("success", "Compte modifié avec succès");
             }
         } else if ($sqlreturn == "23000") {
-            MessageFlash::ajouter("warning", "Le login ou l'email ou le numéro de téléphone est déjà utilisé.");
+            MessageFlash::ajouter("warning", "L'identifiant, l'email ou le numéro de téléphone est déjà utilisé par un autre compte");
             self::afficherFormulaireMiseAJour();
             return;
         } else if ($sqlreturn == "22001"){ // TODO (Pour tout le monde) : Ajouter d'autres explications exceptions pour que l'utilisateur comprenne ce qu'il a mal fait
-            MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
+            MessageFlash::ajouter("warning", "Une information de mauvaise taille a été entrée, veuillez la raccourcir.");
             self::afficherFormulaireMiseAJour();
             return;
         } else {
-            MessageFlash::ajouter("warning", "Le compte n'as pas pu être créé (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Le compte n'as pas pu être modifié (".$sqlreturn."), veuillez réessayer plus tard.");
             ControleurGenerique::rediriger();
             return;
         }
 
         if ($newUtilisateur->getEmail() != $ancienUtilisateur->getEmail()) {
             if (VerificationEmail::envoiEmailValidation($newUtilisateur)) {
-                MessageFlash::ajouter("success","L'utilisateur a bien été modifié. L'email, un nouveau code de verification vous a été envoyé : <a href='https://yopmail.com'>Consultez la boite mail</a>");
+                MessageFlash::ajouter("success","Compte modifié avec succès. Un mail de confirmation a été envoyé à votre nouvelle adresse email : <a href='https://yopmail.com'>Consulter la boîte mail</a>");
             } else {
                 $utilisateurRepository->mettreAJour($ancienUtilisateur);
-                MessageFlash::ajouter("warning", "L'email de confirmation n'as pas pu être envoyée, veuillez réessayer plus tard.");
+                MessageFlash::ajouter("warning", "Impossible d'envoyer un email de confirmation à votre nouvelle adresse, veuillez réessayer plus tard.");
             }
         }
         ControleurGenerique::rediriger();
@@ -414,21 +414,21 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
 
         if ($utilisateur == null){
-            MessageFlash::ajouter("warning", "L'utilisateur n'existe pas");
+            MessageFlash::ajouter("warning", "Utilisateur introuvable");
             self::formulaireConnexion();
         } else {
             if (!VerificationEmail::aValideEmail($utilisateur)){
-                MessageFlash::ajouter("warning", "Veuillez confirmer votre email pour utiliser votre compte.");
+                MessageFlash::ajouter("warning", "Veuillez confirmer votre email pour utiliser ce compte.");
                 self::formulaireConnexion();
                 return;
             }
             if (MotDePasse::verifier($_REQUEST["password"],$utilisateur->getPassword())){
                 ConnexionUtilisateur::connecter($utilisateur->getIdUtilisateur());
-                MessageFlash::ajouter("success", "Connexion réussie !");
+                MessageFlash::ajouter("success", "Bon retour parmi nous, ".htmlspecialchars($utilisateur->getPrenom()).' '.htmlspecialchars($utilisateur->getNom()).' !');
                 ControleurPanier::convertir($utilisateur->getIdUtilisateur());
                 ControleurGenerique::rediriger();
             } else {
-                MessageFlash::ajouter("warning", "Mot de passe incorrect !");
+                MessageFlash::ajouter("warning", "Mot de passe incorrect");
                 self::formulaireConnexion();
             }
         }
@@ -437,8 +437,12 @@ class ControleurUtilisateur extends ControleurGenerique {
     public static function deconnecter() : void {
         ConnexionUtilisateur::deconnecter();
         PanierTemporaire::vider();
+<<<<<<< HEAD
         Redirections::supprimerPointControle();
         MessageFlash::ajouter("success", "Déonnexion effectuée");
+=======
+        MessageFlash::ajouter("success", "Vous avez été déconnecté");
+>>>>>>> edc0d00 (strings: Correction des fautes d'ortograf)
         ControleurGenerique::rediriger();
     }
 
@@ -449,10 +453,10 @@ class ControleurUtilisateur extends ControleurGenerique {
         }
         if (VerificationEmail::traiterEmailValidation($_REQUEST["nonce"])){
             ConnexionUtilisateur::deconnecter();
-            MessageFlash::ajouter("success", "Email confirmée, vérification de compte validée.");
+            MessageFlash::ajouter("success", "Adresse email confirmée, votre compte a été créé !");
             ControleurUtilisateur::formulaireConnexion();
         } else {
-            MessageFlash::ajouter("warning", "Email non confirmée, lien de confirmation invalide !");
+            MessageFlash::ajouter("warning", "Lien de validation incorrect !");
             ControleurGenerique::rediriger();
         }
     }

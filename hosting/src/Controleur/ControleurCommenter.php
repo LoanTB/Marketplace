@@ -44,13 +44,13 @@ class ControleurCommenter extends ControleurGenerique {
         $article = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"],0);
 
         if ($article == null){
-            MessageFlash::ajouter("warning", "L'article n'existe pas ou plus.");
+            MessageFlash::ajouter("warning", "L'article n'existe pas ou plus");
             ControleurGenerique::rediriger();
             return;
         }
 
         if ($article->getIdUtilisateur() == ConnexionUtilisateur::getIdUtilisateurConnecte()){
-            MessageFlash::ajouter("warning", "Vous ne pouvez pas commenter votre propre article.");
+            MessageFlash::ajouter("warning", "Vous ne pouvez pas commenter votre propre article");
             ControleurGenerique::rediriger();
             return;
         }
@@ -59,11 +59,11 @@ class ControleurCommenter extends ControleurGenerique {
         $sqlreturn = (new commenterRepository())->ajouter($commenter);
 
         if ($sqlreturn == "") {
-            MessageFlash::ajouter("success", "Votre commentaire a bien été publié.");
+            MessageFlash::ajouter("success", "Commentaire mis en ligne");
         } else if ($sqlreturn == "22001"){
-            MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
+            MessageFlash::ajouter("warning", "Une information de mauvaise taille a été entrée, veuillez la raccourcir.");
         } else {
-            MessageFlash::ajouter("warning", "Votre commentaire n'as pas pu être publié (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Impossible de poster votre commentaire (".$sqlreturn."), veuillez réessayer plus tard.");
         }
         ControleurGenerique::rediriger();
     }
@@ -88,11 +88,11 @@ class ControleurCommenter extends ControleurGenerique {
         $sqlreturn = (new commenterRepository())->mettreAJourParDeuxPremieresColonne($commenter);
 
         if ($sqlreturn == "") {
-            MessageFlash::ajouter("success", "Votre commentaire a bien été modifié.");
+            MessageFlash::ajouter("success", "Commentaire modifié");
         } else if ($sqlreturn == "22001"){
             MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
         } else {
-            MessageFlash::ajouter("warning", "Votre commentaire n'as pas pu être modifié (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Modification du commentaire impossible (".$sqlreturn."), veuillez réessayer plus tard.");
         }
         ControleurGenerique::rediriger();
     }
@@ -106,11 +106,11 @@ class ControleurCommenter extends ControleurGenerique {
         $sqlreturn = (new commenterRepository())->supprimerParDeuxColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0,$_REQUEST["id_article"],1);
 
         if ($sqlreturn == "") {
-            MessageFlash::ajouter("success", "Votre commentaire a bien été modifié.");
+            MessageFlash::ajouter("success", "Commentaire modifié");
         } else if ($sqlreturn == "22001"){
             MessageFlash::ajouter("warning", "Une information de mauvaise taille à été entrée, veuillez la raccourcir.");
         } else {
-            MessageFlash::ajouter("warning", "Votre commentaire n'as pas pu être modifié (".$sqlreturn."), veuillez réessayer plus tard.");
+            MessageFlash::ajouter("warning", "Modification du commentaire impossible (".$sqlreturn."), veuillez réessayer plus tard.");
         }
         ControleurGenerique::rediriger();
     }
