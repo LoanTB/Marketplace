@@ -74,6 +74,17 @@ class ControleurUtilisateur extends ControleurGenerique {
         ]);
     }
 
+    public static function suppressionConfirmation() : void {
+        if (!ConnexionUtilisateur::estConnecte()){
+            ControleurGenerique::accesNonAutorise("BA");
+            return;
+        }
+        self::afficherNouvelleVue("vueGenerale.php",[
+            "pagetitle" => "Confirmer la suppression du compte ?",
+            "cheminVueBody" => "utilisateur/suppressionConfirmation.php"
+        ]);
+    }
+
     public static function formulaireConnexion() : void {
         self::afficherVueAvecConservationPointControle("vueGenerale.php",[
             "pagetitle" => "Formulaire connexion utilisateurs",

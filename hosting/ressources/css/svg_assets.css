@@ -1,4 +1,4 @@
-.account-icon, .catalog-icon-fill, .image-add-icon, .add-icon, .cart-icon, .favorite-icon, .mag-icon, .settings-icon, .logout-icon, .edit-icon, .key-icon, .close-icon, .delete-icon-fill, .edit-icon-fill, .history-icon, .no-image-icon {
+.delete-icon, .account-icon, .catalog-icon-fill, .image-add-icon, .add-icon, .cart-icon, .favorite-icon, .mag-icon, .settings-icon, .logout-icon, .edit-icon, .key-icon, .close-icon, .delete-icon-fill, .edit-icon-fill, .history-icon, .no-image-icon {
     background-color: var(--var-icon-color);
     width: 24px;
     height: 24px;

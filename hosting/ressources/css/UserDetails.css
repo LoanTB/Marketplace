@@ -2,10 +2,12 @@
 
 :root {
     --var-fieldset-bg-color: #f0f0f0;
+    --var-warntext-color: #8c0101;
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --var-fieldset-bg-color: #3a3a3a;
+        --var-warntext-color: #fddbdb;
     }
   }
 
@@ -100,7 +102,7 @@ main > * {
     text-align: center;
   }
 
-  #deleteAction:not(:hover) {
+  #deleteAction {
     width: 25%;
   }
 
@@ -108,7 +110,6 @@ main > * {
     background-color: #a01d1d;
     color: white;
     box-shadow: 0 2px 16px -3px var(--var-box-shadow-med);
-    width: 60%;
   }
 
   .isImageHere {
@@ -164,4 +165,13 @@ main > * {
     width: 60%;
     height: 60%;
     background-color: var(--var-text);
+}
+
+.zonesDistinction {
+    margin-top: 35px;
+}
+
+.warnTitle {
+    text-align: center;
+    color: var(--var-warntext-color);
 }
