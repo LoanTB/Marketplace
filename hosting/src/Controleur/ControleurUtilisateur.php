@@ -137,7 +137,7 @@ class ControleurUtilisateur extends ControleurGenerique {
 
         if (!MotDePasse::verifier($_REQUEST["password"],$ancienUtilisateur->getPassword())){
             MessageFlash::ajouter("warning", "Mot de passe incorrect.");
-            ControleurUtilisateur::afficherDetail();
+            ControleurUtilisateur::suppressionConfirmation();
             return;
         }
 
