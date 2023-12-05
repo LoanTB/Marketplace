@@ -129,7 +129,7 @@ echo '</h1></div>';
 
 $commentaireUtilisateur = ConnexionUtilisateur::estConnecte() ? ControleurCommenter::recupererCommentaireUtilisateur($article->getIdArticle(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : null;
 
-if (ConnexionUtilisateur::estConnecte()) {
+if (ConnexionUtilisateur::estConnecte() && $article->getIdUtilisateur() != ConnexionUtilisateur::getIdUtilisateurConnecte()) {
 
         echo '<form id="commenter" method="GET" action=\'controleurFrontal.php\'>
             <input type="text" class="commentInput" name="titre" placeholder="Titre" value="';

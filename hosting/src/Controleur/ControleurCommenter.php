@@ -4,6 +4,7 @@ namespace App\Ecommerce\Controleur;
 use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Modele\DataObject\relations\commenter;
+use App\Ecommerce\Modele\Repository\ArticleRepository;
 use App\Ecommerce\Modele\Repository\relations\commenterRepository;
 use DateTime;
 
@@ -40,6 +41,20 @@ class ControleurCommenter extends ControleurGenerique {
             return;
         }
 
+        $article = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"],0);
+
+        if ($article == null){
+            MessageFlash::ajouter("warning", "L'article n'existe pas ou plus.");
+            ControleurGenerique::rediriger();
+            return;
+        }
+
+        if ($article->getIdUtilisateur() == ConnexionUtilisateur::getIdUtilisateurConnecte()){
+            MessageFlash::ajouter("warning", "Vous ne pouvez pas commenter votre propre article.");
+            ControleurGenerique::rediriger();
+            return;
+        }
+
         $commenter = new commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],(new DateTime())->format('Y-m-d H:i:s'),(new DateTime())->format('Y-m-d H:i:s'),$raw = false);
         $sqlreturn = (new commenterRepository())->ajouter($commenter);
 
@@ -59,7 +74,17 @@ class ControleurCommenter extends ControleurGenerique {
             return;
         }
 
-        $commenter = new commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],(new DateTime())->format('Y-m-d H:i:s'),null,$raw = false);
+        $ancienCommentaire = (new commenterRepository())->recupererParDeuxColonne(ConnexionUtilisateur::getIdUtilisateurConnecte(),0,$_REQUEST["id_article"],1);
+
+        if (count($ancienCommentaire) == 1){
+            $ancienCommentaire = $ancienCommentaire[0];
+        } else {
+            MessageFlash::ajouter("warning", "Le commentaire à modifier n'existe pas.");
+            ControleurGenerique::rediriger();
+            return;
+        }
+
+        $commenter = new commenter(ConnexionUtilisateur::getIdUtilisateurConnecte(),$_REQUEST["id_article"],$_REQUEST["titre"],$_REQUEST["texte"],$_REQUEST["note"],(new DateTime())->format('Y-m-d H:i:s'),$ancienCommentaire->getJour(),$raw = false);
         $sqlreturn = (new commenterRepository())->mettreAJourParDeuxPremieresColonne($commenter);
 
         if ($sqlreturn == "") {
