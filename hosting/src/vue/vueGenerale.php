@@ -39,7 +39,7 @@ if (ConnexionUtilisateur::estConnecte()) {
             </li>
             <li class="menubutton"><a href="controleurFrontal.php?action=afficherListe&controleur=panier"><div class="svg cart-icon"></div>Panier</a></li>
             <li class="menubutton"><a href="controleurFrontal.php?action=afficherFavoris&controleur=wishlist"><div class="svg favorite-icon"></div>Favoris</a></li>
-            <li class="menubutton" onclick="triggerAccountMenu()"><a href="#"><div class="svg account-icon"></div>
+            <li class="menubutton" onclick="triggerAccountMenu()"><a href="#"><div class="svg account-icon<?php if (ConnexionUtilisateur::estConnecte() && $utilisateur->getUrlImage() != "") echo ' hasPfp" style="background-image: url(\''.$utilisateur->getUrlImage().'\')'; ?>"></div>
             <?php if(ConnexionUtilisateur::estConnecte()){echo htmlspecialchars($utilisateur->getLogin());}else{echo 'Compte';}?>
             </a></li>
         </ul>
