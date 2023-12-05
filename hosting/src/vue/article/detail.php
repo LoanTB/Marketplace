@@ -10,7 +10,9 @@ use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
 
-$article = (new ArticleRepository())->recupererParUniqueDansRequest();
+/* @var $id_article;*/
+
+$article = (new ArticleRepository())->recupererParUnique($id_article,0);
 if ($article == null){
     MessageFlash::ajouter("warning", "L'article demandé est introuvable !");
     ControleurArticle::afficherListe();
@@ -96,7 +98,8 @@ echo '<span></span>
 </div>
 
 <div id="commentaires">
-    <h1>';
+    <div id="commentHeader">
+        <h1>';
 
 if (count($tousCommentaires) > 0){
     $moyenne = 0;
@@ -105,11 +108,24 @@ if (count($tousCommentaires) > 0){
     }
     $moyenne /= count($tousCommentaires);
 
-    echo count($tousCommentaires).' Commentaires ('.round($moyenne*100).'% de satisfaction)';
+    echo count($tousCommentaires).' Commentaires</h1><h1>';
+    for ($i=0;$i<=5;$i++){
+        if (($moyenne*5)-$i > 1) {
+            echo'<span class="fa fa-star starIsChecked"></span>';
+        } else if (($moyenne*5)-$i < 1 and ($moyenne*5)-$i > 0) {
+            echo'<span class="fa fa-star-half starIsChecked"></span>';
+        } else if (($moyenne*5)-$i < 0 and ($moyenne*5)-$i > -1) {
+            echo'<span class="fa fa-star-half" style="transform: rotateY(180deg) translateX(10%);"></span>';
+        } else if (($moyenne*5)-$i < -1) {
+            echo'<span class="fa fa-star"></span>';
+        } else if (($moyenne*5)-$i == 0) {
+            echo'<span class="fa fa-star starIsChecked"></span>';
+        }
+    }
 } else {
     echo 'Aucun commentaire';
 }
-echo '</h1>';
+echo '</h1></div>';
 
 $commentaireUtilisateur = ConnexionUtilisateur::estConnecte() ? ControleurCommenter::recupererCommentaireUtilisateur($article->getIdArticle(), ConnexionUtilisateur::getIdUtilisateurConnecte()) : null;
 
@@ -209,7 +225,7 @@ foreach ((!is_null($commentaireUtilisateur) ? ControleurCommenter::recupererList
                             } else if (($commentaire->getNote()*5)-$i < 1 and ($commentaire->getNote()*5)-$i > 0) {
                                 echo'<span class="fa fa-star-half starIsChecked"></span>';
                             } else if (($commentaire->getNote()*5)-$i < 0 and ($commentaire->getNote()*5)-$i > -1) {
-                                echo'<span class="fa fa-star-half" style="transform: scaleX(-1);"></span>';
+                                echo'<span class="fa fa-star-half" style="transform: rotateY(180deg) translateX(10%);"></span>';
                             } else if (($commentaire->getNote()*5)-$i < -1) {
                                 echo'<span class="fa fa-star"></span>';
                             } else if (($commentaire->getNote()*5)-$i == 0) {

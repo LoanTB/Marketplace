@@ -5,6 +5,7 @@ use App\Ecommerce\Lib\ConnexionUtilisateur;
 use App\Ecommerce\Lib\MessageFlash;
 use App\Ecommerce\Lib\PanierTemporaire;
 use App\Ecommerce\Modele\DataObject\relations\dansPanier;
+use App\Ecommerce\Modele\Repository\ArticleRepository;
 use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 use DateTime;
 
@@ -26,7 +27,18 @@ class ControleurPanier extends ControleurGenerique {
         if (!ConnexionUtilisateur::estConnecte()) {
             MessageFlash::ajouter("success", "L'article a bien été ajouté au panier.");
         } else {
-            $sqlreturn = (new dansPanierRepository())->ajouter(new dansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $_REQUEST["id_article"], 1, (new DateTime())->format('Y-m-d H:i:s'), $raw = false));
+            $article = (new ArticleRepository())->recupererParUniqueDansRequest();
+            if ($article == null){
+                MessageFlash::ajouter("warning", "L'article n'existe pas.");
+                ControleurGenerique::rediriger();
+                return;
+            }
+            if ($article->getIdUtilisateur() == ConnexionUtilisateur::getIdUtilisateurConnecte() and !ConnexionUtilisateur::estAdministrateur()){
+                MessageFlash::ajouter("warning", "Vous ne pouvez pas ajouter votre propre article au panier.");
+                ControleurGenerique::rediriger();
+                return;
+            }
+            $sqlreturn = (new dansPanierRepository())->ajouter(new dansPanier(ConnexionUtilisateur::getIdUtilisateurConnecte(), $_REQUEST["id_article"],1, (new DateTime())->format('Y-m-d H:i:s'), $raw = false));
 
             if ($sqlreturn == "") {
                 MessageFlash::ajouter("success", "L'article a bien été ajouté au panier.");

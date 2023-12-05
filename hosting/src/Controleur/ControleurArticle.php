@@ -45,7 +45,8 @@ class ControleurArticle extends ControleurGenerique {
 
         self::afficherVueAvecPointControle("vueGenerale.php",[
             "pagetitle" => "Détails de l'article",
-            "cheminVueBody" => "article/detail.php"
+            "cheminVueBody" => "article/detail.php",
+            "id_article" => (new ArticleRepository())->requestUniqueValue()
         ]);
     }
 
@@ -169,41 +170,51 @@ class ControleurArticle extends ControleurGenerique {
 
         $oldIllustrations = (new illustrerRepository())->recupererParColonne($_REQUEST["id_article"], 0);
 
+        $urlsTemp = array();
+
         for ($i = 0; $i < 3; $i++) {
             $inputName = 'image' . $i;
             if ($_FILES[$inputName] && $_FILES[$inputName]['error'] === UPLOAD_ERR_OK) {
                 $fileToUpload = array('image' => $_FILES[$inputName]);
                 $imgurLink = $uploader->uploadImage($fileToUpload);
                 if ($imgurLink) {
-                    $image = new Image( $imgurLink);
+                    $image = new Image($imgurLink);
                     $sqlreturn = (new ImageRepository())->ajouter($image);
                     if ($sqlreturn != "") {
                         MessageFlash::ajouter("warning", "L'image n'a pas pu être sauvegardé dans la table image, veuillez réessayer plus tard.");
                         self::afficherListe();
                         return;
                     }
-                    foreach ($oldIllustrations as $oldIllustration) {
-                        if ($oldIllustration->getOrdre() == $i) {
-                            $sqlreturn = (new illustrerRepository())->supprimer($oldIllustration);
-                            if ($sqlreturn != "") {
-                                MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (s".$sqlreturn."), veuillez réessayer plus tard.");
-                                self::afficherListe();
-                                return;
-                            }
-                            $newIllustration = new illustrer($_REQUEST["id_article"], $imgurLink, $i);
-                            $sqlreturn = (new illustrerRepository())->ajouter($newIllustration);
-                            if ($sqlreturn != "") {
-                                MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (a".$sqlreturn."), veuillez réessayer plus tard.");
-                                self::afficherListe();
-                                return;
-                            }
-                        }
-                    }
+                    $urlsTemp[$i] = $imgurLink;
                 } else {
                     MessageFlash::ajouter("warning", "Impossible d'héberger les images, veuillez réessayer ultérieurement");
                     self::afficherFormulaireCreation();
                     return;
                 }
+            }
+        }
+
+        foreach ($urlsTemp as $cle => $valeur) {
+            for ($x = 0; $x < count($oldIllustrations); $x++) {
+                if ($oldIllustrations[$x] && $oldIllustrations[$x]->getOrdre() === $cle) {
+                    $sqlreturn = (new illustrerRepository())->supprimer($oldIllustrations[$x]);
+                    if ($sqlreturn != "") {
+                        MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (s".$sqlreturn."), veuillez réessayer plus tard.");
+                        self::afficherListe();
+                        return;
+                    }
+                }
+            }
+            $cleTemp = $cle;
+            if ($cle > count($oldIllustrations)) {
+                $cleTemp = count($oldIllustrations);
+            }
+            $newIllustration = new illustrer($_REQUEST["id_article"], $valeur, $cleTemp);
+            $sqlreturn = (new illustrerRepository())->ajouter($newIllustration);
+            if ($sqlreturn != "") {
+                MessageFlash::ajouter("warning", "L'article n'as pas pu être mis à jour (a".$sqlreturn."), veuillez réessayer plus tard.");
+                self::afficherListe();
+                return;
             }
         }
 

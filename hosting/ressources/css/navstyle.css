@@ -150,6 +150,18 @@ nav img {
     margin-left: 5px;
     color: var(--var-text);
 }
+#search > input[type="submit"] {
+    background-color: var(--var-text);
+    transition: transform 0.25s;
+}
+
+#search > input[type="submit"]:hover {
+    transform: scale(1.25);
+}
+
+#search > input[type="submit"]:focus {
+    transform: scale(0.9);
+}
 
 #navbutton {
     display: inline-flex;

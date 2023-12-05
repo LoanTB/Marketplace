@@ -20,19 +20,20 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
                 <input type="text" name="nom" value="<?php echo htmlspecialchars($article->getNom())?>" placeholder="Titre de l'annonce" required>
             </label>
 
-            <div id="picturesZone">
-                <label class="imagePlaceholder" for="img1" id="img1label" class="thumbnail" style="background-image: url('<?php echo (new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[0] ?>')">
+            <div id="picturesZone"><?php
+                $imagesArray = (new illustrerRepository())->recupererImagesArticle($article->getIdArticle());
+                for ($i=0; $i < 3; $i++) {
+                    echo '<label class="imagePlaceholder';
+                    if (count($imagesArray) > $i) {
+                        echo ' isImageHere" style="background-image: url(\''.$imagesArray[$i].'\')"';
+                    } else {
+                        echo '"';
+                    }
+                    echo ' for="img'.($i+1).'" id="img'.($i+1).'label">
                     <div class="svg image-add-icon"> </div>
-                    <input type="file" name="image0" id="img1">
-                </label>
-                <label class="imagePlaceholder" for="img2" id="img2label" class="thumbnail" style="background-image: url('<?php echo (new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[1] ?>')">
-                    <div class="svg image-add-icon"></div>
-                    <input type="file" name="image1" id="img2">
-                </label>
-                <label class="imagePlaceholder" for="img3" id="img3label" class="thumbnail" style="background-image: url('<?php echo (new illustrerRepository())->recupererImagesArticle($article->getIdArticle())[2] ?>')">
-                    <div class="svg image-add-icon"></div>
-                    <input type="file" name="image2" id="img3">
-                </label>
+                    <input type="file" name="image'.$i.'" id="img'.($i+1).'">
+                    </label>';
+                } ?>
             </div>
 
             <label id="articleDescription">
@@ -40,7 +41,7 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
             </label>
 
             <div id="sidebarPrice" class="sidebarItem">
-                <input type="number" value="<?php echo htmlspecialchars($article->getPrix())?>" placeholder="Prix" id="price" name="prix" id="prix_article_id" required>
+                <input type="number" step="0.01" value="<?php echo htmlspecialchars($article->getPrix())?>" placeholder="Prix" id="price" name="prix" id="prix_article_id" required>
                 <div id="devise">€</div>
             </div>
             <div id="sidebarAuthor" class="sidebarItem">
@@ -53,10 +54,10 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
                 </div>
                 <div class="CTAbuttons">
                     <div id="authorProps">
-                        <img src="https://picsum.photos/200">
+                        <img src="<?php if ($utilisateur->getUrlImage()==null) echo '../ressources/img/unknown.png'; else echo $utilisateur->getUrlImage(); ?>">
                         <div id="authorDesc">
                             <p>Poster en tant que</p>
-                            <h3><?php echo htmlspecialchars($utilisateur->getNom()).' '.htmlspecialchars($utilisateur->getPrenom()); ?></h3>
+                            <h3><?php echo htmlspecialchars($utilisateur->getPrenom()).' '.htmlspecialchars($utilisateur->getNom()); ?></h3>
                         </div>
                     </div>
                     <a href="controleurFrontal.php?action=afficherListe&controleur=article" class="animated-button critical">
