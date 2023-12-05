@@ -79,19 +79,16 @@ if (ConnexionUtilisateur::estConnecte()) {
     <div class="footer">
                 <div class="aboutrow">
                     <h6>À propos</h6>
-                    <p>Ce site est un site d'e-commerce développé dans le but de vous offrir la meilleure expérience utilisateur possible.
-                    </p>
-                    <p>N'hésitez pas à nous suivre sur les réseaux sociaux via les liens disponibles ci-dessous</p>
+                    <p>Ce site Web d'e-commerce a été créé pour vous offrir la meilleure expérience utilisateur possible.</p>
                 </div>
                 <div class="quicklinks">
                     <div id="categories">
-                        <h6>Plan du site</h6>
+                        <h6>Informations légales</h6>
                         <ul class="liensfooter">
-                            <li><a>Accueil</a></li>
-                            <li><a>Articles</a></li>
-                            <li><a>Options</a></li>
-                            <li><a>404</a></li>
-                            <li><a>Administration</a></li>
+                            <li><a>Conditions générales</a></li>
+                            <li><a>Vie privée / cookies</a></li>
+                            <li><a>Accessibilité</a></li>
+                            <li><a>Vos droits et obligations</a></li>
                         </ul>
                     </div>
                     <div id="contact">
@@ -99,16 +96,14 @@ if (ConnexionUtilisateur::estConnecte()) {
                         <ul class="liensfooter">
                             <li><a>Dorian B.</a></li>
                             <li><a>Loan TB.</a></li>
-                            <li><a>Dall E.</a></li>
                             <li><a>Lucas C.</a></li>
-                            <li><a>Rick A.</a></li>
                         </ul>
                     </div>
                 </div>
 
                 </div>
                 <div id="copyright">
-                    <p>Copyleft &#127279; 2023 All Wrongs Reserved</p>
+                    <p>Copyright &#127279; 2023 All Wrongs Reserved</p>
                 </div>
                 </footer>
 </body>
