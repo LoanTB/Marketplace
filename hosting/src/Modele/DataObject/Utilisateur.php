@@ -232,6 +232,10 @@ class Utilisateur extends AbstractDataObject {
         return $this->url_image;
     }
 
+    public function getEncodeUrlImage(): string {
+        return urlencode($this->url_image);
+    }
+
     /**
      * @param string $url_image
      */
