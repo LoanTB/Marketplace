@@ -10,7 +10,9 @@ use App\Ecommerce\Modele\Repository\relations\dansPanierRepository;
 use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
 
-$article = (new ArticleRepository())->recupererParUniqueDansRequest();
+/* @var $id_article;*/
+
+$article = (new ArticleRepository())->recupererParUnique($id_article,0);
 if ($article == null){
     MessageFlash::ajouter("warning", "L'article demandé est introuvable !");
     ControleurArticle::afficherListe();

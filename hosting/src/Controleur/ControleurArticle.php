@@ -45,7 +45,8 @@ class ControleurArticle extends ControleurGenerique {
 
         self::afficherVueAvecPointControle("vueGenerale.php",[
             "pagetitle" => "Détails de l'article",
-            "cheminVueBody" => "article/detail.php"
+            "cheminVueBody" => "article/detail.php",
+            "id_article" => (new ArticleRepository())->requestUniqueValue()
         ]);
     }
 
