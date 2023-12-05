@@ -32,7 +32,7 @@ $utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisat
                     echo ' for="img'.($i+1).'" id="img'.($i+1).'label">
                     <div class="svg image-add-icon"> </div>';
                     if (count($imagesArray) > $i) {
-                        echo '<a href="deleteImage'.$i.'" class="deleteButton"><div class="svg delete-icon locked-on-img"></div></a>';
+                        echo '<a href="controleurFrontal.php?action=supprimerImage&controleur=article&id_utilisateur='.htmlspecialchars(rawurlencode($utilisateur->getIdUtilisateur())).'&id_article='.htmlspecialchars(rawurlencode($article->getIdArticle())).'&image='.$i.'" class="deleteButton"><div class="svg delete-icon locked-on-img"></div></a>';
                     }
                     echo '<input type="file" name="image'.$i.'" id="img'.($i+1).'">
                     </label>';
