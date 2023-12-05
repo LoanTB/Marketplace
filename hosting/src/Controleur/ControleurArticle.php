@@ -80,7 +80,12 @@ class ControleurArticle extends ControleurGenerique {
 
     public static function supprimerImage() : void {
         if (!isset($_REQUEST["id_article"]) or !isset($_REQUEST["image"])){
-            ControleurGenerique::accesNonAutorise("AH");
+            ControleurGenerique::accesNonAutorise("ZH");
+            return;
+        }
+
+        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["id_utilisateur"]) and !ConnexionUtilisateur::estAdministrateur()){
+            ControleurGenerique::accesNonAutorise("ZI");
             return;
         }
 
@@ -90,30 +95,25 @@ class ControleurArticle extends ControleurGenerique {
             return;
         }
 
-        if (!ConnexionUtilisateur::estUtilisateur($_REQUEST["id_utilisateur"]) and !ConnexionUtilisateur::estAdministrateur()){
-            ControleurGenerique::accesNonAutorise("AI");
-            return;
-        }
-
         $article = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"],0);
         if (is_null($article)) {
             MessageFlash::ajouter("warning", "L'article demandé est introuvable !");
             self::afficherListe();
         }
 
-        if (!ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur())){
-            ControleurGenerique::accesNonAutorise("G");
+        if (!ConnexionUtilisateur::estUtilisateur($article->getIdUtilisateur()) and !ConnexionUtilisateur::estAdministrateur()){
+            ControleurGenerique::accesNonAutorise("XG");
             return;
         }
 
-        $oldImages = (new illustrerRepository())->recupererParColonne($_REQUEST["id_article"], 0);
-        foreach ($oldImages as $oldImage) {
-            if ($oldImage->getOrdre() == $_REQUEST["image"]) {
-                $sqlreturn = (new illustrerRepository())->supprimer($oldImage);
-                if ($sqlreturn != "") {
-                    MessageFlash::ajouter("warning", "Impossible de supprimer l'image (AI".$sqlreturn."), veuillez réessayer plus tard.");
-                }
+        $oldImage = (new illustrerRepository())->recupererParDeuxColonne($_REQUEST["id_article"], 0,$_REQUEST["image"],2);
+        if (count($oldImage) == 1) {
+            $sqlreturn = (new illustrerRepository())->supprimer($oldImage[0]);
+            if ($sqlreturn != "") {
+                MessageFlash::ajouter("warning", "Impossible de supprimer l'image (" . $sqlreturn . "), veuillez réessayer plus tard.");
             }
+        } else {
+            MessageFlash::ajouter("warning", "Impossible de récupérer l'image, veuillez réessayer plus tard.");
         }
         self::afficherFormulaireMiseAJour();
     }
