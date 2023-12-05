@@ -117,7 +117,9 @@ if (count($tousCommentaires) > 0){
             echo'<span class="fa fa-star-half starIsChecked"></span>';
         } else if (($moyenne*5)-$i < 0 and ($moyenne*5)-$i > -1) {
             echo'<span class="fa fa-star-half" style="transform: rotateY(180deg) translateX(10%);"></span>';
-        } else if (($moyenne*5)-$i < -1) {
+        } else if (($moyenne*5)-$i <= -1) {
+            echo'<span class="fa fa-star"></span>';
+        } else if (($moyenne*5)-$i == 0 and $i == 0) {
             echo'<span class="fa fa-star"></span>';
         } else if (($moyenne*5)-$i == 0) {
             echo'<span class="fa fa-star starIsChecked"></span>';
@@ -227,7 +229,9 @@ foreach ((!is_null($commentaireUtilisateur) ? ControleurCommenter::recupererList
                                 echo'<span class="fa fa-star-half starIsChecked"></span>';
                             } else if (($commentaire->getNote()*5)-$i < 0 and ($commentaire->getNote()*5)-$i > -1) {
                                 echo'<span class="fa fa-star-half" style="transform: rotateY(180deg) translateX(10%);"></span>';
-                            } else if (($commentaire->getNote()*5)-$i < -1) {
+                            } else if (($commentaire->getNote()*5)-$i <= -1) {
+                                echo'<span class="fa fa-star"></span>';
+                            } else if (($commentaire->getNote()*5)-$i == 0 and $i == 0) {
                                 echo'<span class="fa fa-star"></span>';
                             } else if (($commentaire->getNote()*5)-$i == 0) {
                                 echo'<span class="fa fa-star starIsChecked"></span>';
