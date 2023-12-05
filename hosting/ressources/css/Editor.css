@@ -32,7 +32,7 @@
     z-index: -1;
 }
 input[type="file"] {
-    display: none;
+    width: 0;
 }
 
 .imagePlaceholder:hover {
