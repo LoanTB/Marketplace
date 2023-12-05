@@ -370,7 +370,6 @@ footer h6 {
 .separator {
     border-top: transparent 1px solid;
     height: 0;
-    background-color: #3b3b42;
 }
 
 .instanceinfo {
