@@ -6,7 +6,7 @@ use App\Ecommerce\Modele\Repository\UtilisateurRepository;
 use App\Ecommerce\Modele\Repository\relations\illustrerRepository;
 
 $article = (new ArticleRepository())->recupererParUnique($_REQUEST["id_article"], 0);
-$utilisateur = (new UtilisateurRepository)->recupererParUnique(ConnexionUtilisateur::getIdUtilisateurConnecte(), 0);
+$utilisateur = (new UtilisateurRepository)->recupererParUnique($article->getIdUtilisateur(), 0);
 ?>
 <link rel="stylesheet" href="../ressources/css/ArticleDetail.css">
 <link href="../ressources/css/Editor.css" rel="stylesheet">
